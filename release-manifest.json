@@ -3,7 +3,7 @@
   "author": "SerakSan",
   "edition": "github",
   "fileCount": 8351,
-  "bytes": 134490476,
+  "bytes": 135168376,
   "localPathsAndCredentialsCheck": "passed",
   "files": [
     {
@@ -58,8 +58,8 @@
     },
     {
       "path": "README.md",
-      "bytes": 10725,
-      "sha256": "370567f1c45332632994919de582fd8eaaf7fee39e3f96eadb25d2d778661389"
+      "bytes": 10913,
+      "sha256": "143b0a9b783ba3b3178614f70b2d6fb201cea6c78dd6f8a1b3e101ac6e1ae550"
     },
     {
       "path": "START-HERE.txt",
@@ -41538,8 +41538,8 @@
     },
     {
       "path": "examples/minish-studio-name-preview.png",
-      "bytes": 161628,
-      "sha256": "5fc4eb65a01888102976152a1272322c4659b771128296e3c1280f66b6dea2bf"
+      "bytes": 838828,
+      "sha256": "a06eb48e86c849fba68d75df7890c80699a99a5eb189637f93d975079d6489ea"
     },
     {
       "path": "examples/starter.js",
@@ -41573,8 +41573,8 @@
     },
     {
       "path": "index.html",
-      "bytes": 56753,
-      "sha256": "1cd3225f06c32a364ee855cd2eaddf961f7f49683851b6ed4695243b639ca431"
+      "bytes": 57265,
+      "sha256": "5f566580ddc01dce5f0f4966cc064118c5681707c234b40f4c6072c25e45fc9c"
     },
     {
       "path": "library.js",

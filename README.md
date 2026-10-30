@@ -6,6 +6,8 @@ Build your own Zelda scenes with genuine game sprites and environment tiles. Arr
 
 **The included artwork is already bundled.** Extract the app, open it, and start creating. No account, ROM, asset import, or additional installation is needed. The downloaded app works offline.
 
+**[Launch Minish Studio](https://seraksan.github.io/minish-studio/)** · [Download the offline ZIP](https://github.com/SerakSan/minish-studio/releases/latest/download/Minish-Studio-Offline.zip)
+
 ![Minish Studio showing Hyrule Town, the game artwork collection, scene canvas, and editing tools](examples/minish-studio-name-preview.png)
 
 [Get started](#get-started) · [User guide](GUIDE.md) · [Publish your copy](PUBLISHING.md) · [Credits](CREDITS.md)
@@ -28,7 +30,7 @@ The interface uses game-derived lettering, menu frames, and an Ezlo workspace sw
 
 ### Download and use offline
 
-1. Download **Minish-Studio-Offline.zip** from this repository's **Releases** page. If no release is available yet, choose **Code → Download ZIP** instead.
+1. Download [**Minish-Studio-Offline.zip**](https://github.com/SerakSan/minish-studio/releases/latest/download/Minish-Studio-Offline.zip).
 2. Extract the entire ZIP. On Windows, use **Extract All** before opening the app.
 3. Open **index.html** in a current desktop browser. Keep the app files and `assets` folder together.
 4. Choose **Scene** to compose an image, or **Animate** to create an animation.
@@ -36,9 +38,9 @@ The interface uses game-derived lettering, menu frames, and an Ezlo workspace sw
 
 No command line, build step, or local server is required to use the editor. Windows and macOS controls are shown in the app's **Controls** guide. Desktop mouse and trackpad use provide the most editing space.
 
-### Open a hosted copy
+### Launch in your browser
 
-If this repository has a published website, use the website link in its **About** section. The same included artwork loads with the app. Editing and exports happen on your device.
+Open [Minish Studio](https://seraksan.github.io/minish-studio/) to start creating in your browser. The same included artwork loads with the app. Editing and exports happen on your device.
 
 Supported browsers can install the hosted app in its own window. Load it once online before using the cached editor offline. The extracted offline ZIP is the most predictable way to keep every supplied file available without a connection. See [installation and publishing](PUBLISHING.md#install-and-use-offline).
 

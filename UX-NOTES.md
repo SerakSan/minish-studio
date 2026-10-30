@@ -1,10 +1,10 @@
-# Minish Studio v6: usability decisions
+# Minish Studio: usability decisions
 
-The primary tasks are arranging scenes and animating genuine game artwork. Simple offers a short choose, place, play workflow. Timeline keeps direct control of poses and timing. Both use the same animation clip and preserve the scene maker as a separate workspace. The notes below record the decisions behind each revision.
+The primary tasks are arranging scenes and animating genuine game artwork. Simple offers a short choose, place, play workflow. Timeline keeps direct control of poses and timing. Both use the same animation clip and preserve the scene maker as a separate workspace. These notes record development work leading to Minish Studio 1.0, its initial public release. The sections describe development iterations and the checks performed for their stated configurations, rather than a history of earlier public releases.
 
-## Scene workflow foundation, version 4.0
+## Scene workflow foundation
 
-The v3 interface made source labels look like assets, hid too much pose context, and gave a small canvas most of the remaining space. Version 4 addressed these problems while retaining the game's visual style.
+An early development interface made source labels look like assets, hid too much pose context, and gave a small canvas most of the remaining space. The scene workflow rework addressed these problems while retaining the game's visual style.
 
 | Finding | Change | Purpose |
 | --- | --- | --- |
@@ -24,15 +24,15 @@ These are heuristic design decisions informed by Nielsen Norman Group's [usabili
 
 Validation covers responsive layouts, semantic controls, keyboard shortcuts, Undo safety, saved-project compatibility, deterministic generation, and PNG exports. Boss and environment authenticity use separate source mapping and visual review reports.
 
-## Precise placement and Surprise me, version 4.1
+## Precise placement and Surprise me
 
 Library cards and the chosen-piece preview now support a real centered drag. A live preview shows the snapped result before release. One-pixel mode, Alt snap bypass, explicit X/Y inputs, and visible nudge controls cover both quick tile building and exact adjustments. Existing pieces move by snapped displacement, preserving their initial grid offset.
 
 The scene frame and editor pasteboard are separate. Off-frame artwork appears faintly, can be selected and moved, and is excluded from the exported frame. The pasteboard uses surrounding workspace without moving the frame during a drag. Fit accounts for the editor margins. Browser checks confirmed a centered 18 × 23 sprite drop, negative coordinates, complete off-frame placement and reselection, one-pixel nudging, and a fully transparent 960 × 640 export when the only piece was outside the frame.
 
-Surprise me now offers story mood and cast size alongside the setting. Twenty-two story setups vary compatible cast groups, genuine poses, formations, and safe camera framing. A focused test checks 2,700 deterministic compositions, including collision-free placement, valid source crops, peaceful settings, all story setups, and more than 2,000 distinct arrangements. This is a technical and visual review, not a user study. The 390 px mobile view keeps the new controls and random-scene dialog within the page width.
+The initial Surprise me implementation offered story mood and cast size alongside the setting. Twenty-two story setups varied compatible cast groups, genuine poses, formations, and safe camera framing. A focused test checked 2,700 deterministic compositions, including collision-free placement, valid source crops, peaceful settings, all story setups, and more than 2,000 distinct arrangements. This was a technical and visual review, not a user study. The 390 px mobile view kept the new controls and random-scene dialog within the page width. The catalog expanded further before the public release, as described below.
 
-## Windows, Mac, and one-click surprises, version 4.2
+## Windows, Mac, and one-click surprises
 
 Controls now has one comparison table for Windows and Mac, mouse and trackpad instructions, and plain-language descriptions of the scene, collection, file, and editing controls. Labels detect the platform locally and can be overridden. Shortcut handling shares one definition, protects native field editing and composition, respects handled widget events, and keeps Mac Control-click as a secondary click. Browser checks confirmed platform label switching, Mac Duplicate/Undo, Ctrl+Y Redo, and collection-tab arrow navigation without moving the selected piece. Native Windows keyboard mappings are covered by automated event tests; the available browser preview runs on Mac.
 
@@ -40,11 +40,11 @@ Random generation now has 1,388 named setting/story/style choices, including 200
 
 Surprise me again rerolls a generated scene in the same carousel slot, preserving its requested options and using a fresh seed. One Undo restores all prior pieces. Scenes started from scratch are preserved and receive a new neighboring scene. A shared busy guard prevents overlapping generation requests, and scene changes or edits during image loading cancel a pending replacement. The settings dialog shows the available combination count and disables setting choices that are unavailable for its current style.
 
-## Animation workspace, version 5.0
+## Animation workspace
 
 Scene and Animate are independent workspaces. The mode switch sits between the maker name and game logo. The scene editor keeps its projects and focus choice. Animation has separate clips, saves, and Undo, with a copy-based import from the current scene.
 
-The first-use choices are Animate my current scene and a walking demo. The demo uses ten visually reviewed, genuine back-facing Link walking poses. Its two clips demonstrate movement through a real Hyrule Town region and a transparent repeating pose cycle. Pose groups remain source groupings, since a source row can mix directions or actions. Variable crop sizes preserve actor feet or object centers rather than making sprites wobble.
+The initial first-use choices were Animate my current scene and a walking demo. That demo uses ten visually reviewed, genuine back-facing Link walking poses. Its two clips demonstrate movement through a real Hyrule Town region and a transparent repeating pose cycle. Pose groups remain source groupings, since a source row can mix directions or actions. Variable crop sizes preserve actor feet or object centers rather than making sprites wobble.
 
 The timeline combines a playhead, exact frame field, scrubber, track list, and editable keys. Position uses integer interpolation; pose, visibility, and other piece properties hold until their next key. Auto Key records edits at the playhead. Motion, pose sequences, and text reveal are atomic Undo actions. Draft fields commit before Save, Export, typewriter creation, or workspace switching, including a blur fallback. A browser regression confirmed that one Undo after text reveal restores the complete typed dialogue.
 
@@ -52,7 +52,7 @@ Keyboard focus is limited to the current timeline cell on each track rather than
 
 Browser export verification checked every one of the 48 walking-demo GIF frames against its corresponding lossless PNG: all RGBA pixels matched, 37 rendered frames were distinct, and GIF duration was 4,000 ms. The real MP4 export decoded at 240 × 160 with a 3.95-second duration and no media error. Export tests also verify GIF dictionary growth/reset, transparency, palette reduction notices, atlas reconstruction, cancellation, memory limits, and video cleanup. PNG retains exact RGBA; GIF palette/timing constraints and browser video compression are explained in the export interface.
 
-## Simple animation and Ezlo switch, version 6.0.0
+## Simple animation and Ezlo switch
 
 Simple is the default for new animation work. It hides the timeline, key controls, frame counts, and recording options. The main workflow is choosing artwork and an action, placing the piece, and pressing Play. Settings presents Action, Speed, Movement, and Distance together with one Apply animation button. Clip length is shown in seconds. Art offers separate Animations and Still poses views, so a newcomer can choose a recognizable action while exact pose choices remain available.
 
@@ -60,7 +60,7 @@ Dragging or nudging in Simple moves the entire path. Exact X/Y controls and off-
 
 Simple and Timeline share one clip rather than making separate copies. A ready action becomes editable keys in Timeline. Returning to Simple preserves custom keys and shows a clear notice when they differ from the ready recipe. Replacing that piece's action and movement requires the explicit Replace this piece’s animation control; visibility and visual settings remain intact. Undo covers the recipe and its generated keys as one action. Moving or duplicating a piece does not require replacing its custom animation.
 
-The ready catalog contains 32 visually reviewed loops across 15 sources. Each action lists specific source poses instead of cycling a row that might contain loose parts, different directions, or contributor text. Link, Zelda, animals, enemies, effects, and three assembled boss sources have ready choices. Sources without a reviewed loop retain still-pose selection, placement, movement, and Timeline authoring. These are genuine game pixels with editor-authored order and timing. Boss loops are labeled editor assemblies; neither the source collection nor this catalog claims all ROM animations.
+The first ready catalog contained 32 visually reviewed loops across 15 sources. Each action listed specific source poses instead of cycling a row that might contain loose parts, different directions, or contributor text. Link, Zelda, animals, enemies, effects, and three assembled boss sources had ready choices. Sources without a reviewed loop retained still-pose selection, placement, movement, and Timeline authoring. The catalog expanded further before release, as recorded in the assembly-coverage section below. These are genuine game pixels with editor-authored order and timing. Boss loops are labeled editor assemblies; neither the source collection nor this catalog claims all ROM animations.
 
 Dialogue has a Simple Text reveal action. The editable field retains the full phrase while the preview shows partial text. Slow, Normal, and Fast control the reveal. A short clip extends to fit the message and a reading pause, with the existing 600-frame limit. Existing unmodified ready loops extend with it. A message that cannot fit is rejected without truncating its text or changing the project.
 
@@ -75,7 +75,7 @@ The final interface review checked the common choose, place, play, and export wo
 Browser checks confirmed a ready walking demo, negative X placement, valid recipe duplication, full-phrase dialogue reveal and Undo, preserved custom keys, explicit replacement, and one Undo restoring the original custom animation. A Simple-mode export contained 48 frames at 240 × 160 pixels: every GIF RGBA pixel matched the corresponding lossless PNG frame, with 34 distinct rendered frames and 4,000 ms total playback. The asset verifier passed all 134 source sheets and 319,918 unique grid PNGs, with 64 sampled mapping cells per sheet and tile size. Ezlo's seven derived crops separately passed exact RGBA, source-color, and provenance checks. These checks do not certify the completeness of game animation coverage.
 
 
-## Editing workflow and assembly coverage, version 7.0.0
+## Editing workflow and assembly coverage
 
 The review prioritized canvas space, visible editing actions, and predictable keyboard behavior. The Scene inspector now starts with the piece list and selected-piece controls. Canvas setup is collapsible. Narrower side panels, shorter toolbars and carousel, lighter borders, and readable form text give the actual artwork more room while retaining game lettering, Ezlo, pixel colors, and the original logo. The title is Minish Studio with SerakSan retained; decorative studio subtitles are removed.
 

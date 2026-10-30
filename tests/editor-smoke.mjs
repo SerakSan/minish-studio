@@ -129,7 +129,7 @@ const studio = sandbox.MINISH_STUDIO;
 const flush = () => new Promise(resolve => setImmediate(resolve));
 await flush();
 const base = studio.project;
-assert.equal(studio.version, '7.0.1');
+assert.equal(studio.version, '1.0');
 assert.equal(studio.sourceAssets.length, 134);
 assert.equal(studio.assets.length, 134 + pieces.assets.length + (sandbox.MINISH_SPRITES?.assets?.length || 0) + (sandbox.MINISH_LEGACY_BOSSES?.assets?.length || 0) + (sandbox.MINISH_CURATED?.assets?.length || 0) + (sandbox.MINISH_BOSSES?.assets?.length || 0));
 assert.equal(elements.get('assetList').children.length, 134, 'Cleaned sheets must not double source browser entries');

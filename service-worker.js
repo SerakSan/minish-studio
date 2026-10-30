@@ -1,5 +1,5 @@
 'use strict';
-const VERSION = 'minish-studio-7.0.1';
+const VERSION = 'minish-studio-1.0';
 const CACHE = VERSION + ':' + self.registration.scope;
 const SHELL = [
   './', './index.html', './studio.css', './maker.css', './studio.js', './library.js', './controls.js', './animation-engine.js', './simple-animation.js', './animation-export.js', './ezlo-switch.js', './ezlo-switch.css', './animation-ui.js', './animation.css', './examples/animation-demo.js', './random-scenes.js', './pwa.js',

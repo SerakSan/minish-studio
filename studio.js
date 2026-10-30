@@ -1306,6 +1306,6 @@
     bringToFront: () => reorderSelected(1, true), sendToBack: () => reorderSelected(-1, true),
     loadProject: data => { const loaded = validateProject(copy(data)); historyBefore(); project = loaded; selectedId = null; fitMode = true; refreshAll(); scheduleSave(); },
     select: id => { selectedId = scene().objects.find(o => o.id === id)?.id || null; if (selected()) layer = selected().layer; setTool('select'); updateInspector(); scheduleDraw(); },
-    useBackground, render: () => { renderStage(); renderSlides(); }, version: '7.0.1'
+    useBackground, render: () => { renderStage(); renderSlides(); }, version: '1.0'
   };
 })();

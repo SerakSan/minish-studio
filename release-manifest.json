@@ -1,9 +1,9 @@
 {
-  "version": "7.0.1",
+  "version": "1.0",
   "author": "SerakSan",
   "edition": "github",
   "fileCount": 8351,
-  "bytes": 135168376,
+  "bytes": 135167326,
   "localPathsAndCredentialsCheck": "passed",
   "files": [
     {
@@ -28,8 +28,8 @@
     },
     {
       "path": "CHANGELOG.md",
-      "bytes": 6577,
-      "sha256": "73bd1468d54f4fd4eab55a65afe0b8a339cffb13733b47221a5bfc794a6c1a95"
+      "bytes": 5156,
+      "sha256": "410bc6f7de927542b60e88638283346d7adcb88b976be9f58bf5d0218d938707"
     },
     {
       "path": "CREDITS.md",
@@ -38,8 +38,8 @@
     },
     {
       "path": "GUIDE.md",
-      "bytes": 24467,
-      "sha256": "3d95aea6dbbefae6c9261ce446f06de30cc73aa481722d159494beeec1eacaa2"
+      "bytes": 24464,
+      "sha256": "094d7150bbbc505debe5a0fcbb532425111aa311b94136b1acd4cb5a73823ece"
     },
     {
       "path": "LICENSE",
@@ -53,8 +53,8 @@
     },
     {
       "path": "PUBLISHING.md",
-      "bytes": 12927,
-      "sha256": "2e3104f701e0a0e6dbdf2fba6b5493854fca871a04cd9a37c1e443e9d7aaa86d"
+      "bytes": 12957,
+      "sha256": "398f54b3476516ab87b403db7a86ee92933a22ad82a189986edb776d7a4fd516"
     },
     {
       "path": "README.md",
@@ -68,8 +68,8 @@
     },
     {
       "path": "UX-NOTES.md",
-      "bytes": 17265,
-      "sha256": "4f8f63d0075b9b0577f68a881213bd61afb7d14815d6dd16dfbb94426c3dc609"
+      "bytes": 17617,
+      "sha256": "7cf3bd8287d5196f7e4cd9fce3479e6c8df9eb36664ba9eab91dedf0f9a3315f"
     },
     {
       "path": "animation-engine.js",
@@ -41574,7 +41574,7 @@
     {
       "path": "index.html",
       "bytes": 57265,
-      "sha256": "5f566580ddc01dce5f0f4966cc064118c5681707c234b40f4c6072c25e45fc9c"
+      "sha256": "f3bf6558e61e329c00d5d447e98a3f925668c2916f5760ce6f0769a669e5d351"
     },
     {
       "path": "library.js",
@@ -41608,8 +41608,8 @@
     },
     {
       "path": "service-worker.js",
-      "bytes": 2416,
-      "sha256": "6b7f9988a9cd8f90726ec5b516b40a3794eaf26325941f6bf4eb5d5c648d7723"
+      "bytes": 2414,
+      "sha256": "341e27bbf83ee56c189a51ab0a42739db1a89305cdfa6bf4c3367a6952719a38"
     },
     {
       "path": "simple-animation.js",
@@ -41623,8 +41623,8 @@
     },
     {
       "path": "studio.js",
-      "bytes": 99785,
-      "sha256": "e0db30f7455bb44505ba3405ea685cef4fe7fb1fa49f16874a2237b46f959388"
+      "bytes": 99783,
+      "sha256": "30f1ec966ce05f7b464931730323244e0b5304524c19577c258a8ccc8bb93f6b"
     },
     {
       "path": "tests/animation-engine.mjs",
@@ -41648,8 +41648,8 @@
     },
     {
       "path": "tests/editor-smoke.mjs",
-      "bytes": 52049,
-      "sha256": "96007541fc877e808b9fdd4948e7d9aba739da3f4de86601b35631144b67a9ba"
+      "bytes": 52047,
+      "sha256": "792384b26c331ef9557223234429d81c1524c9bde236e963e3a7c71613fe8dcf"
     },
     {
       "path": "tests/ezlo-switch.mjs",
@@ -41703,8 +41703,8 @@
     },
     {
       "path": "tools/build_public_release.py",
-      "bytes": 7078,
-      "sha256": "f72dbbadd08be60139aa0c4e690f06f16aa91b8b5f9f71124f4027bfaecc6257"
+      "bytes": 7076,
+      "sha256": "4c0f17c2e17b79e0319c30e6f73147ade01f6c1ba194c2c27cbaba81882f0920"
     },
     {
       "path": "tools/build_transparent_sprites.py",

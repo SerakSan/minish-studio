@@ -132,7 +132,7 @@ Delete, Backspace, copy, cut, paste, and duplicate work from the placed-piece li
 
 ## Full bosses and their parts
 
-The v4 full-boss collection was rebuilt after checking gameplay captures, the published component sheets, and relevant transformation facts from the public Minish Cap decompilation. It includes anatomy missing from earlier editor arrangements: Chuchu neck/base parts, Octorok limbs and articulated tail, Gyorg eyes and tails, and Vaati's separate eyes and arms.
+The full-boss collection was rebuilt after checking gameplay captures, the published component sheets, and relevant transformation facts from the public Minish Cap decompilation. It includes anatomy missing from earlier editor arrangements: Chuchu neck/base parts, Octorok limbs and articulated tail, Gyorg eyes and tails, and Vaati's separate eyes and arms.
 
 Use the boss state and direction filters to find the supplied variants. Select a placed multipart boss and press **Edit boss parts** to turn the assembled image into individually editable pieces at the same position, scale, and flips. Move or replace a component, or Undo to restore the complete boss.
 

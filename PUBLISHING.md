@@ -50,7 +50,7 @@ These topics describe the project and help people browse related repositories. T
 
 The separate Minish-Studio-Offline.zip contains the runnable app and artwork without developer tools, test files, or original-download archives. It works without a server or a native installer.
 
-On GitHub, open Releases → Draft a new release. Create tag v7.0.1 from main, title it Minish Studio 7.0.1, attach Minish-Studio-Offline.zip, and publish the release. Users download that attachment, extract the entire ZIP, and open index.html. On Windows they should use Extract All before opening the app. START-HERE.txt contains the short usage instructions. Do not attach the private working-project ZIP.
+On GitHub, open Releases → Draft a new release. Create tag v1.0 from main, title it Minish Studio 1.0, attach Minish-Studio-Offline.zip, and publish the release. This is the first public release. Users download that attachment, extract the entire ZIP, and open index.html. On Windows they should use Extract All before opening the app. START-HERE.txt contains the short usage instructions. Do not attach the private working-project ZIP.
 
 ## Optional: publish an installable website
 

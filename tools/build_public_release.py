@@ -103,7 +103,7 @@ def main():
             target.chmod(0o644)
             records.append({'path': relative.as_posix(), 'bytes': target.stat().st_size,
                             'sha256': hashlib.sha256(target.read_bytes()).hexdigest()})
-        report = {'version': '7.0.1', 'author': 'SerakSan', 'edition': 'site' if args.site_only else 'github',
+        report = {'version': '1.0', 'author': 'SerakSan', 'edition': 'site' if args.site_only else 'github',
                   'fileCount': len(records), 'bytes': sum(r['bytes'] for r in records),
                   'localPathsAndCredentialsCheck': 'passed', 'files': records}
         (temporary / 'release-manifest.json').write_text(json.dumps(report, indent=2) + '\n')

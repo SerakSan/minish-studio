@@ -1,0 +1,534 @@
+[
+  {
+    "id": "piece-19728-73-351-2-2",
+    "name": "Pose 146 \u00b7 2 \u00d7 2",
+    "sourceId": "19728",
+    "sourceRect": {
+      "x": 73,
+      "y": 351,
+      "w": 2,
+      "h": 2
+    },
+    "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/19728/",
+    "contributors": "Sonikku",
+    "assetId": "transparent-19728",
+    "path": "assets/curated/sprites/piece-19728-73-351-2-2.png",
+    "width": 6,
+    "height": 6,
+    "padding": 2,
+    "sha256": "0eb1c2718ebdb0311a1abdfff2c415f35753ecaf7cfc80bc7ace50c42652ee0c"
+  },
+  {
+    "id": "piece-6399-0-314-32-16",
+    "name": "Pose 017 \u00b7 32 \u00d7 16",
+    "sourceId": "6399",
+    "sourceRect": {
+      "x": 0,
+      "y": 314,
+      "w": 32,
+      "h": 16
+    },
+    "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6399/",
+    "contributors": "Bacon",
+    "assetId": "clean-6399",
+    "path": "assets/curated/sprites/piece-6399-0-314-32-16.png",
+    "width": 36,
+    "height": 20,
+    "padding": 2,
+    "sha256": "4be84c7b8ecb5f98b7fa64518e3153962436b54cd77db365624d8547f2d5ec35"
+  },
+  {
+    "id": "piece-6399-35-314-32-16",
+    "name": "Pose 018 \u00b7 32 \u00d7 16",
+    "sourceId": "6399",
+    "sourceRect": {
+      "x": 35,
+      "y": 314,
+      "w": 32,
+      "h": 16
+    },
+    "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6399/",
+    "contributors": "Bacon",
+    "assetId": "clean-6399",
+    "path": "assets/curated/sprites/piece-6399-35-314-32-16.png",
+    "width": 36,
+    "height": 20,
+    "padding": 2,
+    "sha256": "53b99c4b4229b430225190467002151d6cc41ecf2b05a5e4b6d8eda023c634c7"
+  },
+  {
+    "id": "piece-6399-0-332-40-40",
+    "name": "Pose 020 \u00b7 40 \u00d7 40",
+    "sourceId": "6399",
+    "sourceRect": {
+      "x": 0,
+      "y": 332,
+      "w": 40,
+      "h": 40
+    },
+    "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6399/",
+    "contributors": "Bacon",
+    "assetId": "clean-6399",
+    "path": "assets/curated/sprites/piece-6399-0-332-40-40.png",
+    "width": 44,
+    "height": 44,
+    "padding": 2,
+    "sha256": "77007424e1c1762b593fddf4fd3a8fd08632182578221a6ae8d311e4d86388e4"
+  },
+  {
+    "id": "piece-6399-42-332-40-40",
+    "name": "Pose 021 \u00b7 40 \u00d7 40",
+    "sourceId": "6399",
+    "sourceRect": {
+      "x": 42,
+      "y": 332,
+      "w": 40,
+      "h": 40
+    },
+    "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6399/",
+    "contributors": "Bacon",
+    "assetId": "clean-6399",
+    "path": "assets/curated/sprites/piece-6399-42-332-40-40.png",
+    "width": 44,
+    "height": 44,
+    "padding": 2,
+    "sha256": "601c9054504c742c307ed389aeecfdf4dbde12d733589980e9ceb8663cfcc6a1"
+  },
+  {
+    "id": "piece-6381-121-1769-12-13",
+    "name": "Pose 382 \u00b7 12 \u00d7 13",
+    "sourceId": "6381",
+    "sourceRect": {
+      "x": 121,
+      "y": 1769,
+      "w": 12,
+      "h": 13
+    },
+    "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6381/",
+    "contributors": "Bacon",
+    "assetId": "clean-6381",
+    "path": "assets/curated/sprites/piece-6381-121-1769-12-13.png",
+    "width": 16,
+    "height": 17,
+    "padding": 2,
+    "sha256": "735e46c656c1fb3a5b7fdb79a59abbff046c8f38f15a4c912555f29203a7f7cf"
+  },
+  {
+    "id": "piece-6381-135-1769-12-13",
+    "name": "Pose 383 \u00b7 12 \u00d7 13",
+    "sourceId": "6381",
+    "sourceRect": {
+      "x": 135,
+      "y": 1769,
+      "w": 12,
+      "h": 13
+    },
+    "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6381/",
+    "contributors": "Bacon",
+    "assetId": "clean-6381",
+    "path": "assets/curated/sprites/piece-6381-135-1769-12-13.png",
+    "width": 16,
+    "height": 17,
+    "padding": 2,
+    "sha256": "66b778347815a8b38b9e2fb9f95019259cd7246b24f149b5b55c06393964a3e6"
+  },
+  {
+    "id": "piece-6381-149-1769-12-13",
+    "name": "Pose 384 \u00b7 12 \u00d7 13",
+    "sourceId": "6381",
+    "sourceRect": {
+      "x": 149,
+      "y": 1769,
+      "w": 12,
+      "h": 13
+    },
+    "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6381/",
+    "contributors": "Bacon",
+    "assetId": "clean-6381",
+    "path": "assets/curated/sprites/piece-6381-149-1769-12-13.png",
+    "width": 16,
+    "height": 17,
+    "padding": 2,
+    "sha256": "e913c347bc8cf1393368638c2340400e70074a59c217080ef3a0d254691ac8fe"
+  },
+  {
+    "id": "piece-6381-163-1769-12-13",
+    "name": "Pose 385 \u00b7 12 \u00d7 13",
+    "sourceId": "6381",
+    "sourceRect": {
+      "x": 163,
+      "y": 1769,
+      "w": 12,
+      "h": 13
+    },
+    "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6381/",
+    "contributors": "Bacon",
+    "assetId": "clean-6381",
+    "path": "assets/curated/sprites/piece-6381-163-1769-12-13.png",
+    "width": 16,
+    "height": 17,
+    "padding": 2,
+    "sha256": "87619cf6aa0db0cad2c63cc242557c79837deab10d6d96ca91784baf5579662f"
+  },
+  {
+    "id": "piece-6461-326-181-16-16",
+    "name": "Part / pose 024 \u00b7 16 \u00d7 16",
+    "sourceId": "6461",
+    "sourceRect": {
+      "x": 326,
+      "y": 181,
+      "w": 16,
+      "h": 16
+    },
+    "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6461/",
+    "contributors": "Sonikku",
+    "assetId": "transparent-6461",
+    "path": "assets/curated/sprites/piece-6461-326-181-16-16.png",
+    "width": 20,
+    "height": 20,
+    "padding": 2,
+    "sha256": "a074d3526f03e1210ec40deaf707376d7b12b25cba2707e819f6afde2b543f08"
+  },
+  {
+    "id": "piece-6461-343-181-16-16",
+    "name": "Part / pose 025 \u00b7 16 \u00d7 16",
+    "sourceId": "6461",
+    "sourceRect": {
+      "x": 343,
+      "y": 181,
+      "w": 16,
+      "h": 16
+    },
+    "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6461/",
+    "contributors": "Sonikku",
+    "assetId": "transparent-6461",
+    "path": "assets/curated/sprites/piece-6461-343-181-16-16.png",
+    "width": 20,
+    "height": 20,
+    "padding": 2,
+    "sha256": "76cb165397940b2cd2bda2844f6b611d888898def22b68c3931d12a3b5b98500"
+  },
+  {
+    "id": "piece-6461-360-181-16-16",
+    "name": "Part / pose 026 \u00b7 16 \u00d7 16",
+    "sourceId": "6461",
+    "sourceRect": {
+      "x": 360,
+      "y": 181,
+      "w": 16,
+      "h": 16
+    },
+    "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6461/",
+    "contributors": "Sonikku",
+    "assetId": "transparent-6461",
+    "path": "assets/curated/sprites/piece-6461-360-181-16-16.png",
+    "width": 20,
+    "height": 20,
+    "padding": 2,
+    "sha256": "817cd286f250c7d26533cc46c76a0d76205e5a5ccdab4f39b15027d5998e1b72"
+  },
+  {
+    "id": "piece-6461-377-181-16-16",
+    "name": "Part / pose 027 \u00b7 16 \u00d7 16",
+    "sourceId": "6461",
+    "sourceRect": {
+      "x": 377,
+      "y": 181,
+      "w": 16,
+      "h": 16
+    },
+    "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6461/",
+    "contributors": "Sonikku",
+    "assetId": "transparent-6461",
+    "path": "assets/curated/sprites/piece-6461-377-181-16-16.png",
+    "width": 20,
+    "height": 20,
+    "padding": 2,
+    "sha256": "1f5e42a03e47c844f7cc492dc244d824d6f13f154ba60de69a09172d22942eb6"
+  },
+  {
+    "id": "piece-6461-394-181-16-16",
+    "name": "Part / pose 028 \u00b7 16 \u00d7 16",
+    "sourceId": "6461",
+    "sourceRect": {
+      "x": 394,
+      "y": 181,
+      "w": 16,
+      "h": 16
+    },
+    "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6461/",
+    "contributors": "Sonikku",
+    "assetId": "transparent-6461",
+    "path": "assets/curated/sprites/piece-6461-394-181-16-16.png",
+    "width": 20,
+    "height": 20,
+    "padding": 2,
+    "sha256": "e022d1566fcec603859d18a746cb56097d767ab59156b82effd7618adfbcb650"
+  },
+  {
+    "id": "piece-6461-411-181-16-16",
+    "name": "Part / pose 029 \u00b7 16 \u00d7 16",
+    "sourceId": "6461",
+    "sourceRect": {
+      "x": 411,
+      "y": 181,
+      "w": 16,
+      "h": 16
+    },
+    "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6461/",
+    "contributors": "Sonikku",
+    "assetId": "transparent-6461",
+    "path": "assets/curated/sprites/piece-6461-411-181-16-16.png",
+    "width": 20,
+    "height": 20,
+    "padding": 2,
+    "sha256": "93e7b7944444bc14c17ad5fe376ead42e20b0da10d88f8d44f2438053d880c1e"
+  },
+  {
+    "id": "piece-6461-428-181-16-16",
+    "name": "Part / pose 030 \u00b7 16 \u00d7 16",
+    "sourceId": "6461",
+    "sourceRect": {
+      "x": 428,
+      "y": 181,
+      "w": 16,
+      "h": 16
+    },
+    "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6461/",
+    "contributors": "Sonikku",
+    "assetId": "transparent-6461",
+    "path": "assets/curated/sprites/piece-6461-428-181-16-16.png",
+    "width": 20,
+    "height": 20,
+    "padding": 2,
+    "sha256": "2eccc3f5452311f7bcb493178871910f389f396cfd01404e182d6ac2318146a0"
+  },
+  {
+    "id": "piece-6461-445-181-16-16",
+    "name": "Part / pose 031 \u00b7 16 \u00d7 16",
+    "sourceId": "6461",
+    "sourceRect": {
+      "x": 445,
+      "y": 181,
+      "w": 16,
+      "h": 16
+    },
+    "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6461/",
+    "contributors": "Sonikku",
+    "assetId": "transparent-6461",
+    "path": "assets/curated/sprites/piece-6461-445-181-16-16.png",
+    "width": 20,
+    "height": 20,
+    "padding": 2,
+    "sha256": "852e55c70a3aa0388df85b54a455e62289bfeb440a03e00c1ecc359ad3333b17"
+  },
+  {
+    "id": "piece-6461-462-181-16-16",
+    "name": "Part / pose 032 \u00b7 16 \u00d7 16",
+    "sourceId": "6461",
+    "sourceRect": {
+      "x": 462,
+      "y": 181,
+      "w": 16,
+      "h": 16
+    },
+    "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6461/",
+    "contributors": "Sonikku",
+    "assetId": "transparent-6461",
+    "path": "assets/curated/sprites/piece-6461-462-181-16-16.png",
+    "width": 20,
+    "height": 20,
+    "padding": 2,
+    "sha256": "dd357d45e745455b5bdf12d1354e3689e2a3c9569ca0694fef6038530386761a"
+  },
+  {
+    "id": "piece-6461-479-181-16-16",
+    "name": "Part / pose 033 \u00b7 16 \u00d7 16",
+    "sourceId": "6461",
+    "sourceRect": {
+      "x": 479,
+      "y": 181,
+      "w": 16,
+      "h": 16
+    },
+    "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6461/",
+    "contributors": "Sonikku",
+    "assetId": "transparent-6461",
+    "path": "assets/curated/sprites/piece-6461-479-181-16-16.png",
+    "width": 20,
+    "height": 20,
+    "padding": 2,
+    "sha256": "704352957c607d7598dc4eccaad64cbe1dfd83ddbb2fb38fcb6c776135185954"
+  },
+  {
+    "id": "piece-6461-496-181-16-16",
+    "name": "Part / pose 034 \u00b7 16 \u00d7 16",
+    "sourceId": "6461",
+    "sourceRect": {
+      "x": 496,
+      "y": 181,
+      "w": 16,
+      "h": 16
+    },
+    "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6461/",
+    "contributors": "Sonikku",
+    "assetId": "transparent-6461",
+    "path": "assets/curated/sprites/piece-6461-496-181-16-16.png",
+    "width": 20,
+    "height": 20,
+    "padding": 2,
+    "sha256": "2523c9f6c09b6cd8058c7783928e64b45b8fb065bd86e10ee4d0febb43fbf3da"
+  },
+  {
+    "id": "piece-6461-513-181-16-16",
+    "name": "Part / pose 035 \u00b7 16 \u00d7 16",
+    "sourceId": "6461",
+    "sourceRect": {
+      "x": 513,
+      "y": 181,
+      "w": 16,
+      "h": 16
+    },
+    "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6461/",
+    "contributors": "Sonikku",
+    "assetId": "transparent-6461",
+    "path": "assets/curated/sprites/piece-6461-513-181-16-16.png",
+    "width": 20,
+    "height": 20,
+    "padding": 2,
+    "sha256": "c7c106d8d522554a26e1909062ee073dd8fefded1588842a7b7f5d678c65588a"
+  },
+  {
+    "id": "piece-6461-530-181-16-16",
+    "name": "Part / pose 036 \u00b7 16 \u00d7 16",
+    "sourceId": "6461",
+    "sourceRect": {
+      "x": 530,
+      "y": 181,
+      "w": 16,
+      "h": 16
+    },
+    "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6461/",
+    "contributors": "Sonikku",
+    "assetId": "transparent-6461",
+    "path": "assets/curated/sprites/piece-6461-530-181-16-16.png",
+    "width": 20,
+    "height": 20,
+    "padding": 2,
+    "sha256": "bba6835c7cf545a5f32daa0dec280f89745768c7bfd37db4f6c8837a25a82524"
+  },
+  {
+    "id": "piece-6534-52-335-6-62",
+    "name": "Part / pose 080 \u00b7 6 \u00d7 62",
+    "sourceId": "6534",
+    "sourceRect": {
+      "x": 52,
+      "y": 335,
+      "w": 6,
+      "h": 62
+    },
+    "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6534/",
+    "contributors": "Kenju",
+    "assetId": "transparent-6534",
+    "path": "assets/curated/sprites/piece-6534-52-335-6-62.png",
+    "width": 10,
+    "height": 66,
+    "padding": 2,
+    "sha256": "9cfe2853de748223a5d8eea5cf6c31812feba5b01f404aaab0f1469a001afb20"
+  },
+  {
+    "id": "piece-6535-131-65-32-16",
+    "name": "Part / pose 021 \u00b7 32 \u00d7 16",
+    "sourceId": "6535",
+    "sourceRect": {
+      "x": 131,
+      "y": 65,
+      "w": 32,
+      "h": 16
+    },
+    "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6535/",
+    "contributors": "Sonikku",
+    "assetId": "transparent-6535",
+    "path": "assets/curated/sprites/piece-6535-131-65-32-16.png",
+    "width": 36,
+    "height": 20,
+    "padding": 2,
+    "sha256": "eaf9523d51e1cfcaa8fcc4c02ed5c45fc10a4ddf49e514f20638ce6b8f710ee3"
+  },
+  {
+    "id": "piece-6535-131-82-32-16",
+    "name": "Part / pose 024 \u00b7 32 \u00d7 16",
+    "sourceId": "6535",
+    "sourceRect": {
+      "x": 131,
+      "y": 82,
+      "w": 32,
+      "h": 16
+    },
+    "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6535/",
+    "contributors": "Sonikku",
+    "assetId": "transparent-6535",
+    "path": "assets/curated/sprites/piece-6535-131-82-32-16.png",
+    "width": 36,
+    "height": 20,
+    "padding": 2,
+    "sha256": "3d59f3751c43bc52b6f53f7aa35acec0307865c69dba44714c3d7348f1467d81"
+  },
+  {
+    "id": "piece-6535-131-99-32-16",
+    "name": "Part / pose 025 \u00b7 32 \u00d7 16",
+    "sourceId": "6535",
+    "sourceRect": {
+      "x": 131,
+      "y": 99,
+      "w": 32,
+      "h": 16
+    },
+    "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6535/",
+    "contributors": "Sonikku",
+    "assetId": "transparent-6535",
+    "path": "assets/curated/sprites/piece-6535-131-99-32-16.png",
+    "width": 36,
+    "height": 20,
+    "padding": 2,
+    "sha256": "616d6745860684bf55bbde626cdc9a2193c6fcb96476be13be564995be7d90b7"
+  },
+  {
+    "id": "piece-6535-131-116-32-16",
+    "name": "Part / pose 026 \u00b7 32 \u00d7 16",
+    "sourceId": "6535",
+    "sourceRect": {
+      "x": 131,
+      "y": 116,
+      "w": 32,
+      "h": 16
+    },
+    "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6535/",
+    "contributors": "Sonikku",
+    "assetId": "transparent-6535",
+    "path": "assets/curated/sprites/piece-6535-131-116-32-16.png",
+    "width": 36,
+    "height": 20,
+    "padding": 2,
+    "sha256": "f8439139cc81b71dfd3c9bd814c6799071b54b1df6ad21c2194016e5a38f17e8"
+  },
+  {
+    "id": "piece-6437-268-414-8-8",
+    "name": "Object 132 \u00b7 8 \u00d7 8",
+    "sourceId": "6437",
+    "sourceRect": {
+      "x": 268,
+      "y": 414,
+      "w": 8,
+      "h": 8
+    },
+    "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6437/",
+    "contributors": "EternalLight",
+    "assetId": "transparent-6437",
+    "path": "assets/curated/sprites/piece-6437-268-414-8-8.png",
+    "width": 12,
+    "height": 12,
+    "padding": 2,
+    "sha256": "8b4563b039bf571eed4934bfce856b826e37a306fd1084bddd92ef2f3e373238"
+  }
+]

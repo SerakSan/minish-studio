@@ -1,0 +1,212 @@
+{
+  "format": "minish-cap-studio",
+  "version": 1,
+  "name": "My Hyrule Story",
+  "activeSlide": "starter-town",
+  "slides": [
+    {
+      "id": "starter-town",
+      "name": "01 Hyrule Town",
+      "preset": "portrait",
+      "width": 216,
+      "height": 270,
+      "exportScale": 5,
+      "color": "#819452",
+      "transparent": false,
+      "objects": [
+        {
+          "id": "town-map",
+          "kind": "sprite",
+          "assetId": "6526",
+          "sx": 0,
+          "sy": 0,
+          "sw": 1008,
+          "sh": 1218,
+          "x": -396,
+          "y": -304,
+          "scale": 1,
+          "flipX": false,
+          "flipY": false,
+          "keyColor": null,
+          "layer": "terrain",
+          "background": true
+        },
+        {
+          "id": "town-link",
+          "kind": "sprite",
+          "assetId": "6369",
+          "sx": 15,
+          "sy": 7,
+          "sw": 19,
+          "sh": 27,
+          "x": 100,
+          "y": 100,
+          "scale": 1,
+          "flipX": false,
+          "flipY": false,
+          "keyColor": null,
+          "layer": "objects"
+        },
+        {
+          "id": "town-dialogue",
+          "kind": "dialogue",
+          "x": 10,
+          "y": 200,
+          "w": 196,
+          "h": 58,
+          "text": "A new adventure begins.\nMake this little world your own.",
+          "fontSize": 9,
+          "color": "#fff7d3",
+          "box": true,
+          "layer": "overlay",
+          "scale": 1
+        }
+      ]
+    },
+    {
+      "id": "starter-woods",
+      "name": "02 Minish Woods",
+      "preset": "portrait",
+      "width": 216,
+      "height": 270,
+      "exportScale": 5,
+      "color": "#819452",
+      "transparent": false,
+      "objects": [
+        {
+          "id": "woods-map",
+          "kind": "sprite",
+          "assetId": "6554",
+          "sx": 0,
+          "sy": 0,
+          "sw": 1058,
+          "sh": 1250,
+          "x": -776,
+          "y": -128,
+          "scale": 1,
+          "flipX": false,
+          "flipY": false,
+          "keyColor": null,
+          "layer": "terrain",
+          "background": true
+        },
+        {
+          "id": "woods-link",
+          "kind": "sprite",
+          "assetId": "6369",
+          "sx": 15,
+          "sy": 7,
+          "sw": 19,
+          "sh": 27,
+          "x": 142,
+          "y": 154,
+          "scale": 1,
+          "flipX": false,
+          "flipY": false,
+          "keyColor": null,
+          "layer": "objects"
+        },
+        {
+          "id": "woods-dialogue",
+          "kind": "dialogue",
+          "x": 10,
+          "y": 200,
+          "w": 196,
+          "h": 58,
+          "text": "Take the scenic route.\nSome stories need a little magic.",
+          "fontSize": 9,
+          "color": "#fff7d3",
+          "box": true,
+          "layer": "overlay",
+          "scale": 1
+        }
+      ]
+    },
+    {
+      "id": "starter-village",
+      "name": "03 Minish Village",
+      "preset": "portrait",
+      "width": 216,
+      "height": 270,
+      "exportScale": 5,
+      "color": "#819452",
+      "transparent": false,
+      "objects": [
+        {
+          "id": "village-map",
+          "kind": "sprite",
+          "assetId": "6540",
+          "sx": 0,
+          "sy": 0,
+          "sw": 1008,
+          "sh": 984,
+          "x": -320,
+          "y": -176,
+          "scale": 1,
+          "flipX": false,
+          "flipY": false,
+          "keyColor": null,
+          "layer": "terrain",
+          "background": true
+        },
+        {
+          "id": "village-link",
+          "kind": "sprite",
+          "assetId": "6369",
+          "sx": 15,
+          "sy": 7,
+          "sw": 19,
+          "sh": 27,
+          "x": 114,
+          "y": 65,
+          "scale": 1,
+          "flipX": false,
+          "flipY": false,
+          "keyColor": null,
+          "layer": "objects"
+        },
+        {
+          "id": "village-dialogue",
+          "kind": "dialogue",
+          "x": 10,
+          "y": 200,
+          "w": 196,
+          "h": 58,
+          "text": "Small world. Big ideas.\nYour next chapter starts here.",
+          "fontSize": 9,
+          "color": "#fff7d3",
+          "box": true,
+          "layer": "overlay",
+          "scale": 1
+        }
+      ]
+    }
+  ],
+  "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/",
+  "assets": [
+    {
+      "id": "6369",
+      "name": "Link (Cap)",
+      "path": "assets/sheets/6369-link-cap.png",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6369/"
+    },
+    {
+      "id": "6526",
+      "name": "Hyrule Town",
+      "path": "assets/sheets/6526-hyrule-town.png",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6526/"
+    },
+    {
+      "id": "6540",
+      "name": "Minish Village",
+      "path": "assets/sheets/6540-minish-village.png",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6540/"
+    },
+    {
+      "id": "6554",
+      "name": "Minish Woods",
+      "path": "assets/sheets/6554-minish-woods.png",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6554/"
+    }
+  ]
+}

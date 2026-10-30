@@ -1,0 +1,17 @@
+{
+  "status": "passed",
+  "verifiedAt": "2026-10-25T15:31:22+00:00",
+  "originalSourceChecksumsVerified": 134,
+  "rgbaPngsVerified": 7622,
+  "improvedSheetsVerified": 25,
+  "additionalExactKeyPixelsRemoved": 95470,
+  "reviewedSourceAnnotationPixelsMasked": 4950,
+  "sourcePresentationCutsExcluded": 151,
+  "excludedPngsAbsentFromFolderAndZip": true,
+  "remainingOpaqueContentRects": 53,
+  "transparentPaddingVerified": true,
+  "rgbArtworkPreserved": true,
+  "sourceCoordinateMappingsVerified": true,
+  "zipCrcVerified": true,
+  "limitations": "Reviewed ready-to-place character, enemy, boss and object cuts. Explicit source palettes, labels, logos, credit banners and flattened reference grids are excluded from this PNG pack and the ready gallery, with reasons recorded; every source region stays accessible in the unchanged original sheets. Legitimate opaque body tiles, arena tiles and interface graphics retain their actual artwork. Missing poses or layers are not invented."
+}

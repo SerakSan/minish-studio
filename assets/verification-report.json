@@ -1,0 +1,22 @@
+{
+  "status": "passed",
+  "verifiedAt": "2026-10-25T12:54:50+00:00",
+  "mode": "full",
+  "sheetsVerified": 134,
+  "packs": [
+    {
+      "tileSize": 8,
+      "uniqueTilesVerified": 230310,
+      "gridCells": 720340,
+      "gridCellsCompared": 720340,
+      "atlasPagesVerified": 4
+    },
+    {
+      "tileSize": 16,
+      "uniqueTilesVerified": 89608,
+      "gridCells": 182356,
+      "gridCellsCompared": 182356,
+      "atlasPagesVerified": 6
+    }
+  ]
+}

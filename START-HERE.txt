@@ -1,0 +1,40 @@
+MINISH STUDIO
+by SerakSan
+
+USE THE DOWNLOADED APP
+
+1. Extract this entire ZIP into a folder on your computer.
+   On Windows, choose Extract All. Do not open the app inside the ZIP.
+2. Open index.html in a current desktop browser.
+3. Keep the app files and the assets folder together.
+
+No account, command line, server, or additional installation is required.
+The downloaded app can run without an internet connection.
+
+YOUR PROJECTS STAY ON YOUR DEVICE
+
+Editing, animation, and exports happen in your browser. The editor does not
+upload your scenes, animations, dialogue, or selected project files.
+
+Autosave belongs to the current browser and app location. Use Save project
+to keep a portable project file, especially before moving this app folder,
+changing browsers, clearing browser data, or installing a different version.
+The exported project file can be opened again with Open.
+
+INSTALL THE HOSTED WEB APP
+
+When using a hosted copy, Chrome and Edge may show an install icon or the
+editor's More > Install app option. Safari on supported Macs offers
+File > Add to Dock. Open the installed app once while online and let it finish
+loading before using it offline. Optional artwork ZIP downloads need to be
+saved separately if you want them offline.
+
+The hosted website requests the app files from its hosting provider. It does
+not send your editing project to that provider. Opening Credits source links
+visits the linked external websites.
+
+This package is a browser application. Native Windows EXE and macOS DMG
+installers are not included.
+
+Game artwork and source contributors retain their separate rights.
+See CREDITS.md, ASSET_RIGHTS.md, and PRIVACY.md.

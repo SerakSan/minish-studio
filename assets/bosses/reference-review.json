@@ -1,0 +1,120 @@
+{
+  "reviewedAt": "2026-10-26T09:07:40+00:00",
+  "references": {
+    "6415": [
+      {
+        "title": "Nintendo: official Minish Cap gameplay screenshot",
+        "url": "https://www.nintendo.com/jp/games/feature/nintendo-classics/detail/img/A-8665_j_05.jpg"
+      },
+      {
+        "title": "Chuchu component offsets and affine scale",
+        "url": "https://github.com/zeldaret/tmc/blob/master/src/enemy/chuchuBoss.c"
+      }
+    ],
+    "6460": [
+      {
+        "title": "Chuchu gameplay reference",
+        "url": "https://www.youtube.com/watch?v=YHydYUR37bQ&t=37"
+      },
+      {
+        "title": "Chuchu component offsets and affine scale",
+        "url": "https://github.com/zeldaret/tmc/blob/master/src/enemy/chuchuBoss.c"
+      }
+    ],
+    "6506": [
+      {
+        "title": "GameSpot: Big Octorok gameplay",
+        "url": "https://www.gamespot.com/wp-content/uploads/original/gamespot/images/2005/013/reviews/632853-920670_20050114_036.jpg"
+      },
+      {
+        "title": "Octorok gameplay, normal and frozen phases",
+        "url": "https://www.youtube.com/watch?v=YHydYUR37bQ&t=482"
+      },
+      {
+        "title": "Octorok separate body, legs, mouth and tail; affine scale",
+        "url": "https://github.com/zeldaret/tmc/blob/master/src/enemy/octorokBoss.c"
+      }
+    ],
+    "6546": [
+      {
+        "title": "GameSpot: Gleerok stunned with extended neck",
+        "url": "https://www.gamespot.com/wp-content/uploads/original/gamespot/images/2005/013/reviews/632836-920670_20050114_019.jpg"
+      },
+      {
+        "title": "Gleerok five neck entities and head spacing",
+        "url": "https://github.com/zeldaret/tmc/blob/master/src/enemy/gleerok.c"
+      }
+    ],
+    "6461": [
+      {
+        "title": "GameSpot: Red Gyorg eye phase",
+        "url": "https://www.gamespot.com/wp-content/uploads/original/gamespot/images/2005/013/reviews/632863-920670_20050114_046.jpg"
+      },
+      {
+        "title": "Gyorg Pair gameplay",
+        "url": "https://www.youtube.com/watch?v=YHydYUR37bQ&t=659"
+      },
+      {
+        "title": "Blue Gyorg affine size",
+        "url": "https://github.com/zeldaret/tmc/blob/master/src/enemy/gyorgMale.c"
+      },
+      {
+        "title": "Gyorg tail segment counts and distances",
+        "url": "https://github.com/zeldaret/tmc/blob/master/src/projectile/gyorgTail.c"
+      }
+    ],
+    "535841": [
+      {
+        "title": "GameSpot: Mazaal head and detached hands",
+        "url": "https://www.gamespot.com/wp-content/uploads/original/gamespot/images/2005/013/reviews/632844-920670_20050114_027.jpg"
+      }
+    ],
+    "6534": [
+      {
+        "title": "Zelda Universe: Vaati Reborn captured gameplay",
+        "url": "https://zeldauniverse.net/wp-content/uploads/2019/11/vaati-reborn-886x593.png"
+      },
+      {
+        "title": "GameSpot: Vaati Reborn gameplay",
+        "url": "https://www.gamespot.com/wp-content/uploads/original/gamespot/images/2005/013/reviews/632870-920670_20050114_053.jpg"
+      }
+    ],
+    "31116": [
+      {
+        "title": "GameSpot: Transfigured with four open red orbs",
+        "url": "https://www.gamespot.com/wp-content/uploads/original/gamespot/images/2005/013/reviews/632871-920670_20050114_054.jpg"
+      }
+    ],
+    "6535": [
+      {
+        "title": "GameSpot: Wrath four-eye phase",
+        "url": "https://www.gamespot.com/wp-content/uploads/original/gamespot/images/2005/013/reviews/632873-920670_20050114_056.jpg"
+      },
+      {
+        "title": "Wrath armed and eye phases gameplay",
+        "url": "https://www.youtube.com/watch?v=YHydYUR37bQ&t=1150"
+      },
+      {
+        "title": "Wrath four articulated arm links plus claw",
+        "url": "https://github.com/zeldaret/tmc/blob/master/src/enemy/vaatiArm.c"
+      },
+      {
+        "title": "Wrath eye arrangement coordinates",
+        "url": "https://github.com/zeldaret/tmc/blob/master/src/enemy/vaatiWrathEye.c"
+      }
+    ]
+  },
+  "coverageNotes": {
+    "6415": "Six upright head expressions on the four-part standing arrangement checked against Nintendo gameplay, at normal 1.6× affine scale. All 27 large head states remain available in Boss parts. Falling and defeat expressions are not attached to an unsupported standing body; exact collapse curves and ROM timing are not reconstructed.",
+    "6460": "Six upright head expressions with genuine narrow neck and wide foot, using the shared Chuchu four-part geometry and normal 1.6× affine scale. All 27 head states and electric effects remain in Boss parts. Falling, defeat curves and the ROM timeline are not reconstructed.",
+    "6506": "Normal, burning and frozen source states; four separate legs, mouth, four tail joints and tail flower; eight rotation presets. Body uses the game’s normal 1.6× affine scale. Rotation, breathing and tail movement vary continuously, so these are reference-informed editor poses.",
+    "6546": "Genuine rocky body, five neck links and distinct jawed head. Front, side, lowered and damaged arrangements use the available directional source frames. Neck curves are editable presets; exact ROM animation timings and every curve are not asserted.",
+    "6461": "Three red body source frames with all eight genuine eye overlays, articulated red tail; five blue body frames at game affine scale with eye and articulated tail. Eye patterns and tail bends are editable gameplay phase presets, not every possible combination.",
+    "535841": "All eight published active hand poses, corresponding inactive blue poses, head and mirrored opposite hand. Includes mixed and inactive hand phases. Floating hand spacing is an editable scene arrangement.",
+    "6534": "Available complete humanoid action, moving and teleport frames; two-eye, four-eye and covered-eye shield presets. No detached transformation fragments are presented as complete bosses. Eye orbit angle is editable rather than a claim of every ROM state.",
+    "31116": "Complete eight-orb body and energy frames, four-open-eye gameplay patterns and exposed body frames. Projectile effects and transformation fragments remain separate in Boss parts.",
+    "6535": "All 14 published normal body animation states with two articulated arms, five source claw angles, one-arm states, four real eye states, charging and exposed phase. Arm curves and eye wave positions are editable reference-informed presets, not exact ROM animation captures."
+  },
+  "method": "Original sprites visually compared with published captured gameplay; affine scales and articulated component counts cross-checked against public game-code research. Positions remain explicitly labeled editable presets.",
+  "limitations": "Available published complete frames and reference-informed editable multipart presets for all nine boss sheets. Continuous affine transforms, joint curves, hidden ROM states and exact animation timelines are not exhaustively reconstructed. No community labels or example collages are included as boss artwork."
+}

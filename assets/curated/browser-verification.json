@@ -1,0 +1,20 @@
+{
+  "status": "passed",
+  "nativeScene": [
+    240,
+    160
+  ],
+  "exportPNG": [
+    960,
+    640
+  ],
+  "bossPartsBeforeAfter": "RGBA pixels identical",
+  "componentUndo": "restores single boss",
+  "responsiveWidthsChecked": [
+    390,
+    805,
+    1280
+  ],
+  "kinstoneHeadings": "not included in ready gallery",
+  "editorSource": "audited regions and genuine source parts"
+}

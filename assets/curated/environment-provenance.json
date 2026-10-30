@@ -1,0 +1,1252 @@
+[
+  {
+    "assetId": "env-142450-armos-room",
+    "sourceId": "142450",
+    "sourceRect": {
+      "x": 0,
+      "y": 112,
+      "w": 240,
+      "h": 160
+    },
+    "exteriorAlphaCleared": 0,
+    "annotationOnlyRects": []
+  },
+  {
+    "assetId": "env-6507-bakery",
+    "sourceId": "6507",
+    "sourceRect": {
+      "x": 0,
+      "y": 0,
+      "w": 240,
+      "h": 160
+    },
+    "exteriorAlphaCleared": 0,
+    "annotationOnlyRects": []
+  },
+  {
+    "assetId": "env-6439-barrel-interior",
+    "sourceId": "6439",
+    "sourceRect": {
+      "x": 215,
+      "y": 0,
+      "w": 240,
+      "h": 330
+    },
+    "exteriorAlphaCleared": 0,
+    "annotationOnlyRects": []
+  },
+  {
+    "assetId": "env-31008-castor-wilds",
+    "sourceId": "31008",
+    "sourceRect": {
+      "x": 0,
+      "y": 0,
+      "w": 1008,
+      "h": 960
+    },
+    "exteriorAlphaCleared": 0,
+    "annotationOnlyRects": []
+  },
+  {
+    "assetId": "env-6447-dampe",
+    "sourceId": "6447",
+    "sourceRect": {
+      "x": 0,
+      "y": 0,
+      "w": 240,
+      "h": 160
+    },
+    "exteriorAlphaCleared": 0,
+    "annotationOnlyRects": []
+  },
+  {
+    "assetId": "env-6563-sanctuary-upper",
+    "sourceId": "6563",
+    "sourceRect": {
+      "x": 82,
+      "y": 2,
+      "w": 304,
+      "h": 344
+    },
+    "exteriorAlphaCleared": 0,
+    "annotationOnlyRects": []
+  },
+  {
+    "assetId": "env-6563-sanctuary-hall",
+    "sourceId": "6563",
+    "sourceRect": {
+      "x": 2,
+      "y": 348,
+      "w": 464,
+      "h": 648
+    },
+    "exteriorAlphaCleared": 0,
+    "annotationOnlyRects": []
+  },
+  {
+    "assetId": "env-6563-sanctuary-crystals",
+    "sourceId": "6563",
+    "sourceRect": {
+      "x": 34,
+      "y": 998,
+      "w": 400,
+      "h": 568
+    },
+    "exteriorAlphaCleared": 0,
+    "annotationOnlyRects": []
+  },
+  {
+    "assetId": "env-6563-sanctuary-garden",
+    "sourceId": "6563",
+    "sourceRect": {
+      "x": 2,
+      "y": 1568,
+      "w": 272,
+      "h": 432
+    },
+    "exteriorAlphaCleared": 0,
+    "annotationOnlyRects": []
+  },
+  {
+    "assetId": "env-6563-sanctuary-dark",
+    "sourceId": "6563",
+    "sourceRect": {
+      "x": 276,
+      "y": 1568,
+      "w": 272,
+      "h": 432
+    },
+    "exteriorAlphaCleared": 0,
+    "annotationOnlyRects": []
+  },
+  {
+    "assetId": "env-6434-ezlo-empty",
+    "sourceId": "6434",
+    "sourceRect": {
+      "x": 12,
+      "y": 106,
+      "w": 240,
+      "h": 234
+    },
+    "exteriorAlphaCleared": 0,
+    "annotationOnlyRects": []
+  },
+  {
+    "assetId": "env-6434-ezlo-furnished",
+    "sourceId": "6434",
+    "sourceRect": {
+      "x": 254,
+      "y": 106,
+      "w": 240,
+      "h": 234
+    },
+    "exteriorAlphaCleared": 0,
+    "annotationOnlyRects": []
+  },
+  {
+    "assetId": "env-6543-fairy-fountain",
+    "sourceId": "6543",
+    "sourceRect": {
+      "x": 0,
+      "y": 0,
+      "w": 240,
+      "h": 160
+    },
+    "exteriorAlphaCleared": 0,
+    "annotationOnlyRects": []
+  },
+  {
+    "assetId": "env-6446-abbey",
+    "sourceId": "6446",
+    "sourceRect": {
+      "x": 0,
+      "y": 26,
+      "w": 466,
+      "h": 256
+    },
+    "exteriorAlphaCleared": 13067,
+    "annotationOnlyRects": [
+      {
+        "x": 190,
+        "y": 26,
+        "w": 96,
+        "h": 8
+      }
+    ]
+  },
+  {
+    "assetId": "env-16014-gallery-empty",
+    "sourceId": "16014",
+    "sourceRect": {
+      "x": 338,
+      "y": 0,
+      "w": 240,
+      "h": 160
+    },
+    "exteriorAlphaCleared": 0,
+    "annotationOnlyRects": []
+  },
+  {
+    "assetId": "env-16014-gallery",
+    "sourceId": "16014",
+    "sourceRect": {
+      "x": 590,
+      "y": 0,
+      "w": 240,
+      "h": 160
+    },
+    "exteriorAlphaCleared": 0,
+    "annotationOnlyRects": []
+  },
+  {
+    "assetId": "env-16014-gallery-cave",
+    "sourceId": "16014",
+    "sourceRect": {
+      "x": 840,
+      "y": 162,
+      "w": 239,
+      "h": 160
+    },
+    "exteriorAlphaCleared": 0,
+    "annotationOnlyRects": []
+  },
+  {
+    "assetId": "env-34658-school-entrance",
+    "sourceId": "34658",
+    "sourceRect": {
+      "x": 0,
+      "y": 0,
+      "w": 240,
+      "h": 240
+    },
+    "exteriorAlphaCleared": 0,
+    "annotationOnlyRects": []
+  },
+  {
+    "assetId": "env-34658-school-classroom",
+    "sourceId": "34658",
+    "sourceRect": {
+      "x": 245,
+      "y": 0,
+      "w": 320,
+      "h": 176
+    },
+    "exteriorAlphaCleared": 0,
+    "annotationOnlyRects": []
+  },
+  {
+    "assetId": "env-31009-wind-room-1",
+    "sourceId": "31009",
+    "sourceRect": {
+      "x": 262,
+      "y": 44,
+      "w": 240,
+      "h": 168
+    },
+    "exteriorAlphaCleared": 0,
+    "annotationOnlyRects": []
+  },
+  {
+    "assetId": "env-31009-wind-room-2",
+    "sourceId": "31009",
+    "sourceRect": {
+      "x": 262,
+      "y": 228,
+      "w": 240,
+      "h": 160
+    },
+    "exteriorAlphaCleared": 0,
+    "annotationOnlyRects": []
+  },
+  {
+    "assetId": "env-31009-wind-room-3",
+    "sourceId": "31009",
+    "sourceRect": {
+      "x": 262,
+      "y": 488,
+      "w": 240,
+      "h": 168
+    },
+    "exteriorAlphaCleared": 0,
+    "annotationOnlyRects": []
+  },
+  {
+    "assetId": "env-31009-wind-room-4",
+    "sourceId": "31009",
+    "sourceRect": {
+      "x": 262,
+      "y": 672,
+      "w": 240,
+      "h": 160
+    },
+    "exteriorAlphaCleared": 0,
+    "annotationOnlyRects": []
+  },
+  {
+    "assetId": "env-31009-wind-room-5",
+    "sourceId": "31009",
+    "sourceRect": {
+      "x": 262,
+      "y": 928,
+      "w": 240,
+      "h": 168
+    },
+    "exteriorAlphaCleared": 0,
+    "annotationOnlyRects": []
+  },
+  {
+    "assetId": "env-31009-wind-room-6",
+    "sourceId": "31009",
+    "sourceRect": {
+      "x": 262,
+      "y": 1112,
+      "w": 240,
+      "h": 160
+    },
+    "exteriorAlphaCleared": 0,
+    "annotationOnlyRects": []
+  },
+  {
+    "assetId": "env-31009-wind-room-7",
+    "sourceId": "31009",
+    "sourceRect": {
+      "x": 262,
+      "y": 1356,
+      "w": 240,
+      "h": 168
+    },
+    "exteriorAlphaCleared": 0,
+    "annotationOnlyRects": []
+  },
+  {
+    "assetId": "env-31009-wind-room-8",
+    "sourceId": "31009",
+    "sourceRect": {
+      "x": 262,
+      "y": 1540,
+      "w": 240,
+      "h": 160
+    },
+    "exteriorAlphaCleared": 0,
+    "annotationOnlyRects": []
+  },
+  {
+    "assetId": "env-6440-castle-throne",
+    "sourceId": "6440",
+    "sourceRect": {
+      "x": 112,
+      "y": 0,
+      "w": 272,
+      "h": 320
+    },
+    "exteriorAlphaCleared": 448,
+    "annotationOnlyRects": []
+  },
+  {
+    "assetId": "env-6440-castle-bedroom",
+    "sourceId": "6440",
+    "sourceRect": {
+      "x": 384,
+      "y": 0,
+      "w": 263,
+      "h": 192
+    },
+    "exteriorAlphaCleared": 263,
+    "annotationOnlyRects": []
+  },
+  {
+    "assetId": "env-6440-castle-hall",
+    "sourceId": "6440",
+    "sourceRect": {
+      "x": 16,
+      "y": 352,
+      "w": 480,
+      "h": 512
+    },
+    "exteriorAlphaCleared": 103,
+    "annotationOnlyRects": []
+  },
+  {
+    "assetId": "env-6440-castle-entry",
+    "sourceId": "6440",
+    "sourceRect": {
+      "x": 32,
+      "y": 1040,
+      "w": 432,
+      "h": 413
+    },
+    "exteriorAlphaCleared": 3709,
+    "annotationOnlyRects": []
+  },
+  {
+    "assetId": "env-6441-castle-garden",
+    "sourceId": "6441",
+    "sourceRect": {
+      "x": 0,
+      "y": 0,
+      "w": 1008,
+      "h": 528
+    },
+    "exteriorAlphaCleared": 0,
+    "annotationOnlyRects": []
+  },
+  {
+    "assetId": "env-6526-town",
+    "sourceId": "6526",
+    "sourceRect": {
+      "x": 0,
+      "y": 0,
+      "w": 1008,
+      "h": 960
+    },
+    "exteriorAlphaCleared": 0,
+    "annotationOnlyRects": []
+  },
+  {
+    "assetId": "env-142448-inner-mazaal-a",
+    "sourceId": "142448",
+    "sourceRect": {
+      "x": 0,
+      "y": 0,
+      "w": 272,
+      "h": 304
+    },
+    "exteriorAlphaCleared": 0,
+    "annotationOnlyRects": []
+  },
+  {
+    "assetId": "env-142448-inner-mazaal-b",
+    "sourceId": "142448",
+    "sourceRect": {
+      "x": 277,
+      "y": 0,
+      "w": 272,
+      "h": 304
+    },
+    "exteriorAlphaCleared": 0,
+    "annotationOnlyRects": []
+  },
+  {
+    "assetId": "env-6550-bookshelf",
+    "sourceId": "6550",
+    "sourceRect": {
+      "x": 0,
+      "y": 0,
+      "w": 336,
+      "h": 440
+    },
+    "exteriorAlphaCleared": 0,
+    "annotationOnlyRects": []
+  },
+  {
+    "assetId": "env-6550-librari-room",
+    "sourceId": "6550",
+    "sourceRect": {
+      "x": 350,
+      "y": 232,
+      "w": 240,
+      "h": 240
+    },
+    "exteriorAlphaCleared": 0,
+    "annotationOnlyRects": []
+  },
+  {
+    "assetId": "env-6490-ranch",
+    "sourceId": "6490",
+    "sourceRect": {
+      "x": 0,
+      "y": 0,
+      "w": 720,
+      "h": 960
+    },
+    "exteriorAlphaCleared": 0,
+    "annotationOnlyRects": []
+  },
+  {
+    "assetId": "env-34087-cafe",
+    "sourceId": "34087",
+    "sourceRect": {
+      "x": 0,
+      "y": 0,
+      "w": 240,
+      "h": 192
+    },
+    "exteriorAlphaCleared": 0,
+    "annotationOnlyRects": []
+  },
+  {
+    "assetId": "env-6560-mine",
+    "sourceId": "6560",
+    "sourceRect": {
+      "x": 0,
+      "y": 0,
+      "w": 722,
+      "h": 610
+    },
+    "exteriorAlphaCleared": 0,
+    "annotationOnlyRects": []
+  },
+  {
+    "assetId": "env-6560-mine-room-a",
+    "sourceId": "6560",
+    "sourceRect": {
+      "x": 724,
+      "y": 200,
+      "w": 354,
+      "h": 160
+    },
+    "exteriorAlphaCleared": 0,
+    "annotationOnlyRects": []
+  },
+  {
+    "assetId": "env-6560-mine-room-b",
+    "sourceId": "6560",
+    "sourceRect": {
+      "x": 50,
+      "y": 612,
+      "w": 240,
+      "h": 160
+    },
+    "exteriorAlphaCleared": 0,
+    "annotationOnlyRects": []
+  },
+  {
+    "assetId": "env-6560-mine-room-c",
+    "sourceId": "6560",
+    "sourceRect": {
+      "x": 434,
+      "y": 612,
+      "w": 240,
+      "h": 160
+    },
+    "exteriorAlphaCleared": 0,
+    "annotationOnlyRects": []
+  },
+  {
+    "assetId": "env-6450-elder",
+    "sourceId": "6450",
+    "sourceRect": {
+      "x": 0,
+      "y": 48,
+      "w": 240,
+      "h": 160
+    },
+    "exteriorAlphaCleared": 3386,
+    "annotationOnlyRects": []
+  },
+  {
+    "assetId": "env-37861-minish-path",
+    "sourceId": "37861",
+    "sourceRect": {
+      "x": 0,
+      "y": 0,
+      "w": 240,
+      "h": 880
+    },
+    "exteriorAlphaCleared": 0,
+    "annotationOnlyRects": []
+  },
+  {
+    "assetId": "env-37861-minish-tree-a",
+    "sourceId": "37861",
+    "sourceRect": {
+      "x": 260,
+      "y": 0,
+      "w": 240,
+      "h": 880
+    },
+    "exteriorAlphaCleared": 123707,
+    "annotationOnlyRects": []
+  },
+  {
+    "assetId": "env-37861-minish-tree-b",
+    "sourceId": "37861",
+    "sourceRect": {
+      "x": 520,
+      "y": 0,
+      "w": 240,
+      "h": 960
+    },
+    "exteriorAlphaCleared": 135970,
+    "annotationOnlyRects": []
+  },
+  {
+    "assetId": "env-6548-minish-ice",
+    "sourceId": "6548",
+    "sourceRect": {
+      "x": 0,
+      "y": 0,
+      "w": 240,
+      "h": 240
+    },
+    "exteriorAlphaCleared": 3608,
+    "annotationOnlyRects": []
+  },
+  {
+    "assetId": "env-6548-minish-cave",
+    "sourceId": "6548",
+    "sourceRect": {
+      "x": 0,
+      "y": 242,
+      "w": 240,
+      "h": 160
+    },
+    "exteriorAlphaCleared": 364,
+    "annotationOnlyRects": []
+  },
+  {
+    "assetId": "env-6548-minish-home-a",
+    "sourceId": "6548",
+    "sourceRect": {
+      "x": 240,
+      "y": 33,
+      "w": 176,
+      "h": 160
+    },
+    "exteriorAlphaCleared": 4842,
+    "annotationOnlyRects": []
+  },
+  {
+    "assetId": "env-6548-minish-home-b",
+    "sourceId": "6548",
+    "sourceRect": {
+      "x": 416,
+      "y": 33,
+      "w": 176,
+      "h": 160
+    },
+    "exteriorAlphaCleared": 5278,
+    "annotationOnlyRects": []
+  },
+  {
+    "assetId": "env-6548-minish-home-c",
+    "sourceId": "6548",
+    "sourceRect": {
+      "x": 240,
+      "y": 195,
+      "w": 176,
+      "h": 160
+    },
+    "exteriorAlphaCleared": 4810,
+    "annotationOnlyRects": []
+  },
+  {
+    "assetId": "env-6548-minish-home-d",
+    "sourceId": "6548",
+    "sourceRect": {
+      "x": 416,
+      "y": 195,
+      "w": 176,
+      "h": 160
+    },
+    "exteriorAlphaCleared": 2662,
+    "annotationOnlyRects": []
+  },
+  {
+    "assetId": "env-6431-portal-1",
+    "sourceId": "6431",
+    "sourceRect": {
+      "x": 0,
+      "y": 0,
+      "w": 240,
+      "h": 320
+    },
+    "exteriorAlphaCleared": 0,
+    "annotationOnlyRects": []
+  },
+  {
+    "assetId": "env-6431-portal-2",
+    "sourceId": "6431",
+    "sourceRect": {
+      "x": 254,
+      "y": 0,
+      "w": 240,
+      "h": 320
+    },
+    "exteriorAlphaCleared": 0,
+    "annotationOnlyRects": []
+  },
+  {
+    "assetId": "env-6431-portal-3",
+    "sourceId": "6431",
+    "sourceRect": {
+      "x": 507,
+      "y": 0,
+      "w": 240,
+      "h": 320
+    },
+    "exteriorAlphaCleared": 0,
+    "annotationOnlyRects": []
+  },
+  {
+    "assetId": "env-6431-portal-4",
+    "sourceId": "6431",
+    "sourceRect": {
+      "x": 775,
+      "y": 0,
+      "w": 240,
+      "h": 320
+    },
+    "exteriorAlphaCleared": 0,
+    "annotationOnlyRects": []
+  },
+  {
+    "assetId": "env-6431-portal-5",
+    "sourceId": "6431",
+    "sourceRect": {
+      "x": 0,
+      "y": 329,
+      "w": 240,
+      "h": 320
+    },
+    "exteriorAlphaCleared": 0,
+    "annotationOnlyRects": []
+  },
+  {
+    "assetId": "env-6431-portal-6",
+    "sourceId": "6431",
+    "sourceRect": {
+      "x": 254,
+      "y": 329,
+      "w": 240,
+      "h": 320
+    },
+    "exteriorAlphaCleared": 0,
+    "annotationOnlyRects": []
+  },
+  {
+    "assetId": "env-6431-portal-7",
+    "sourceId": "6431",
+    "sourceRect": {
+      "x": 507,
+      "y": 329,
+      "w": 240,
+      "h": 320
+    },
+    "exteriorAlphaCleared": 0,
+    "annotationOnlyRects": []
+  },
+  {
+    "assetId": "env-6431-portal-8",
+    "sourceId": "6431",
+    "sourceRect": {
+      "x": 775,
+      "y": 329,
+      "w": 240,
+      "h": 320
+    },
+    "exteriorAlphaCleared": 0,
+    "annotationOnlyRects": []
+  },
+  {
+    "assetId": "env-6540-village",
+    "sourceId": "6540",
+    "sourceRect": {
+      "x": 0,
+      "y": 0,
+      "w": 1008,
+      "h": 984
+    },
+    "exteriorAlphaCleared": 138849,
+    "annotationOnlyRects": [
+      {
+        "x": 0,
+        "y": 696,
+        "w": 172,
+        "h": 288
+      }
+    ]
+  },
+  {
+    "assetId": "env-142449-village-lake",
+    "sourceId": "142449",
+    "sourceRect": {
+      "x": 0,
+      "y": 0,
+      "w": 480,
+      "h": 416
+    },
+    "exteriorAlphaCleared": 0,
+    "annotationOnlyRects": []
+  },
+  {
+    "assetId": "env-6554-woods",
+    "sourceId": "6554",
+    "sourceRect": {
+      "x": 50,
+      "y": 0,
+      "w": 1008,
+      "h": 1008
+    },
+    "exteriorAlphaCleared": 0,
+    "annotationOnlyRects": []
+  },
+  {
+    "assetId": "env-6554-shrine-entry",
+    "sourceId": "6554",
+    "sourceRect": {
+      "x": 493,
+      "y": 1020,
+      "w": 240,
+      "h": 200
+    },
+    "exteriorAlphaCleared": 0,
+    "annotationOnlyRects": []
+  },
+  {
+    "assetId": "env-6553-crenel-path",
+    "sourceId": "6553",
+    "sourceRect": {
+      "x": 46,
+      "y": 42,
+      "w": 244,
+      "h": 826
+    },
+    "exteriorAlphaCleared": 0,
+    "annotationOnlyRects": []
+  },
+  {
+    "assetId": "env-6553-crenel-ledge-a",
+    "sourceId": "6553",
+    "sourceRect": {
+      "x": 301,
+      "y": 42,
+      "w": 244,
+      "h": 124
+    },
+    "exteriorAlphaCleared": 0,
+    "annotationOnlyRects": []
+  },
+  {
+    "assetId": "env-6553-crenel-ledge-b",
+    "sourceId": "6553",
+    "sourceRect": {
+      "x": 550,
+      "y": 42,
+      "w": 244,
+      "h": 123
+    },
+    "exteriorAlphaCleared": 0,
+    "annotationOnlyRects": []
+  },
+  {
+    "assetId": "env-6553-crenel-ledge-c",
+    "sourceId": "6553",
+    "sourceRect": {
+      "x": 301,
+      "y": 170,
+      "w": 244,
+      "h": 127
+    },
+    "exteriorAlphaCleared": 0,
+    "annotationOnlyRects": []
+  },
+  {
+    "assetId": "env-6555-post-office",
+    "sourceId": "6555",
+    "sourceRect": {
+      "x": 184,
+      "y": 11,
+      "w": 240,
+      "h": 160
+    },
+    "exteriorAlphaCleared": 0,
+    "annotationOnlyRects": []
+  },
+  {
+    "assetId": "env-6521-shoe-table",
+    "sourceId": "6521",
+    "sourceRect": {
+      "x": 0,
+      "y": 0,
+      "w": 320,
+      "h": 240
+    },
+    "exteriorAlphaCleared": 0,
+    "annotationOnlyRects": []
+  },
+  {
+    "assetId": "env-34627-shoe-shop",
+    "sourceId": "34627",
+    "sourceRect": {
+      "x": 0,
+      "y": 0,
+      "w": 240,
+      "h": 160
+    },
+    "exteriorAlphaCleared": 0,
+    "annotationOnlyRects": []
+  },
+  {
+    "assetId": "env-6518-crypt-a",
+    "sourceId": "6518",
+    "sourceRect": {
+      "x": 15,
+      "y": 0,
+      "w": 560,
+      "h": 304
+    },
+    "exteriorAlphaCleared": 0,
+    "annotationOnlyRects": []
+  },
+  {
+    "assetId": "env-6518-crypt-b",
+    "sourceId": "6518",
+    "sourceRect": {
+      "x": 159,
+      "y": 304,
+      "w": 272,
+      "h": 224
+    },
+    "exteriorAlphaCleared": 0,
+    "annotationOnlyRects": []
+  },
+  {
+    "assetId": "env-6518-crypt-c",
+    "sourceId": "6518",
+    "sourceRect": {
+      "x": 139,
+      "y": 528,
+      "w": 312,
+      "h": 320
+    },
+    "exteriorAlphaCleared": 0,
+    "annotationOnlyRects": []
+  },
+  {
+    "assetId": "env-6518-crypt-d",
+    "sourceId": "6518",
+    "sourceRect": {
+      "x": 0,
+      "y": 848,
+      "w": 592,
+      "h": 384
+    },
+    "exteriorAlphaCleared": 0,
+    "annotationOnlyRects": []
+  },
+  {
+    "assetId": "env-6518-crypt-e",
+    "sourceId": "6518",
+    "sourceRect": {
+      "x": 160,
+      "y": 1232,
+      "w": 272,
+      "h": 320
+    },
+    "exteriorAlphaCleared": 0,
+    "annotationOnlyRects": []
+  },
+  {
+    "assetId": "env-6518-crypt-f",
+    "sourceId": "6518",
+    "sourceRect": {
+      "x": 160,
+      "y": 1552,
+      "w": 272,
+      "h": 192
+    },
+    "exteriorAlphaCleared": 0,
+    "annotationOnlyRects": []
+  },
+  {
+    "assetId": "env-6479-library-a",
+    "sourceId": "6479",
+    "sourceRect": {
+      "x": 0,
+      "y": 0,
+      "w": 224,
+      "h": 176
+    },
+    "exteriorAlphaCleared": 0,
+    "annotationOnlyRects": []
+  },
+  {
+    "assetId": "env-6479-library-b",
+    "sourceId": "6479",
+    "sourceRect": {
+      "x": 0,
+      "y": 198,
+      "w": 352,
+      "h": 256
+    },
+    "exteriorAlphaCleared": 0,
+    "annotationOnlyRects": []
+  },
+  {
+    "assetId": "env-6519-valley",
+    "sourceId": "6519",
+    "sourceRect": {
+      "x": 2,
+      "y": 2,
+      "w": 480,
+      "h": 1008
+    },
+    "exteriorAlphaCleared": 0,
+    "annotationOnlyRects": []
+  },
+  {
+    "assetId": "env-6519-valley-cave-a",
+    "sourceId": "6519",
+    "sourceRect": {
+      "x": 492,
+      "y": 2,
+      "w": 240,
+      "h": 160
+    },
+    "exteriorAlphaCleared": 0,
+    "annotationOnlyRects": []
+  },
+  {
+    "assetId": "env-6519-valley-cave-b",
+    "sourceId": "6519",
+    "sourceRect": {
+      "x": 492,
+      "y": 168,
+      "w": 240,
+      "h": 160
+    },
+    "exteriorAlphaCleared": 0,
+    "annotationOnlyRects": []
+  },
+  {
+    "assetId": "env-6519-valley-cave-c",
+    "sourceId": "6519",
+    "sourceRect": {
+      "x": 492,
+      "y": 336,
+      "w": 240,
+      "h": 320
+    },
+    "exteriorAlphaCleared": 0,
+    "annotationOnlyRects": []
+  },
+  {
+    "assetId": "env-34626-simon",
+    "sourceId": "34626",
+    "sourceRect": {
+      "x": 0,
+      "y": 0,
+      "w": 240,
+      "h": 160
+    },
+    "exteriorAlphaCleared": 0,
+    "annotationOnlyRects": []
+  },
+  {
+    "assetId": "env-6483-south-field",
+    "sourceId": "6483",
+    "sourceRect": {
+      "x": 0,
+      "y": 0,
+      "w": 1008,
+      "h": 688
+    },
+    "exteriorAlphaCleared": 0,
+    "annotationOnlyRects": []
+  },
+  {
+    "assetId": "env-6470-stockwell",
+    "sourceId": "6470",
+    "sourceRect": {
+      "x": 0,
+      "y": 0,
+      "w": 240,
+      "h": 184
+    },
+    "exteriorAlphaCleared": 0,
+    "annotationOnlyRects": []
+  },
+  {
+    "assetId": "env-6488-ranch-house-a",
+    "sourceId": "6488",
+    "sourceRect": {
+      "x": 0,
+      "y": 0,
+      "w": 240,
+      "h": 160
+    },
+    "exteriorAlphaCleared": 0,
+    "annotationOnlyRects": []
+  },
+  {
+    "assetId": "env-6488-ranch-house-b",
+    "sourceId": "6488",
+    "sourceRect": {
+      "x": 240,
+      "y": 0,
+      "w": 240,
+      "h": 160
+    },
+    "exteriorAlphaCleared": 0,
+    "annotationOnlyRects": []
+  },
+  {
+    "assetId": "env-142447-wrath-hand-a",
+    "sourceId": "142447",
+    "sourceRect": {
+      "x": 0,
+      "y": 0,
+      "w": 304,
+      "h": 224
+    },
+    "exteriorAlphaCleared": 0,
+    "annotationOnlyRects": []
+  },
+  {
+    "assetId": "env-142447-wrath-hand-b",
+    "sourceId": "142447",
+    "sourceRect": {
+      "x": 308,
+      "y": 0,
+      "w": 304,
+      "h": 224
+    },
+    "exteriorAlphaCleared": 0,
+    "annotationOnlyRects": []
+  },
+  {
+    "assetId": "env-6566-wind-shrine",
+    "sourceId": "6566",
+    "sourceRect": {
+      "x": 0,
+      "y": 0,
+      "w": 320,
+      "h": 416
+    },
+    "exteriorAlphaCleared": 0,
+    "annotationOnlyRects": []
+  },
+  {
+    "assetId": "env-86016-witch",
+    "sourceId": "86016",
+    "sourceRect": {
+      "x": 0,
+      "y": 0,
+      "w": 240,
+      "h": 160
+    },
+    "exteriorAlphaCleared": 0,
+    "annotationOnlyRects": []
+  },
+  {
+    "assetId": "env-6430-crenel-sky",
+    "sourceId": "6430",
+    "sourceRect": {
+      "x": 20,
+      "y": 48,
+      "w": 256,
+      "h": 256
+    },
+    "exteriorAlphaCleared": 0,
+    "annotationOnlyRects": []
+  },
+  {
+    "assetId": "env-6430-cloud-tops",
+    "sourceId": "6430",
+    "sourceRect": {
+      "x": 297,
+      "y": 49,
+      "w": 256,
+      "h": 256
+    },
+    "exteriorAlphaCleared": 0,
+    "annotationOnlyRects": []
+  },
+  {
+    "assetId": "env-6430-veil-falls",
+    "sourceId": "6430",
+    "sourceRect": {
+      "x": 19,
+      "y": 328,
+      "w": 256,
+      "h": 256
+    },
+    "exteriorAlphaCleared": 0,
+    "annotationOnlyRects": []
+  },
+  {
+    "assetId": "env-6430-palace-sky",
+    "sourceId": "6430",
+    "sourceRect": {
+      "x": 297,
+      "y": 329,
+      "w": 256,
+      "h": 256
+    },
+    "exteriorAlphaCleared": 0,
+    "annotationOnlyRects": []
+  },
+  {
+    "assetId": "env-6430-forest-title",
+    "sourceId": "6430",
+    "sourceRect": {
+      "x": 578,
+      "y": 49,
+      "w": 240,
+      "h": 160
+    },
+    "exteriorAlphaCleared": 0,
+    "annotationOnlyRects": []
+  },
+  {
+    "assetId": "env-6430-file-background",
+    "sourceId": "6430",
+    "sourceRect": {
+      "x": 578,
+      "y": 231,
+      "w": 240,
+      "h": 160
+    },
+    "exteriorAlphaCleared": 0,
+    "annotationOnlyRects": []
+  },
+  {
+    "assetId": "env-6430-beanstalk",
+    "sourceId": "6430",
+    "sourceRect": {
+      "x": 577,
+      "y": 414,
+      "w": 240,
+      "h": 168
+    },
+    "exteriorAlphaCleared": 0,
+    "annotationOnlyRects": []
+  },
+  {
+    "assetId": "env-6535-arena",
+    "sourceId": "6535",
+    "sourceRect": {
+      "x": 312,
+      "y": 483,
+      "w": 240,
+      "h": 160
+    },
+    "exteriorAlphaCleared": 0,
+    "annotationOnlyRects": []
+  },
+  {
+    "assetId": "env-6377-home-empty",
+    "sourceId": "6377",
+    "sourceRect": {
+      "x": 8,
+      "y": 120,
+      "w": 240,
+      "h": 160
+    },
+    "exteriorAlphaCleared": 0,
+    "annotationOnlyRects": []
+  },
+  {
+    "assetId": "env-6377-home-forge",
+    "sourceId": "6377",
+    "sourceRect": {
+      "x": 8,
+      "y": 288,
+      "w": 240,
+      "h": 128
+    },
+    "exteriorAlphaCleared": 0,
+    "annotationOnlyRects": []
+  }
+]

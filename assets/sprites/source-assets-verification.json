@@ -1,0 +1,22 @@
+{
+  "status": "passed",
+  "verifiedAt": "2026-10-25T15:14:12+00:00",
+  "mode": "sample: 32 cells per sheet and size",
+  "sheetsVerified": 134,
+  "packs": [
+    {
+      "tileSize": 8,
+      "uniqueTilesVerified": 230310,
+      "gridCells": 720340,
+      "gridCellsCompared": 4793,
+      "atlasPagesVerified": 4
+    },
+    {
+      "tileSize": 16,
+      "uniqueTilesVerified": 89608,
+      "gridCells": 182356,
+      "gridCellsCompared": 4725,
+      "atlasPagesVerified": 6
+    }
+  ]
+}

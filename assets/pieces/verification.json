@@ -1,0 +1,12 @@
+{
+  "status": "passed",
+  "verifiedAt": "2026-10-25T14:41:03+00:00",
+  "sourceSheetsUnchanged": 134,
+  "derivedSheetsVerified": 80,
+  "pieceBoundsAndMappingsVerified": 7827,
+  "recordedBackgroundPixelsRemoved": 7295290,
+  "foregroundPixels": 4873355,
+  "foregroundPixelsInIndexedRects": 4363706,
+  "foregroundCoverageRatio": 0.89542,
+  "scope": "Source-art crops and connected exact-color background removal verified. No assertion is made that downloaded sheets contain every game pose. Original full-sheet/manual crop access retains every source region."
+}

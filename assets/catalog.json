@@ -1,0 +1,4945 @@
+{
+  "schemaVersion": 1,
+  "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/",
+  "generatedAt": "2026-10-25T12:53:14+00:00",
+  "assets": [
+    {
+      "id": "6465",
+      "name": "Link's House Tiles",
+      "section": "Tilesets",
+      "contributors": "Caffeine Ripper",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6465/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/6/6465.png?updated=1755472426",
+      "originalPath": "assets/originals/6465.png",
+      "originalBytes": 32662,
+      "originalSha256": "0f006297d5654d1de4748b623070b8a660217547506cbb2650a913e42a205ed6",
+      "status": "downloaded",
+      "path": "assets/sheets/6465-link-s-house-tiles.png",
+      "thumbnail": "assets/thumbnails/6465-link-s-house-tiles.png",
+      "width": 512,
+      "height": 342,
+      "format": "PNG",
+      "originalFormat": "PNG",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "18cca48ae3fa3ca66e76b64f566ca20cc3eb123823574f601c6fb23a3dcf651d",
+      "rgbaSha256": "226f28080c044e11882673974a616d57ffc314d10e5b5f5cf5a5f7f9813b6142",
+      "byteSize": 36508,
+      "background": {
+        "hasTransparency": false,
+        "alphaRange": [
+          255,
+          255
+        ],
+        "suggestedKeyColor": "#ffffff"
+      }
+    },
+    {
+      "id": "6369",
+      "name": "Link (Cap)",
+      "section": "Playable Characters",
+      "contributors": "Barubary",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6369/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/6/6369.png?updated=1755472425",
+      "originalPath": "assets/originals/6369.png",
+      "originalBytes": 182261,
+      "originalSha256": "c8fbeee07f5d418c92c9d4769fc302d6168c5634c6c03103802a4a2bf17cf266",
+      "status": "downloaded",
+      "path": "assets/sheets/6369-link-cap.png",
+      "thumbnail": "assets/thumbnails/6369-link-cap.png",
+      "width": 1208,
+      "height": 3736,
+      "format": "PNG",
+      "originalFormat": "PNG",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "2ebec79169cd5df40ce266fca8edc0d122c3b08b0e9f55c123cbfabf1325ecea",
+      "rgbaSha256": "9554271823e9a61eb1973027ec2c00e87ba9668b283641e1808bd0329a293ea6",
+      "byteSize": 426354,
+      "background": {
+        "hasTransparency": true,
+        "alphaRange": [
+          0,
+          255
+        ]
+      }
+    },
+    {
+      "id": "6370",
+      "name": "Link (Capless)",
+      "section": "Playable Characters",
+      "contributors": "Barubary",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6370/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/6/6370.png?updated=1755472425",
+      "originalPath": "assets/originals/6370.png",
+      "originalBytes": 49289,
+      "originalSha256": "b4575a56fab0b69d4782474e5bcc72efb2e1e8b4f84ada42e63c459b4c925660",
+      "status": "downloaded",
+      "path": "assets/sheets/6370-link-capless.png",
+      "thumbnail": "assets/thumbnails/6370-link-capless.png",
+      "width": 1112,
+      "height": 1196,
+      "format": "PNG",
+      "originalFormat": "PNG",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "de91b697eae0a9f88b7ee9e51ef287d6cb29104888f44421b5c6c83ed54e6b5f",
+      "rgbaSha256": "c0bfe5de68dd6ff16f8a957d51a667e47862ed09c078b5d30c6c283989e9e79d",
+      "byteSize": 112859,
+      "background": {
+        "hasTransparency": true,
+        "alphaRange": [
+          0,
+          255
+        ]
+      }
+    },
+    {
+      "id": "19728",
+      "name": "Link (Minish)",
+      "section": "Playable Characters",
+      "contributors": "Sonikku",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/19728/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/18/19728.png?updated=1755472533",
+      "originalPath": "assets/originals/19728.png",
+      "originalBytes": 9108,
+      "originalSha256": "a42a928c58718544bb97c112a22c14440f001a382ca61bdb8ba4a29c6705fef6",
+      "status": "downloaded",
+      "path": "assets/sheets/19728-link-minish.png",
+      "thumbnail": "assets/thumbnails/19728-link-minish.png",
+      "width": 102,
+      "height": 422,
+      "format": "PNG",
+      "originalFormat": "PNG",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "4d8598b961f7301aa2a54ec81882fedfe82e4d98afd1c2465132915c396bb30a",
+      "rgbaSha256": "9d715070ad222cea18c269b5ebd1d3884e1f4d8b7c4c945f26f6bf1eba6d2b74",
+      "byteSize": 9490,
+      "background": {
+        "hasTransparency": false,
+        "alphaRange": [
+          255,
+          255
+        ],
+        "suggestedKeyColor": "#ffffff"
+      }
+    },
+    {
+      "id": "6399",
+      "name": "Biggoron",
+      "section": "Non-Playable Characters",
+      "contributors": "Bacon",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6399/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/6/6399.gif?updated=1755472426",
+      "originalPath": "assets/originals/6399.gif",
+      "originalBytes": 27130,
+      "originalSha256": "f104f99fd4800f8abfc01bf5b03ce3f71a1bacdc8adadd7083de309c422e50b1",
+      "status": "downloaded",
+      "path": "assets/sheets/6399-biggoron.png",
+      "thumbnail": "assets/thumbnails/6399-biggoron.png",
+      "width": 445,
+      "height": 805,
+      "format": "PNG",
+      "originalFormat": "GIF",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "de90d5d3a56f88c56ce2c8fd56bc43811de51e5715ea7394b9d6b08a2c117768",
+      "rgbaSha256": "8f718888a49e814d5683429345fb5034c6b764c973247eec7e010fb5be426abb",
+      "byteSize": 30950,
+      "background": {
+        "hasTransparency": true,
+        "alphaRange": [
+          0,
+          255
+        ]
+      }
+    },
+    {
+      "id": "6396",
+      "name": "Blade Brothers",
+      "section": "Non-Playable Characters",
+      "contributors": "Some One",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6396/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/6/6396.png?updated=1755472426",
+      "originalPath": "assets/originals/6396.png",
+      "originalBytes": 66622,
+      "originalSha256": "4bb9d0a24b3e9e0416ead58c9f0a819ae5790f58a50f955f52fe7135608ada65",
+      "status": "downloaded",
+      "path": "assets/sheets/6396-blade-brothers.png",
+      "thumbnail": "assets/thumbnails/6396-blade-brothers.png",
+      "width": 746,
+      "height": 716,
+      "format": "PNG",
+      "originalFormat": "PNG",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "61809fc82d35b2046ee957b4b2961f1b5c3d4bd9cbff9a29b13c44f648dac038",
+      "rgbaSha256": "99a78e5c99e378ae4a2f91081286c472454071ca80610d337aed1a99d77e0e4b",
+      "byteSize": 75363,
+      "background": {
+        "hasTransparency": false,
+        "alphaRange": [
+          255,
+          255
+        ],
+        "suggestedKeyColor": "#008000"
+      }
+    },
+    {
+      "id": "6384",
+      "name": "Carpenters",
+      "section": "Non-Playable Characters",
+      "contributors": "Cloud Strife",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6384/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/6/6384.png?updated=1755472425",
+      "originalPath": "assets/originals/6384.png",
+      "originalBytes": 14657,
+      "originalSha256": "ac1a8fcb9f92e08fe0c0a07e70caf3975125c83c036c3a0b155a749ec983cc9a",
+      "status": "downloaded",
+      "path": "assets/sheets/6384-carpenters.png",
+      "thumbnail": "assets/thumbnails/6384-carpenters.png",
+      "width": 350,
+      "height": 316,
+      "format": "PNG",
+      "originalFormat": "PNG",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "0def073c7b4eb7949b9d08a216fd0df4fc5706a524589ff742eb14d43a3215b8",
+      "rgbaSha256": "19e5cba2a0494dedd1ba8bf9335a6eeb1b6eff1e278d427c597487688672295f",
+      "byteSize": 17187,
+      "background": {
+        "hasTransparency": false,
+        "alphaRange": [
+          255,
+          255
+        ],
+        "suggestedKeyColor": "#000000"
+      }
+    },
+    {
+      "id": "6402",
+      "name": "Cats",
+      "section": "Non-Playable Characters",
+      "contributors": "Warrier1",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6402/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/6/6402.gif?updated=1755472426",
+      "originalPath": "assets/originals/6402.gif",
+      "originalBytes": 13406,
+      "originalSha256": "ae148ceef137123828d20f2cef59d8571bc6a15fbdc0472818f3a95c77dff6eb",
+      "status": "downloaded",
+      "path": "assets/sheets/6402-cats.png",
+      "thumbnail": "assets/thumbnails/6402-cats.png",
+      "width": 422,
+      "height": 300,
+      "format": "PNG",
+      "originalFormat": "GIF",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "1dfc8758c44711190bc8147382304931e55bc1df39f2145fb1f81480a6ebfa98",
+      "rgbaSha256": "2cc8e23b37ed7bc7dd5b35ac6e7bdc1b78d14b82389f76393c6186c29b35eca9",
+      "byteSize": 21444,
+      "background": {
+        "hasTransparency": true,
+        "alphaRange": [
+          0,
+          255
+        ]
+      }
+    },
+    {
+      "id": "6403",
+      "name": "Cuccos",
+      "section": "Non-Playable Characters",
+      "contributors": "Fleeka",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6403/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/6/6403.png?updated=1755472426",
+      "originalPath": "assets/originals/6403.png",
+      "originalBytes": 7929,
+      "originalSha256": "12d3b5ef892a314daebff92369c00a0cd4702c55d6b6717aed503fe24f5bbfca",
+      "status": "downloaded",
+      "path": "assets/sheets/6403-cuccos.png",
+      "thumbnail": "assets/thumbnails/6403-cuccos.png",
+      "width": 152,
+      "height": 156,
+      "format": "PNG",
+      "originalFormat": "PNG",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "4147ff3d7f36aa075ac69d69548f6920c70a9a91779ba771ae512bea82f2f558",
+      "rgbaSha256": "c74bac7606abd2acb8a82eb94797509634a15f563f7c483f691adc2171b43426",
+      "byteSize": 7907,
+      "background": {
+        "hasTransparency": false,
+        "alphaRange": [
+          255,
+          255
+        ],
+        "suggestedKeyColor": "#ffffff"
+      }
+    },
+    {
+      "id": "6542",
+      "name": "Deku Scrub",
+      "section": "Non-Playable Characters",
+      "contributors": "shiMa",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6542/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/6/6542.png?updated=1755472427",
+      "originalPath": "assets/originals/6542.png",
+      "originalBytes": 22752,
+      "originalSha256": "481ad69dbebc844f27e40e2b56110a72709912409978e21e1dfa4d45faee355d",
+      "status": "downloaded",
+      "path": "assets/sheets/6542-deku-scrub.png",
+      "thumbnail": "assets/thumbnails/6542-deku-scrub.png",
+      "width": 226,
+      "height": 463,
+      "format": "PNG",
+      "originalFormat": "PNG",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "01d5b8e6cb9e89a23956c677b9d685243584d8b1afdfb1eaae22023b6cd13439",
+      "rgbaSha256": "65615c007075a5810f82b103ff355f6dfc5e959aa224c024e877a04f84a2f75a",
+      "byteSize": 25643,
+      "background": {
+        "hasTransparency": false,
+        "alphaRange": [
+          255,
+          255
+        ]
+      }
+    },
+    {
+      "id": "24932",
+      "name": "Din, Nayru & Farore (Oracles)",
+      "section": "Non-Playable Characters",
+      "contributors": "MisterMike",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/24932/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/23/24932.png?updated=1755472560",
+      "originalPath": "assets/originals/24932.png",
+      "originalBytes": 8680,
+      "originalSha256": "4161eb03c6df1ce0ff8facdbb1d583ceb40373ef40fd6d8c7a82cbe3b3e49a6a",
+      "status": "downloaded",
+      "path": "assets/sheets/24932-din-nayru-farore-oracles.png",
+      "thumbnail": "assets/thumbnails/24932-din-nayru-farore-oracles.png",
+      "width": 263,
+      "height": 106,
+      "format": "PNG",
+      "originalFormat": "PNG",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "e1d694083ce0a7d602e82c1f690f5d5f98d2ff22dfffac3a94239883a18a2463",
+      "rgbaSha256": "95dd313b40b005cbde16810080bdeeb56a8aba2796828e111298f3d735d828e5",
+      "byteSize": 8037,
+      "background": {
+        "hasTransparency": false,
+        "alphaRange": [
+          255,
+          255
+        ],
+        "suggestedKeyColor": "#008000"
+      }
+    },
+    {
+      "id": "6400",
+      "name": "Dogs",
+      "section": "Non-Playable Characters",
+      "contributors": "Rakia",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6400/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/6/6400.png?updated=1755472426",
+      "originalPath": "assets/originals/6400.png",
+      "originalBytes": 4069,
+      "originalSha256": "1e3b2b095aba03b4c8fe7f139f77cbdcb513f0ab9056a55a2a3c97186e18d69e",
+      "status": "downloaded",
+      "path": "assets/sheets/6400-dogs.png",
+      "thumbnail": "assets/thumbnails/6400-dogs.png",
+      "width": 169,
+      "height": 125,
+      "format": "PNG",
+      "originalFormat": "PNG",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "34d0eebeee7bfd0aac0fe47d2c78257215f1f7bb06280170e2757c0cad648e55",
+      "rgbaSha256": "e6315c18e3dc29f466a3dacd1a57f2e43bce03daec339d18fa2e0d3e2f90dbd9",
+      "byteSize": 4343,
+      "background": {
+        "hasTransparency": false,
+        "alphaRange": [
+          255,
+          255
+        ],
+        "suggestedKeyColor": "#ffffff"
+      }
+    },
+    {
+      "id": "6372",
+      "name": "Ezlo (Hat)",
+      "section": "Non-Playable Characters",
+      "contributors": "Sonikku",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6372/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/6/6372.png?updated=1755472425",
+      "originalPath": "assets/originals/6372.png",
+      "originalBytes": 29130,
+      "originalSha256": "6bdd9a7412609dc52c15af441b5d14f6a0a3b71f326fc1d49be4aafda34aacb3",
+      "status": "downloaded",
+      "path": "assets/sheets/6372-ezlo-hat.png",
+      "thumbnail": "assets/thumbnails/6372-ezlo-hat.png",
+      "width": 480,
+      "height": 374,
+      "format": "PNG",
+      "originalFormat": "PNG",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "9c1fc4ab531ca9b73d650e612662e920ad08eb0c6b8600dcab0174588530c9ad",
+      "rgbaSha256": "77dcb4cde3249b57143ac8e7adf7106d085f0fdcff3f1cef3740acab9bbd9722",
+      "byteSize": 31682,
+      "background": {
+        "hasTransparency": false,
+        "alphaRange": [
+          255,
+          255
+        ],
+        "suggestedKeyColor": "#ffffff"
+      }
+    },
+    {
+      "id": "6373",
+      "name": "Ezlo (Minish)",
+      "section": "Non-Playable Characters",
+      "contributors": "Bacon",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6373/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/6/6373.gif?updated=1755472425",
+      "originalPath": "assets/originals/6373.gif",
+      "originalBytes": 13014,
+      "originalSha256": "93134fa87182ef2b28b0188171f9f77f08db1c9fdb6276a4908e389f7d623595",
+      "status": "downloaded",
+      "path": "assets/sheets/6373-ezlo-minish.png",
+      "thumbnail": "assets/thumbnails/6373-ezlo-minish.png",
+      "width": 373,
+      "height": 518,
+      "format": "PNG",
+      "originalFormat": "GIF",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "cca317d8278a23a3a6f3687971ff586cd70b3d00b35fbe0e4fe8a6df64006799",
+      "rgbaSha256": "2f96b495dc0f15749388e5ec2f5f3dc8aa7c179d50bfdf07fad8674584cccc17",
+      "byteSize": 20400,
+      "background": {
+        "hasTransparency": true,
+        "alphaRange": [
+          0,
+          255
+        ]
+      }
+    },
+    {
+      "id": "6389",
+      "name": "Field NPCs 1",
+      "section": "Non-Playable Characters",
+      "contributors": "Bacon",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6389/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/6/6389.gif?updated=1755472425",
+      "originalPath": "assets/originals/6389.gif",
+      "originalBytes": 64802,
+      "originalSha256": "375e974c381da71beccae3f2f95b9fd9e066a7a021a4d1d9a4cfdc3fdfd6a823",
+      "status": "downloaded",
+      "path": "assets/sheets/6389-field-npcs-1.png",
+      "thumbnail": "assets/thumbnails/6389-field-npcs-1.png",
+      "width": 364,
+      "height": 1496,
+      "format": "PNG",
+      "originalFormat": "GIF",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "22eda53338d41b679af0077fc0b338b9b389ddbcb9544a81e15bae80dfb86ba1",
+      "rgbaSha256": "c9e7e8e6b06e17d2171de0897b317cedfbb118548cdccd58731df257ba506397",
+      "byteSize": 99188,
+      "background": {
+        "hasTransparency": true,
+        "alphaRange": [
+          0,
+          255
+        ]
+      }
+    },
+    {
+      "id": "6392",
+      "name": "Forest Minish",
+      "section": "Non-Playable Characters",
+      "contributors": "Bacon",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6392/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/6/6392.gif?updated=1755472426",
+      "originalPath": "assets/originals/6392.gif",
+      "originalBytes": 10842,
+      "originalSha256": "d380a9487d780d4d55486fb1e4527cb8735235662eb172f8bc43672a1081854f",
+      "status": "downloaded",
+      "path": "assets/sheets/6392-forest-minish.png",
+      "thumbnail": "assets/thumbnails/6392-forest-minish.png",
+      "width": 429,
+      "height": 199,
+      "format": "PNG",
+      "originalFormat": "GIF",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "eade562efdd5a63210e58a5f9841aeefe50c982606bd0d61d34333d63231f41c",
+      "rgbaSha256": "bc6b6f666dac8154782ec5c94a72ff5f894ccf0aa73baaca2eb04d0ba2665d9a",
+      "byteSize": 15111,
+      "background": {
+        "hasTransparency": true,
+        "alphaRange": [
+          0,
+          255
+        ]
+      }
+    },
+    {
+      "id": "6379",
+      "name": "Hyrule Town Residents 1",
+      "section": "Non-Playable Characters",
+      "contributors": "Marty",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6379/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/6/6379.png?updated=1755472425",
+      "originalPath": "assets/originals/6379.png",
+      "originalBytes": 17549,
+      "originalSha256": "b7f89497a9bdb886705e7551d6f9a4cbb99684534f85da8a96a6a3099ed71143",
+      "status": "downloaded",
+      "path": "assets/sheets/6379-hyrule-town-residents-1.png",
+      "thumbnail": "assets/thumbnails/6379-hyrule-town-residents-1.png",
+      "width": 395,
+      "height": 227,
+      "format": "PNG",
+      "originalFormat": "PNG",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "8d6831ce116db0c0160cc3f9555989f8eac59d8e40a195ed2c8f259817f5e033",
+      "rgbaSha256": "e1dacb3a39c11153f915b82a1fa45ee572932c0db235d61f726efc5883a22216",
+      "byteSize": 21535,
+      "background": {
+        "hasTransparency": false,
+        "alphaRange": [
+          255,
+          255
+        ],
+        "suggestedKeyColor": "#ffffff"
+      }
+    },
+    {
+      "id": "6381",
+      "name": "Hyrule Town Residents 2",
+      "section": "Non-Playable Characters",
+      "contributors": "Bacon",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6381/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/6/6381.png?updated=1755472425",
+      "originalPath": "assets/originals/6381.png",
+      "originalBytes": 171781,
+      "originalSha256": "2e66e2b3b1870bfe65df96d104c3f81f26f823a8b0c9b68898b68fa49119c0e8",
+      "status": "downloaded",
+      "path": "assets/sheets/6381-hyrule-town-residents-2.png",
+      "thumbnail": "assets/thumbnails/6381-hyrule-town-residents-2.png",
+      "width": 297,
+      "height": 2227,
+      "format": "PNG",
+      "originalFormat": "PNG",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "e910fa340c4e2136061f903bb593e2a6e7c1a7dafc3842560ab7dc0885920f9d",
+      "rgbaSha256": "f1b44a73bec209d5487b066af5804004d8dfe6bf189cf411b9d242eadee1e1fc",
+      "byteSize": 134788,
+      "background": {
+        "hasTransparency": false,
+        "alphaRange": [
+          255,
+          255
+        ],
+        "suggestedKeyColor": "#ab0000"
+      }
+    },
+    {
+      "id": "6387",
+      "name": "Hyrule Town Residents 3",
+      "section": "Non-Playable Characters",
+      "contributors": "KG Spriter",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6387/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/6/6387.png?updated=1755472425",
+      "originalPath": "assets/originals/6387.png",
+      "originalBytes": 23854,
+      "originalSha256": "0b03e3c46ede5d6dcc5cd6c9e8114a06ad73e2361fe957b2de57a87fac2f1f93",
+      "status": "downloaded",
+      "path": "assets/sheets/6387-hyrule-town-residents-3.png",
+      "thumbnail": "assets/thumbnails/6387-hyrule-town-residents-3.png",
+      "width": 457,
+      "height": 512,
+      "format": "PNG",
+      "originalFormat": "PNG",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "15791bb76f575fcb7be710619a96716b8dc7b7e0a6afa14158c951b4d35f832b",
+      "rgbaSha256": "430027d2c7c192609eb5531b1f5ff619d343d07e07bf358272ec09dc16e25446",
+      "byteSize": 40309,
+      "background": {
+        "hasTransparency": false,
+        "alphaRange": [
+          255,
+          255
+        ],
+        "suggestedKeyColor": "#ffffff"
+      }
+    },
+    {
+      "id": "6375",
+      "name": "King Daltus",
+      "section": "Non-Playable Characters",
+      "contributors": "Bacon",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6375/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/6/6375.gif?updated=1755472425",
+      "originalPath": "assets/originals/6375.gif",
+      "originalBytes": 25257,
+      "originalSha256": "f33e7a8eab436ae63911999f0a741cf1fff0b3e20cbf80be558aff00d6fe7cd7",
+      "status": "downloaded",
+      "path": "assets/sheets/6375-king-daltus.png",
+      "thumbnail": "assets/thumbnails/6375-king-daltus.png",
+      "width": 548,
+      "height": 337,
+      "format": "PNG",
+      "originalFormat": "GIF",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "08670ee1f56fe06dba65113e6210e65386cfee1769ca1916234c6753e5d30203",
+      "rgbaSha256": "e9a88b4d34ae7ba023043beff2e162efed409c7807c44b7a2ded05acc9e11537",
+      "byteSize": 28903,
+      "background": {
+        "hasTransparency": false,
+        "alphaRange": [
+          255,
+          255
+        ]
+      }
+    },
+    {
+      "id": "6394",
+      "name": "Mountain Minish",
+      "section": "Non-Playable Characters",
+      "contributors": "aquatics64",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6394/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/6/6394.png?updated=1755472426",
+      "originalPath": "assets/originals/6394.png",
+      "originalBytes": 25510,
+      "originalSha256": "78ab563f00435956780b674aba8573c63711c6c52ee8a7d909906a873480a218",
+      "status": "downloaded",
+      "path": "assets/sheets/6394-mountain-minish.png",
+      "thumbnail": "assets/thumbnails/6394-mountain-minish.png",
+      "width": 642,
+      "height": 340,
+      "format": "PNG",
+      "originalFormat": "PNG",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "710696e861b2957b6910fd09b4f1c504c4f47f5e144e38864e922262fe051704",
+      "rgbaSha256": "3b717b0096bc196e8764fd263bda8f470e27f208ddadfecddc98a8eba97eb738",
+      "byteSize": 33131,
+      "background": {
+        "hasTransparency": false,
+        "alphaRange": [
+          255,
+          255
+        ],
+        "suggestedKeyColor": "#ffffff"
+      }
+    },
+    {
+      "id": "22716",
+      "name": "Princess Zelda",
+      "section": "Non-Playable Characters",
+      "contributors": "Sonikku",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/22716/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/21/22716.png?updated=1755472546",
+      "originalPath": "assets/originals/22716.png",
+      "originalBytes": 59780,
+      "originalSha256": "94af95efe623ba3d89d02432bb83f2f51c96939bd1502c3fd94a0c337eabcf52",
+      "status": "downloaded",
+      "path": "assets/sheets/22716-princess-zelda.png",
+      "thumbnail": "assets/thumbnails/22716-princess-zelda.png",
+      "width": 440,
+      "height": 808,
+      "format": "PNG",
+      "originalFormat": "PNG",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "3720e2ad089fac057002075f58678a568c7918ec5122a3bd1aa63eff6a42075a",
+      "rgbaSha256": "bd213718797f92822b98f7c89f8419b4b8eec095bb4025638e1c6c47c414f762",
+      "byteSize": 56312,
+      "background": {
+        "hasTransparency": true,
+        "alphaRange": [
+          0,
+          255
+        ]
+      }
+    },
+    {
+      "id": "6391",
+      "name": "Royal Guards",
+      "section": "Non-Playable Characters",
+      "contributors": "Unknown",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6391/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/6/6391.png?updated=1755472426",
+      "originalPath": "assets/originals/6391.png",
+      "originalBytes": 12833,
+      "originalSha256": "d10e26c5734af4cac4959bf3c73e2957bf5922939c26adb144cdcd73b369ce59",
+      "status": "downloaded",
+      "path": "assets/sheets/6391-royal-guards.png",
+      "thumbnail": "assets/thumbnails/6391-royal-guards.png",
+      "width": 456,
+      "height": 224,
+      "format": "PNG",
+      "originalFormat": "PNG",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "0ead4cd179ee8bce89a46eee223223c0733987c1e1d2934b9fdaf328394b66af",
+      "rgbaSha256": "b716b17062564a1744851842801df1a0fe0bb94952367a8c171d2f16d998d49a",
+      "byteSize": 13538,
+      "background": {
+        "hasTransparency": false,
+        "alphaRange": [
+          255,
+          255
+        ]
+      }
+    },
+    {
+      "id": "6398",
+      "name": "Royal Valley NPCs",
+      "section": "Non-Playable Characters",
+      "contributors": "Bacon",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6398/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/6/6398.gif?updated=1755472426",
+      "originalPath": "assets/originals/6398.gif",
+      "originalBytes": 10753,
+      "originalSha256": "a9d77711caefb9518c887314f17802f83fb8e803047df9036b5d8fddba1c7af0",
+      "status": "downloaded",
+      "path": "assets/sheets/6398-royal-valley-npcs.png",
+      "thumbnail": "assets/thumbnails/6398-royal-valley-npcs.png",
+      "width": 306,
+      "height": 240,
+      "format": "PNG",
+      "originalFormat": "GIF",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "055b7b5453ee58eb313a30ee1fd875458990bb43015f85cb38f5890240990636",
+      "rgbaSha256": "62bbe6fd3a79adab29658415173c091695039a66b1bbaa88100b0b4360efc887",
+      "byteSize": 13260,
+      "background": {
+        "hasTransparency": true,
+        "alphaRange": [
+          0,
+          255
+        ]
+      }
+    },
+    {
+      "id": "6377",
+      "name": "Smith",
+      "section": "Non-Playable Characters",
+      "contributors": "Sonikku",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6377/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/6/6377.png?updated=1755472425",
+      "originalPath": "assets/originals/6377.png",
+      "originalBytes": 41055,
+      "originalSha256": "d8bb5f6902fc2afa8e86ebff20a6c4a680950333cec87903e635447d639ad8fb",
+      "status": "downloaded",
+      "path": "assets/sheets/6377-smith.png",
+      "thumbnail": "assets/thumbnails/6377-smith.png",
+      "width": 368,
+      "height": 456,
+      "format": "PNG",
+      "originalFormat": "PNG",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "10cefe5299735c63d6e907cc1f604322f128fdae4ec753e4b44f34b05bad790a",
+      "rgbaSha256": "29c6b65ca02782cbd2371fe907fd9afe06ce0fc6d316dfd733e2126d438d3647",
+      "byteSize": 38654,
+      "background": {
+        "hasTransparency": true,
+        "alphaRange": [
+          0,
+          255
+        ]
+      }
+    },
+    {
+      "id": "6393",
+      "name": "Town Minish",
+      "section": "Non-Playable Characters",
+      "contributors": "Bacon",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6393/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/6/6393.gif?updated=1755472426",
+      "originalPath": "assets/originals/6393.gif",
+      "originalBytes": 33558,
+      "originalSha256": "ddaa24c08afd1c1e83a9d31f383d7818ca175eb253a58450416ec958084a532b",
+      "status": "downloaded",
+      "path": "assets/sheets/6393-town-minish.png",
+      "thumbnail": "assets/thumbnails/6393-town-minish.png",
+      "width": 399,
+      "height": 691,
+      "format": "PNG",
+      "originalFormat": "GIF",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "42bbe7b23bccddf05ec6a7478d9d17bbc9f0583e560a50f90d7d3c8757bcb382",
+      "rgbaSha256": "e047181e7a59249786fbc283c2bfdd342c7ca7229013139e7a13dd31e63221ea",
+      "byteSize": 46928,
+      "background": {
+        "hasTransparency": true,
+        "alphaRange": [
+          0,
+          255
+        ]
+      }
+    },
+    {
+      "id": "6530",
+      "name": "Vaati (Sorcerer & Minish)",
+      "section": "Non-Playable Characters",
+      "contributors": "MisterMike",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6530/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/6/6530.png?updated=1755472426",
+      "originalPath": "assets/originals/6530.png",
+      "originalBytes": 29935,
+      "originalSha256": "f3519e249b4649a420cb0c722072162122638e1fc290f6c5ff7b795bf16676b1",
+      "status": "downloaded",
+      "path": "assets/sheets/6530-vaati-sorcerer-minish.png",
+      "thumbnail": "assets/thumbnails/6530-vaati-sorcerer-minish.png",
+      "width": 758,
+      "height": 205,
+      "format": "PNG",
+      "originalFormat": "PNG",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "3239541c99a2f685e570eda968a3f26a21896a53144d48665e6e14d39cfe2659",
+      "rgbaSha256": "4ec44fd0c73754baae513a054784984d1328f2af2279be81deabd888ca4b0a00",
+      "byteSize": 28463,
+      "background": {
+        "hasTransparency": false,
+        "alphaRange": [
+          255,
+          255
+        ],
+        "suggestedKeyColor": "#008000"
+      }
+    },
+    {
+      "id": "6406",
+      "name": "Acrobandits",
+      "section": "Enemies",
+      "contributors": "BigGoron",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6406/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/6/6406.png?updated=1755472426",
+      "originalPath": "assets/originals/6406.png",
+      "originalBytes": 22102,
+      "originalSha256": "2794b633241450aaf12988fff0ca8cd2febe740775f1c330b9f40d44e7b92d42",
+      "status": "downloaded",
+      "path": "assets/sheets/6406-acrobandits.png",
+      "thumbnail": "assets/thumbnails/6406-acrobandits.png",
+      "width": 1230,
+      "height": 137,
+      "format": "PNG",
+      "originalFormat": "PNG",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "b887d4cac5936280c6fe88c0d3556dfc90f60577735e8ffdd60d8653a58bc60a",
+      "rgbaSha256": "c206e7dd5b0a72fbc3d5612cf823b41353059b32b76acf9d4d1b057b36c29a9e",
+      "byteSize": 23961,
+      "background": {
+        "hasTransparency": false,
+        "alphaRange": [
+          255,
+          255
+        ],
+        "suggestedKeyColor": "#f3f3f3"
+      }
+    },
+    {
+      "id": "6411",
+      "name": "Beetle",
+      "section": "Enemies",
+      "contributors": "P-Tux7",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6411/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/6/6411.png?updated=1774071553",
+      "originalPath": "assets/originals/6411.png",
+      "originalBytes": 1396,
+      "originalSha256": "fee424e01df41670f8d348b6a15945ea9fc66e3d151e14af08d78b284bcec54e",
+      "status": "downloaded",
+      "path": "assets/sheets/6411-beetle.png",
+      "thumbnail": "assets/thumbnails/6411-beetle.png",
+      "width": 141,
+      "height": 93,
+      "format": "PNG",
+      "originalFormat": "PNG",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "8bc5a76090f16a37c22d4e215c52ec49938df4d0af073f1245f1588de302f51e",
+      "rgbaSha256": "a3d96b2c8b56538812a2996bbe4e1e6d9c74416c43cdcc476045fe814a5dd073",
+      "byteSize": 3238,
+      "background": {
+        "hasTransparency": false,
+        "alphaRange": [
+          255,
+          255
+        ],
+        "suggestedKeyColor": "#ffffff"
+      }
+    },
+    {
+      "id": "6413",
+      "name": "Bob-omb",
+      "section": "Enemies",
+      "contributors": "Robbydude",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6413/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/6/6413.png?updated=1755472426",
+      "originalPath": "assets/originals/6413.png",
+      "originalBytes": 3837,
+      "originalSha256": "fa55cd59a6e7efaefc4bfa16c32ba62f50cbdc09550e7ac6f40395e8994ecd81",
+      "status": "downloaded",
+      "path": "assets/sheets/6413-bob-omb.png",
+      "thumbnail": "assets/thumbnails/6413-bob-omb.png",
+      "width": 100,
+      "height": 223,
+      "format": "PNG",
+      "originalFormat": "PNG",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "7e59f1fdbfda0c5659a5601d2c41792953661d748e4358fca62d957edd677987",
+      "rgbaSha256": "b3eb086062760232a5c3ab09ad5d93ee7ceb3f532694096a5ba861038fa7cbe6",
+      "byteSize": 4355,
+      "background": {
+        "hasTransparency": false,
+        "alphaRange": [
+          255,
+          255
+        ],
+        "suggestedKeyColor": "#000000"
+      }
+    },
+    {
+      "id": "6414",
+      "name": "Chuchu",
+      "section": "Enemies",
+      "contributors": "Caffeine Ripper",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6414/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/6/6414.png?updated=1755472426",
+      "originalPath": "assets/originals/6414.png",
+      "originalBytes": 37681,
+      "originalSha256": "3e1a350bf5c7a494fe5b774a00769aa20a9abec6a336cd974d6760d534e32b33",
+      "status": "downloaded",
+      "path": "assets/sheets/6414-chuchu.png",
+      "thumbnail": "assets/thumbnails/6414-chuchu.png",
+      "width": 484,
+      "height": 931,
+      "format": "PNG",
+      "originalFormat": "PNG",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "588aadf32e5fb2bc1fec628a3d62190533484363dddee23831a1dc91b37f4951",
+      "rgbaSha256": "fc83ca52cf257ca680b4a76ae087db73d1850455e3b5eaf1c2ab5e3a55586c0b",
+      "byteSize": 47322,
+      "background": {
+        "hasTransparency": false,
+        "alphaRange": [
+          255,
+          255
+        ],
+        "suggestedKeyColor": "#000000"
+      }
+    },
+    {
+      "id": "6443",
+      "name": "Cloud Piranha",
+      "section": "Enemies",
+      "contributors": "Sonikku",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6443/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/6/6443.png?updated=1755472426",
+      "originalPath": "assets/originals/6443.png",
+      "originalBytes": 6743,
+      "originalSha256": "2849588bbdaa1d9ec7b396404df0ee303e2b7511fe60d5945290ae0008f460ae",
+      "status": "downloaded",
+      "path": "assets/sheets/6443-cloud-piranha.png",
+      "thumbnail": "assets/thumbnails/6443-cloud-piranha.png",
+      "width": 188,
+      "height": 201,
+      "format": "PNG",
+      "originalFormat": "PNG",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "8bb8980d8955b20855261a61d5de2ccf2fa1bd937fd63ba91533ae3fe19185c7",
+      "rgbaSha256": "6e72ffb5d57d8da8b1b7a2cb431c556332fe7281a75dfa5ba94779e526e61924",
+      "byteSize": 8211,
+      "background": {
+        "hasTransparency": false,
+        "alphaRange": [
+          255,
+          255
+        ],
+        "suggestedKeyColor": "#ffffff"
+      }
+    },
+    {
+      "id": "6445",
+      "name": "Crow",
+      "section": "Enemies",
+      "contributors": "Sonikku",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6445/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/6/6445.png?updated=1755472426",
+      "originalPath": "assets/originals/6445.png",
+      "originalBytes": 1967,
+      "originalSha256": "d500a23d9115a8ec792bf0c984400f6d77a7bacf0e3efd0d80ed099a40de6e2b",
+      "status": "downloaded",
+      "path": "assets/sheets/6445-crow.png",
+      "thumbnail": "assets/thumbnails/6445-crow.png",
+      "width": 111,
+      "height": 76,
+      "format": "PNG",
+      "originalFormat": "PNG",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "1806ded5b5a3e56cec99dc6f93f671953e448aea74c8f7b6ac0bb100624ea0e2",
+      "rgbaSha256": "05659629c0be6440f991ad532a152a7775ddda96063b991b9d3d2d358f488802",
+      "byteSize": 1877,
+      "background": {
+        "hasTransparency": false,
+        "alphaRange": [
+          255,
+          255
+        ],
+        "suggestedKeyColor": "#ffffff"
+      }
+    },
+    {
+      "id": "64168",
+      "name": "Darknut",
+      "section": "Enemies",
+      "contributors": "Shred Mako",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/64168/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/61/64168.png?updated=1755473488",
+      "originalPath": "assets/originals/64168.png",
+      "originalBytes": 213161,
+      "originalSha256": "72a6e632fd10d9d5598214fc744e07409a8cf3e3cd58bca9c2b4835cebe85c5e",
+      "status": "downloaded",
+      "path": "assets/sheets/64168-darknut.png",
+      "thumbnail": "assets/thumbnails/64168-darknut.png",
+      "width": 1077,
+      "height": 995,
+      "format": "PNG",
+      "originalFormat": "PNG",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "b4271ee92358c8aab0a7f3a4a0325583bfb036f22162726a11c90e9f1df9e663",
+      "rgbaSha256": "51d6b735fed323b251d96623bfd6083e6a705b027811cc0ea2af0bb7d47d1751",
+      "byteSize": 236149,
+      "background": {
+        "hasTransparency": false,
+        "alphaRange": [
+          255,
+          255
+        ],
+        "suggestedKeyColor": "#b8b8d8"
+      }
+    },
+    {
+      "id": "6449",
+      "name": "Door Trap",
+      "section": "Enemies",
+      "contributors": "Sonikku",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6449/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/6/6449.png?updated=1755472426",
+      "originalPath": "assets/originals/6449.png",
+      "originalBytes": 2926,
+      "originalSha256": "e7c7430ca5617303a36bc7af0670bea9590f49cec27dbc15e9b7a8989861d171",
+      "status": "downloaded",
+      "path": "assets/sheets/6449-door-trap.png",
+      "thumbnail": "assets/thumbnails/6449-door-trap.png",
+      "width": 279,
+      "height": 87,
+      "format": "PNG",
+      "originalFormat": "PNG",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "b155dd1dfcdaa1b52061a77bf2401a8a6a9baf5d028dbf30baa1b7c34099c1ff",
+      "rgbaSha256": "03dbc4cd02a4d079cc96f4b7cbd5f0e7777f36a497c3ffeb7991b5bd3d32e8fb",
+      "byteSize": 2852,
+      "background": {
+        "hasTransparency": false,
+        "alphaRange": [
+          255,
+          255
+        ],
+        "suggestedKeyColor": "#ffffff"
+      }
+    },
+    {
+      "id": "6409",
+      "name": "Eyegore Statue",
+      "section": "Enemies",
+      "contributors": "Bacon",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6409/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/6/6409.gif?updated=1755472426",
+      "originalPath": "assets/originals/6409.gif",
+      "originalBytes": 18513,
+      "originalSha256": "840776df09c1f3f6796f3577d8ac80b4eb39e545a5c5513c860102d0b2519398",
+      "status": "downloaded",
+      "path": "assets/sheets/6409-eyegore-statue.png",
+      "thumbnail": "assets/thumbnails/6409-eyegore-statue.png",
+      "width": 389,
+      "height": 338,
+      "format": "PNG",
+      "originalFormat": "GIF",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "8cdccdfa0f905816cbc0c57499bd8c602d82573a8c36a45e673e0925eeac4a3b",
+      "rgbaSha256": "c4c090eadfaeae8b935ebb650118c96e560d2d5bdf879ba2c06693ccc170b5a0",
+      "byteSize": 21707,
+      "background": {
+        "hasTransparency": true,
+        "alphaRange": [
+          0,
+          255
+        ]
+      }
+    },
+    {
+      "id": "49617",
+      "name": "Floormaster & Wallmaster",
+      "section": "Enemies",
+      "contributors": "ShadowKami",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/49617/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/47/49617.png?updated=1755472989",
+      "originalPath": "assets/originals/49617.png",
+      "originalBytes": 23006,
+      "originalSha256": "183289be4724b73286304a758e30de8678cf13232a8d90f1d8f04d9058f43d64",
+      "status": "downloaded",
+      "path": "assets/sheets/49617-floormaster-wallmaster.png",
+      "thumbnail": "assets/thumbnails/49617-floormaster-wallmaster.png",
+      "width": 442,
+      "height": 186,
+      "format": "PNG",
+      "originalFormat": "PNG",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "a04138279946810ab60077cceda1cae938fdb5faeda9326fc35ca413dc4e0541",
+      "rgbaSha256": "5f46d6f6e7475e918350fec94c17eeb28daf867cd73cc75b47b365ca7c634c7e",
+      "byteSize": 19752,
+      "background": {
+        "hasTransparency": false,
+        "alphaRange": [
+          255,
+          255
+        ],
+        "suggestedKeyColor": "#ffffff"
+      }
+    },
+    {
+      "id": "6459",
+      "name": "Ghini",
+      "section": "Enemies",
+      "contributors": "Sonikku",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6459/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/6/6459.png?updated=1755472426",
+      "originalPath": "assets/originals/6459.png",
+      "originalBytes": 4208,
+      "originalSha256": "5819e94205554221dff0b5b340ae77ffe8254281146e0651034efd39cc8e3c19",
+      "status": "downloaded",
+      "path": "assets/sheets/6459-ghini.png",
+      "thumbnail": "assets/thumbnails/6459-ghini.png",
+      "width": 104,
+      "height": 151,
+      "format": "PNG",
+      "originalFormat": "PNG",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "81f92bebdc7b1b7932f8dfac5ad0f7a101ef63c135f8645aaf35fa3d863b837a",
+      "rgbaSha256": "aac716723b39702f4308c58f8a47e83e3709a1ea39ad2da0f21f4ffb55011a13",
+      "byteSize": 4997,
+      "background": {
+        "hasTransparency": false,
+        "alphaRange": [
+          255,
+          255
+        ],
+        "suggestedKeyColor": "#ffffff"
+      }
+    },
+    {
+      "id": "6472",
+      "name": "Keaton",
+      "section": "Enemies",
+      "contributors": "Gold Ghosty",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6472/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/6/6472.png?updated=1755472426",
+      "originalPath": "assets/originals/6472.png",
+      "originalBytes": 18091,
+      "originalSha256": "da09fdc2acbbd8012bcab83cb30c450f2b41260eed24cd9c6bff0d829d9372cf",
+      "status": "downloaded",
+      "path": "assets/sheets/6472-keaton.png",
+      "thumbnail": "assets/thumbnails/6472-keaton.png",
+      "width": 288,
+      "height": 388,
+      "format": "PNG",
+      "originalFormat": "PNG",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "5d9dad3ae54a31b28bb3460a9284a3e23aa366a53c559eba5dcaf2da5ce9507c",
+      "rgbaSha256": "05af73fdcdc672a5a51f7cd37beee53e6905e191cdc47eaaa922b73dfd9bfece",
+      "byteSize": 20921,
+      "background": {
+        "hasTransparency": false,
+        "alphaRange": [
+          255,
+          255
+        ],
+        "suggestedKeyColor": "#0080ff"
+      }
+    },
+    {
+      "id": "6475",
+      "name": "Keese",
+      "section": "Enemies",
+      "contributors": "Sonikku",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6475/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/6/6475.png?updated=1755472426",
+      "originalPath": "assets/originals/6475.png",
+      "originalBytes": 1806,
+      "originalSha256": "d36e2e005ac4172c14dcd16e83be145f484f70940f8b1bb7e67347c23581f960",
+      "status": "downloaded",
+      "path": "assets/sheets/6475-keese.png",
+      "thumbnail": "assets/thumbnails/6475-keese.png",
+      "width": 170,
+      "height": 66,
+      "format": "PNG",
+      "originalFormat": "PNG",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "61e6856d2eea4dca21064eea7461c06ed614ede0c34da62394d4ed52cb023059",
+      "rgbaSha256": "8f11ea647d4e8607f57668fc57551194c58317583ade2935e408ae313a61c849",
+      "byteSize": 1508,
+      "background": {
+        "hasTransparency": false,
+        "alphaRange": [
+          255,
+          255
+        ]
+      }
+    },
+    {
+      "id": "6405",
+      "name": "Lakitu",
+      "section": "Enemies",
+      "contributors": "Sonikku",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6405/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/6/6405.png?updated=1755472426",
+      "originalPath": "assets/originals/6405.png",
+      "originalBytes": 32471,
+      "originalSha256": "81800cd220fc358119ca391b361490baa3236cdebd12e6477844261fc4b4d084",
+      "status": "downloaded",
+      "path": "assets/sheets/6405-lakitu.png",
+      "thumbnail": "assets/thumbnails/6405-lakitu.png",
+      "width": 379,
+      "height": 285,
+      "format": "PNG",
+      "originalFormat": "PNG",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "bfc20d36f183c54a85d2ecfe42b2a390059202e4cc02a170e9a137f06e0f775e",
+      "rgbaSha256": "7a61235019dc6acd81cf0a49ab9ceac9f084c45627f60c0e8dee72f03b858bad",
+      "byteSize": 20751,
+      "background": {
+        "hasTransparency": true,
+        "alphaRange": [
+          0,
+          255
+        ]
+      }
+    },
+    {
+      "id": "6478",
+      "name": "Leever",
+      "section": "Enemies",
+      "contributors": "Sonikku",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6478/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/6/6478.png?updated=1755472426",
+      "originalPath": "assets/originals/6478.png",
+      "originalBytes": 5013,
+      "originalSha256": "e5741d71f48fd055235ebf16d8f9618bb0746daffe8ca069adafb4d8d53636af",
+      "status": "downloaded",
+      "path": "assets/sheets/6478-leever.png",
+      "thumbnail": "assets/thumbnails/6478-leever.png",
+      "width": 210,
+      "height": 135,
+      "format": "PNG",
+      "originalFormat": "PNG",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "d40d3bed7ce5d5871b91a23252efce2bcfd01ebb4a05d521c889ffcf43c9078c",
+      "rgbaSha256": "6a2567d5a227ef4db5e658552f571c70b2a15ae4e2207431fbc9817147ddfa91",
+      "byteSize": 4293,
+      "background": {
+        "hasTransparency": false,
+        "alphaRange": [
+          255,
+          255
+        ],
+        "suggestedKeyColor": "#ffffff"
+      }
+    },
+    {
+      "id": "6480",
+      "name": "Like Like",
+      "section": "Enemies",
+      "contributors": "Sonikku",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6480/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/6/6480.png?updated=1755472426",
+      "originalPath": "assets/originals/6480.png",
+      "originalBytes": 3129,
+      "originalSha256": "197ba32e33388afc5da83e178a6de029fe99f3470f5348138e2eb10316103558",
+      "status": "downloaded",
+      "path": "assets/sheets/6480-like-like.png",
+      "thumbnail": "assets/thumbnails/6480-like-like.png",
+      "width": 185,
+      "height": 94,
+      "format": "PNG",
+      "originalFormat": "PNG",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "bf51d91a29d06fc4ffeb49238f87004827ab099440b6f9b6202a43a683977bd9",
+      "rgbaSha256": "9509866d94b5811c5dd742f97d4bc25dc1d156fd396ce8a78897052e957024b6",
+      "byteSize": 2985,
+      "background": {
+        "hasTransparency": false,
+        "alphaRange": [
+          255,
+          255
+        ],
+        "suggestedKeyColor": "#ffffff"
+      }
+    },
+    {
+      "id": "6497",
+      "name": "Moldorms",
+      "section": "Enemies",
+      "contributors": "Sonikku",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6497/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/6/6497.png?updated=1755472426",
+      "originalPath": "assets/originals/6497.png",
+      "originalBytes": 4135,
+      "originalSha256": "8491c422eef8fc51d639a58efb8c4cc52898d7188f2750cf35501f32485ada9e",
+      "status": "downloaded",
+      "path": "assets/sheets/6497-moldorms.png",
+      "thumbnail": "assets/thumbnails/6497-moldorms.png",
+      "width": 242,
+      "height": 131,
+      "format": "PNG",
+      "originalFormat": "PNG",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "7d71c14000e6718b6ec559ded2f2408fae36bd1bc600d424eaa0a4dc6f8d90f5",
+      "rgbaSha256": "e301813b278db10d11b9e99729e2cb2fbc96ed78fcc6374479909dd3d1013ed7",
+      "byteSize": 4640,
+      "background": {
+        "hasTransparency": false,
+        "alphaRange": [
+          255,
+          255
+        ],
+        "suggestedKeyColor": "#ffffff"
+      }
+    },
+    {
+      "id": "6498",
+      "name": "Moldworm",
+      "section": "Enemies",
+      "contributors": "Sonikku",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6498/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/6/6498.png?updated=1755472426",
+      "originalPath": "assets/originals/6498.png",
+      "originalBytes": 5332,
+      "originalSha256": "2c554c17c8ffa7c02cffb37e347737f38192fbdfb2473f20c9ee2a050317460d",
+      "status": "downloaded",
+      "path": "assets/sheets/6498-moldworm.png",
+      "thumbnail": "assets/thumbnails/6498-moldworm.png",
+      "width": 145,
+      "height": 164,
+      "format": "PNG",
+      "originalFormat": "PNG",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "4fd1f8bf830953b59cd63c3d8eef1fa92f681359f423cbfdb6c3e9172d6422dc",
+      "rgbaSha256": "0c08ff9d08508d459ce310fefa0d0710b3baadd37eeb8cf2ace6eb764e9c6ba2",
+      "byteSize": 6087,
+      "background": {
+        "hasTransparency": false,
+        "alphaRange": [
+          255,
+          255
+        ],
+        "suggestedKeyColor": "#ffffff"
+      }
+    },
+    {
+      "id": "6504",
+      "name": "Octorok",
+      "section": "Enemies",
+      "contributors": "Sblaka",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6504/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/6/6504.gif?updated=1755472426",
+      "originalPath": "assets/originals/6504.gif",
+      "originalBytes": 11675,
+      "originalSha256": "69eabcc9d9ae08b66dc2cd068f1d2c7eb20f8c1cf0e26bda9dc4cb81d981d9bf",
+      "status": "downloaded",
+      "path": "assets/sheets/6504-octorok.png",
+      "thumbnail": "assets/thumbnails/6504-octorok.png",
+      "width": 292,
+      "height": 227,
+      "format": "PNG",
+      "originalFormat": "GIF",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "d2f2b670d5d5788d83bae6020ee0637be4e9bac3e6d8404df42c712bc965b6af",
+      "rgbaSha256": "2e60a11ac1b2f5e06b15f236f79d9d449a234b1a794315735d137063627fc237",
+      "byteSize": 20813,
+      "background": {
+        "hasTransparency": false,
+        "alphaRange": [
+          255,
+          255
+        ],
+        "suggestedKeyColor": "#fa72b3"
+      }
+    },
+    {
+      "id": "6509",
+      "name": "Peahat",
+      "section": "Enemies",
+      "contributors": "Sonikku",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6509/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/6/6509.png?updated=1755472426",
+      "originalPath": "assets/originals/6509.png",
+      "originalBytes": 6844,
+      "originalSha256": "2e8f9fbf14925a1c32a0df4009290a3ad18461ca91258eab779e7ed10f643281",
+      "status": "downloaded",
+      "path": "assets/sheets/6509-peahat.png",
+      "thumbnail": "assets/thumbnails/6509-peahat.png",
+      "width": 213,
+      "height": 156,
+      "format": "PNG",
+      "originalFormat": "PNG",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "0c60a481eb6878a363a051f7b8f8448020b0488c3f9eba47254b1bb8843b3878",
+      "rgbaSha256": "3a44e0c2c62c377ca931e7d25b0ade5289e0bba812cb83036ec30bfbd2a1bdc5",
+      "byteSize": 7973,
+      "background": {
+        "hasTransparency": false,
+        "alphaRange": [
+          255,
+          255
+        ],
+        "suggestedKeyColor": "#ffffff"
+      }
+    },
+    {
+      "id": "6511",
+      "name": "Pesto",
+      "section": "Enemies",
+      "contributors": "Sonikku",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6511/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/6/6511.png?updated=1755472426",
+      "originalPath": "assets/originals/6511.png",
+      "originalBytes": 7832,
+      "originalSha256": "1c25560b4d057040c4558286787433721b49277129977b57dc546a344c7b0c91",
+      "status": "downloaded",
+      "path": "assets/sheets/6511-pesto.png",
+      "thumbnail": "assets/thumbnails/6511-pesto.png",
+      "width": 203,
+      "height": 161,
+      "format": "PNG",
+      "originalFormat": "PNG",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "97122dd77abbdfe595ff4bf542f6a666a6de42e27ffcd883c16a4cf89b98a614",
+      "rgbaSha256": "d4ff62b93da3569856930332cf824e2cf76de16ddffafcea0c473098372d6af2",
+      "byteSize": 8983,
+      "background": {
+        "hasTransparency": false,
+        "alphaRange": [
+          255,
+          255
+        ],
+        "suggestedKeyColor": "#ffffff"
+      }
+    },
+    {
+      "id": "6512",
+      "name": "Puffstool",
+      "section": "Enemies",
+      "contributors": "Sonikku",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6512/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/6/6512.png?updated=1755472426",
+      "originalPath": "assets/originals/6512.png",
+      "originalBytes": 15978,
+      "originalSha256": "9889c0a62f12ac694060bdb14f570b194b8084b544bfadb50d57a5869d262d58",
+      "status": "downloaded",
+      "path": "assets/sheets/6512-puffstool.png",
+      "thumbnail": "assets/thumbnails/6512-puffstool.png",
+      "width": 401,
+      "height": 220,
+      "format": "PNG",
+      "originalFormat": "PNG",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "e1ea57b9141f62f2ea60633097130ce24172f55a6e08f3fa27e12385a1cc4de5",
+      "rgbaSha256": "b702cc85e36a7f2d8b30909d391a983f1aae37ab4948bf349580c661aeafdf12",
+      "byteSize": 18826,
+      "background": {
+        "hasTransparency": false,
+        "alphaRange": [
+          255,
+          255
+        ]
+      }
+    },
+    {
+      "id": "6515",
+      "name": "Rollobite",
+      "section": "Enemies",
+      "contributors": "Sonikku",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6515/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/6/6515.png?updated=1755472426",
+      "originalPath": "assets/originals/6515.png",
+      "originalBytes": 4646,
+      "originalSha256": "d48cb6327a6deb7c8efc3ecb85db8af8464063b2f4fb373417c2dc101c6961c4",
+      "status": "downloaded",
+      "path": "assets/sheets/6515-rollobite.png",
+      "thumbnail": "assets/thumbnails/6515-rollobite.png",
+      "width": 185,
+      "height": 123,
+      "format": "PNG",
+      "originalFormat": "PNG",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "f07936547bf1171173d9badd473af058d144ec7a1f7fb0713f531db42ecf3ab2",
+      "rgbaSha256": "612e4b680f23bb14daa865ca3622500d1d0a1f9a20eec493ff3aac8a1f6a0c0c",
+      "byteSize": 4984,
+      "background": {
+        "hasTransparency": false,
+        "alphaRange": [
+          255,
+          255
+        ],
+        "suggestedKeyColor": "#ffffff"
+      }
+    },
+    {
+      "id": "6517",
+      "name": "Rope",
+      "section": "Enemies",
+      "contributors": "Whispy",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6517/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/6/6517.gif?updated=1755472426",
+      "originalPath": "assets/originals/6517.gif",
+      "originalBytes": 8165,
+      "originalSha256": "876477f3b69a22e4e66b2b3ab92a433da7aa9e9ec2a8f094e3a94df79f00e75d",
+      "status": "downloaded",
+      "path": "assets/sheets/6517-rope.png",
+      "thumbnail": "assets/thumbnails/6517-rope.png",
+      "width": 154,
+      "height": 294,
+      "format": "PNG",
+      "originalFormat": "GIF",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "b0ff6b30a7817ea227983695ff9a2a65b0a2453533a6288dc738596fe34ec9d7",
+      "rgbaSha256": "20481ef33751276caef9fbe3ce14dd65c6e9e9e490112f2fdc2c6cf8765aaa1b",
+      "byteSize": 12073,
+      "background": {
+        "hasTransparency": false,
+        "alphaRange": [
+          255,
+          255
+        ],
+        "suggestedKeyColor": "#000000"
+      }
+    },
+    {
+      "id": "6520",
+      "name": "Rupee Like",
+      "section": "Enemies",
+      "contributors": "Sonikku",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6520/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/6/6520.png?updated=1755472426",
+      "originalPath": "assets/originals/6520.png",
+      "originalBytes": 4775,
+      "originalSha256": "1dce21cc31e929bb283398e595b2e1052a9308481e262c6e997bc4f7335339f6",
+      "status": "downloaded",
+      "path": "assets/sheets/6520-rupee-like.png",
+      "thumbnail": "assets/thumbnails/6520-rupee-like.png",
+      "width": 179,
+      "height": 132,
+      "format": "PNG",
+      "originalFormat": "PNG",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "5ca3ff3b2265a6e9d3c719ac8dd6710df10e5744bc53a699a5588a544a5bd665",
+      "rgbaSha256": "822622cb5e440d5d5e3d31a7edaa65ecf83fd339a063af749891c6adf708ab87",
+      "byteSize": 4675,
+      "background": {
+        "hasTransparency": false,
+        "alphaRange": [
+          255,
+          255
+        ],
+        "suggestedKeyColor": "#ffffff"
+      }
+    },
+    {
+      "id": "6564",
+      "name": "Sluggula",
+      "section": "Enemies",
+      "contributors": "BigGoron",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6564/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/6/6564.png?updated=1755472427",
+      "originalPath": "assets/originals/6564.png",
+      "originalBytes": 9561,
+      "originalSha256": "66556358f5fa13e9e7042212653fbb59f18f945a068612facc70652935485abb",
+      "status": "downloaded",
+      "path": "assets/sheets/6564-sluggula.png",
+      "thumbnail": "assets/thumbnails/6564-sluggula.png",
+      "width": 330,
+      "height": 145,
+      "format": "PNG",
+      "originalFormat": "PNG",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "8da93a15804e1fe25d94bed62618d441fb28eb566b2666de83e1adffbc8bdbb0",
+      "rgbaSha256": "d2501f09206a8a5c67edd91c014e698ee191226f1a881b6ba98a2e819e312180",
+      "byteSize": 9877,
+      "background": {
+        "hasTransparency": false,
+        "alphaRange": [
+          255,
+          255
+        ]
+      }
+    },
+    {
+      "id": "6407",
+      "name": "Spark",
+      "section": "Enemies",
+      "contributors": "Sonikku",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6407/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/6/6407.png?updated=1755472426",
+      "originalPath": "assets/originals/6407.png",
+      "originalBytes": 3291,
+      "originalSha256": "708937650bb3dd57d8a20f426714df568e2600ba56bd0ec9ed5125983c81120c",
+      "status": "downloaded",
+      "path": "assets/sheets/6407-spark.png",
+      "thumbnail": "assets/thumbnails/6407-spark.png",
+      "width": 144,
+      "height": 119,
+      "format": "PNG",
+      "originalFormat": "PNG",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "17c46009aba6fffcabdbfa058d315be460836cd4b565ab10b0188739ab649744",
+      "rgbaSha256": "83dc76478e68f32c8cce9a0e6e7df3bc5e26484c38df979e114f93980c7bdd00",
+      "byteSize": 3473,
+      "background": {
+        "hasTransparency": false,
+        "alphaRange": [
+          255,
+          255
+        ],
+        "suggestedKeyColor": "#ffffff"
+      }
+    },
+    {
+      "id": "6556",
+      "name": "Spear Moblin",
+      "section": "Enemies",
+      "contributors": "fear",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6556/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/6/6556.png?updated=1755472427",
+      "originalPath": "assets/originals/6556.png",
+      "originalBytes": 43911,
+      "originalSha256": "cd3c9865fe94215d212809c2346be85c0c79d9a15213c345ac52abfe29abbb60",
+      "status": "downloaded",
+      "path": "assets/sheets/6556-spear-moblin.png",
+      "thumbnail": "assets/thumbnails/6556-spear-moblin.png",
+      "width": 601,
+      "height": 432,
+      "format": "PNG",
+      "originalFormat": "PNG",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "fe9b4c5ddcd30cc36dbc629c3f9d794f74a11d3220daa4a052823a4b38a4f280",
+      "rgbaSha256": "22cdce822d6734cde0b745a8b1c5b94ddc29a8c75eb59e7e289b8929779fe1eb",
+      "byteSize": 42933,
+      "background": {
+        "hasTransparency": false,
+        "alphaRange": [
+          255,
+          255
+        ],
+        "suggestedKeyColor": "#c0c0c0"
+      }
+    },
+    {
+      "id": "6523",
+      "name": "Spiked Beetle",
+      "section": "Enemies",
+      "contributors": "Robbydude",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6523/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/6/6523.png?updated=1755472426",
+      "originalPath": "assets/originals/6523.png",
+      "originalBytes": 5314,
+      "originalSha256": "3d849c36b041559a839c4038098933307e9daf0273380b39a649a37b4ca3f3f0",
+      "status": "downloaded",
+      "path": "assets/sheets/6523-spiked-beetle.png",
+      "thumbnail": "assets/thumbnails/6523-spiked-beetle.png",
+      "width": 101,
+      "height": 245,
+      "format": "PNG",
+      "originalFormat": "PNG",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "fa0dee35c1abc1b70f667df1c2657d8a7c16d3cc4088fca15171d6abbae03fed",
+      "rgbaSha256": "0dc5b99210377463b53506a56b9e79fcd6f4cf1c63920df714d49ef005bc17f6",
+      "byteSize": 6427,
+      "background": {
+        "hasTransparency": false,
+        "alphaRange": [
+          255,
+          255
+        ],
+        "suggestedKeyColor": "#000000"
+      }
+    },
+    {
+      "id": "6524",
+      "name": "Stalfos",
+      "section": "Enemies",
+      "contributors": "Sonikku",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6524/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/6/6524.png?updated=1755472426",
+      "originalPath": "assets/originals/6524.png",
+      "originalBytes": 42516,
+      "originalSha256": "36bc6d30c029e8d1d1651813f06c6f5f96bb9509347c7ca6bfa04ac4a5c21f42",
+      "status": "downloaded",
+      "path": "assets/sheets/6524-stalfos.png",
+      "thumbnail": "assets/thumbnails/6524-stalfos.png",
+      "width": 418,
+      "height": 681,
+      "format": "PNG",
+      "originalFormat": "PNG",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "8305a08e8841704173ea2aabaef30a938307156381427f242c87a98d566804f9",
+      "rgbaSha256": "05fbf53bac0d0d60e5de98189bf9625c1d35ef34cbcada2fd0b74f4c81d4c1a0",
+      "byteSize": 49756,
+      "background": {
+        "hasTransparency": false,
+        "alphaRange": [
+          255,
+          255
+        ],
+        "suggestedKeyColor": "#ffffff"
+      }
+    },
+    {
+      "id": "6557",
+      "name": "Tektike",
+      "section": "Enemies",
+      "contributors": "EDGE",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6557/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/6/6557.png?updated=1755472427",
+      "originalPath": "assets/originals/6557.png",
+      "originalBytes": 8538,
+      "originalSha256": "93918dc0ff1cebbea4506177bd38b1af418704ee0dd7aa0e3e6b047b9bebb75a",
+      "status": "downloaded",
+      "path": "assets/sheets/6557-tektike.png",
+      "thumbnail": "assets/thumbnails/6557-tektike.png",
+      "width": 311,
+      "height": 137,
+      "format": "PNG",
+      "originalFormat": "PNG",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "e38e430143cb2ddf9ee75049424ef0d903899025d3ed5f61bbe6acaa1dc27fb3",
+      "rgbaSha256": "97c4dc596174050b62e86c37a2b13d4645b15e0dd45f517a8f1029a476929088",
+      "byteSize": 9395,
+      "background": {
+        "hasTransparency": false,
+        "alphaRange": [
+          255,
+          255
+        ],
+        "suggestedKeyColor": "#ff00ff"
+      }
+    },
+    {
+      "id": "6448",
+      "name": "Wisp",
+      "section": "Enemies",
+      "contributors": "Sonikku",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6448/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/6/6448.png?updated=1755472426",
+      "originalPath": "assets/originals/6448.png",
+      "originalBytes": 6197,
+      "originalSha256": "f7823ed0f8c3815edc98d05d06ec96e132e1e72b71774a35de9e49cfc6de2b3a",
+      "status": "downloaded",
+      "path": "assets/sheets/6448-wisp.png",
+      "thumbnail": "assets/thumbnails/6448-wisp.png",
+      "width": 191,
+      "height": 220,
+      "format": "PNG",
+      "originalFormat": "PNG",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "a1fa4074716a9f5757dc84444092f3e9a87c77eecccfc5f6848b71e7b3fdeb3a",
+      "rgbaSha256": "0b097435732cf3e184e452b8e297eaab5b3973d032d41fc57ca40aebae7f4c11",
+      "byteSize": 6412,
+      "background": {
+        "hasTransparency": false,
+        "alphaRange": [
+          255,
+          255
+        ],
+        "suggestedKeyColor": "#ffffff"
+      }
+    },
+    {
+      "id": "6460",
+      "name": "Big Blue Chuchu",
+      "section": "Bosses",
+      "contributors": "Sonikku",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6460/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/6/6460.png?updated=1755472426",
+      "originalPath": "assets/originals/6460.png",
+      "originalBytes": 25980,
+      "originalSha256": "04b0b5ee62b0d4164320b435e32f2523da807ad40c297d32d6acd07c2e147dcc",
+      "status": "downloaded",
+      "path": "assets/sheets/6460-big-blue-chuchu.png",
+      "thumbnail": "assets/thumbnails/6460-big-blue-chuchu.png",
+      "width": 342,
+      "height": 480,
+      "format": "PNG",
+      "originalFormat": "PNG",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "130d37b2a44c2cd4b3522ca7dda3aa9c88e357997e5bcf0e00d235285036a8b7",
+      "rgbaSha256": "cbf22a0181b55c95668c651923c1fcb06e9b76e8419faf4932dbb3752b141506",
+      "byteSize": 30423,
+      "background": {
+        "hasTransparency": false,
+        "alphaRange": [
+          255,
+          255
+        ],
+        "suggestedKeyColor": "#ffffff"
+      }
+    },
+    {
+      "id": "6415",
+      "name": "Big Green Chuchu",
+      "section": "Bosses",
+      "contributors": "Sonikku",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6415/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/6/6415.png?updated=1755472426",
+      "originalPath": "assets/originals/6415.png",
+      "originalBytes": 20679,
+      "originalSha256": "720d3c7c2106af5a0ddd2d48df0f723082c1d117efa713d459e4ec1daf32f7ee",
+      "status": "downloaded",
+      "path": "assets/sheets/6415-big-green-chuchu.png",
+      "thumbnail": "assets/thumbnails/6415-big-green-chuchu.png",
+      "width": 339,
+      "height": 377,
+      "format": "PNG",
+      "originalFormat": "PNG",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "49df9df2eeddf407a177a5645d8ee62b96333b798da80a4649844d0b7666ace4",
+      "rgbaSha256": "2044ffb91b50e11ccbd5e2e75642f26272f6f4917663aed25eb21261c6c09c30",
+      "byteSize": 25578,
+      "background": {
+        "hasTransparency": false,
+        "alphaRange": [
+          255,
+          255
+        ],
+        "suggestedKeyColor": "#ffffff"
+      }
+    },
+    {
+      "id": "6506",
+      "name": "Big Octorok",
+      "section": "Bosses",
+      "contributors": "Bacon",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6506/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/6/6506.gif?updated=1755472426",
+      "originalPath": "assets/originals/6506.gif",
+      "originalBytes": 16078,
+      "originalSha256": "ba0ec8dc822feb3b387705ced7a5a1675cf63b2af70e25a651f0316bfcbd25f0",
+      "status": "downloaded",
+      "path": "assets/sheets/6506-big-octorok.png",
+      "thumbnail": "assets/thumbnails/6506-big-octorok.png",
+      "width": 392,
+      "height": 290,
+      "format": "PNG",
+      "originalFormat": "GIF",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "a7a7b135c4d545e8ea56c4e0146ec0364863e9f000e6aeb67159a50f2453cd89",
+      "rgbaSha256": "40048d0a4553e21d3b3f34e26dc001095edfb0d5441e305442bde5ad5daeaae0",
+      "byteSize": 22957,
+      "background": {
+        "hasTransparency": true,
+        "alphaRange": [
+          0,
+          255
+        ]
+      }
+    },
+    {
+      "id": "6546",
+      "name": "Gleerok",
+      "section": "Bosses",
+      "contributors": "Moon",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6546/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/6/6546.png?updated=1755472427",
+      "originalPath": "assets/originals/6546.png",
+      "originalBytes": 39561,
+      "originalSha256": "6b8b750d67cb95e91a9d71bfdc969b7ba5e4e0d121c5b1889a23023d293dc4f4",
+      "status": "downloaded",
+      "path": "assets/sheets/6546-gleerok.png",
+      "thumbnail": "assets/thumbnails/6546-gleerok.png",
+      "width": 592,
+      "height": 650,
+      "format": "PNG",
+      "originalFormat": "PNG",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "e51af87723f017c2e6702e94538901aed953d6db56a300bd4c20a915c04e087f",
+      "rgbaSha256": "6959ea138e287c644e22b14f659bf5b10cc3721f303874403e2192ebec9a6e7f",
+      "byteSize": 73341,
+      "background": {
+        "hasTransparency": true,
+        "alphaRange": [
+          0,
+          255
+        ],
+        "suggestedKeyColor": "#2f9110"
+      }
+    },
+    {
+      "id": "6461",
+      "name": "Gyorg Pair",
+      "section": "Bosses",
+      "contributors": "Sonikku",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6461/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/6/6461.png?updated=1755472426",
+      "originalPath": "assets/originals/6461.png",
+      "originalBytes": 33414,
+      "originalSha256": "6dccb2c0c1544a6ede10dbfd4dff4a30a931ae03dabe3bd2ab7d29fe2f86dade",
+      "status": "downloaded",
+      "path": "assets/sheets/6461-gyorg-pair.png",
+      "thumbnail": "assets/thumbnails/6461-gyorg-pair.png",
+      "width": 894,
+      "height": 327,
+      "format": "PNG",
+      "originalFormat": "PNG",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "368f25ecf00894e0dff23d81b24d993ec4c09f2d5939eed68c6aec9c86cfe49d",
+      "rgbaSha256": "7b8c66d2e7189480e5a409225ad398fddbdaa53039557ed44e2853d03de185c9",
+      "byteSize": 35398,
+      "background": {
+        "hasTransparency": false,
+        "alphaRange": [
+          255,
+          255
+        ],
+        "suggestedKeyColor": "#ffffff"
+      }
+    },
+    {
+      "id": "535841",
+      "name": "Mazaal",
+      "section": "Bosses",
+      "contributors": "P-Tux7",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/535841/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/515/535841.png?updated=1774303108",
+      "originalPath": "assets/originals/535841.png",
+      "originalBytes": 49141,
+      "originalSha256": "4800e79fff3486e867353e1b229ce8b9f4581222cc17b43b0a43a8221683998a",
+      "status": "downloaded",
+      "path": "assets/sheets/535841-mazaal.png",
+      "thumbnail": "assets/thumbnails/535841-mazaal.png",
+      "width": 576,
+      "height": 624,
+      "format": "PNG",
+      "originalFormat": "PNG",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "53123cb5c98d923695ea49f8bbc2c816a36649af1d44718b144493ef938961d1",
+      "rgbaSha256": "61985498cd358956e5e0550d341a86aa9cc6b12131e81925f51539ebf2eb4981",
+      "byteSize": 46078,
+      "background": {
+        "hasTransparency": false,
+        "alphaRange": [
+          255,
+          255
+        ],
+        "suggestedKeyColor": "#33a579"
+      }
+    },
+    {
+      "id": "6534",
+      "name": "Vaati Reborn",
+      "section": "Bosses",
+      "contributors": "Kenju",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6534/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/6/6534.png?updated=1755472426",
+      "originalPath": "assets/originals/6534.png",
+      "originalBytes": 66460,
+      "originalSha256": "d2dc3aa3be96b98518046b474640ede6b8d5c64f150ec318fe0f844eb5c20ce1",
+      "status": "downloaded",
+      "path": "assets/sheets/6534-vaati-reborn.png",
+      "thumbnail": "assets/thumbnails/6534-vaati-reborn.png",
+      "width": 699,
+      "height": 523,
+      "format": "PNG",
+      "originalFormat": "PNG",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "a56240eacca3dc7bc7c013e772b5f7c4b59dbf3431c13a769d27e9a5b21702ca",
+      "rgbaSha256": "45c7266c2199ff82f3a9decc10f61ea596005c1cad1d48db206ba9092ffb32b6",
+      "byteSize": 74339,
+      "background": {
+        "hasTransparency": false,
+        "alphaRange": [
+          255,
+          255
+        ],
+        "suggestedKeyColor": "#000000"
+      }
+    },
+    {
+      "id": "31116",
+      "name": "Vaati Transfigured",
+      "section": "Bosses",
+      "contributors": "Vaati",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/31116/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/28/31116.png?updated=1755472649",
+      "originalPath": "assets/originals/31116.png",
+      "originalBytes": 69800,
+      "originalSha256": "59b2b71580ef5fab3c3f909e0018b8cf71141eb9123cefa29e4aacb301878f81",
+      "status": "downloaded",
+      "path": "assets/sheets/31116-vaati-transfigured.png",
+      "thumbnail": "assets/thumbnails/31116-vaati-transfigured.png",
+      "width": 1096,
+      "height": 432,
+      "format": "PNG",
+      "originalFormat": "PNG",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "994a111e9a129bcfe7c22ce540c973b6682770fe5152bec0f6dd63cdf11f394f",
+      "rgbaSha256": "4f500da36800e772e5fa920ecd410e17faea1d74eeb432a9876968b14d80127b",
+      "byteSize": 69700,
+      "background": {
+        "hasTransparency": false,
+        "alphaRange": [
+          255,
+          255
+        ],
+        "suggestedKeyColor": "#ffffff"
+      }
+    },
+    {
+      "id": "6535",
+      "name": "Vaati's Wrath",
+      "section": "Bosses",
+      "contributors": "Sonikku",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6535/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/6/6535.png?updated=1755472426",
+      "originalPath": "assets/originals/6535.png",
+      "originalBytes": 84893,
+      "originalSha256": "4aee4b04d63c28937a7c072abd494191e0a7ed2342bf4f086882a0e72871e95f",
+      "status": "downloaded",
+      "path": "assets/sheets/6535-vaati-s-wrath.png",
+      "thumbnail": "assets/thumbnails/6535-vaati-s-wrath.png",
+      "width": 975,
+      "height": 715,
+      "format": "PNG",
+      "originalFormat": "PNG",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "c9a274755f9ccd17585ce370303e72e82a92ac563dcfbe405a9f2122d1e796d3",
+      "rgbaSha256": "9ea82b442280735eb6cc05f855f126ceee6e1bb2741b63d8969e1dfcba214a2b",
+      "byteSize": 95353,
+      "background": {
+        "hasTransparency": false,
+        "alphaRange": [
+          255,
+          255
+        ]
+      }
+    },
+    {
+      "id": "142450",
+      "name": "Armos Interiors",
+      "section": "Maps",
+      "contributors": "Urathros",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/142450/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/139/142450.png?updated=1755482065",
+      "originalPath": "assets/originals/142450.png",
+      "originalBytes": 21081,
+      "originalSha256": "4b633e3a8c1885656adc072043507467f53522c50dc2f1a4dbc05d834ac09ecf",
+      "status": "downloaded",
+      "path": "assets/sheets/142450-armos-interiors.png",
+      "thumbnail": "assets/thumbnails/142450-armos-interiors.png",
+      "width": 256,
+      "height": 272,
+      "format": "PNG",
+      "originalFormat": "PNG",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "be05fb4db218528a106cd0418caa9e4369f918504cb8b0b0b4d8ba301ce0b4b7",
+      "rgbaSha256": "0f34edce9de2aa90ca5d39a1564e80c677f32baaea5272cdb45c0be310930499",
+      "byteSize": 18918,
+      "background": {
+        "hasTransparency": false,
+        "alphaRange": [
+          255,
+          255
+        ]
+      }
+    },
+    {
+      "id": "6507",
+      "name": "Bakery",
+      "section": "Maps",
+      "contributors": "Aleclom",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6507/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/6/6507.png?updated=1755472426",
+      "originalPath": "assets/originals/6507.png",
+      "originalBytes": 17810,
+      "originalSha256": "88e9785b2d20453188419f36663084bc3d4797476baf3e6a0dc3bd75dd62983b",
+      "status": "downloaded",
+      "path": "assets/sheets/6507-bakery.png",
+      "thumbnail": "assets/thumbnails/6507-bakery.png",
+      "width": 367,
+      "height": 247,
+      "format": "PNG",
+      "originalFormat": "PNG",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "5b6ec5f2da76948acb49c8370ae6c037a08c3bb05f9bb09d9cf178705c578532",
+      "rgbaSha256": "7c3de31b3f129d2138b866aeab4f40e31acbe6d50352ef4f4597d1d505271070",
+      "byteSize": 20859,
+      "background": {
+        "hasTransparency": false,
+        "alphaRange": [
+          255,
+          255
+        ]
+      }
+    },
+    {
+      "id": "6439",
+      "name": "Barrel House",
+      "section": "Maps",
+      "contributors": "fear",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6439/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/6/6439.png?updated=1755472426",
+      "originalPath": "assets/originals/6439.png",
+      "originalBytes": 48289,
+      "originalSha256": "44ccb565ce502079a0bf9e462274e6659eba9da1ee7c774300b16525b1f11e6e",
+      "status": "downloaded",
+      "path": "assets/sheets/6439-barrel-house.png",
+      "thumbnail": "assets/thumbnails/6439-barrel-house.png",
+      "width": 455,
+      "height": 341,
+      "format": "PNG",
+      "originalFormat": "PNG",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "d76ae5ece10dbbccd7d2714d35aadc3afe86b1b949f2e3f1e4aca4e8e291163c",
+      "rgbaSha256": "2fb2a60bbf770ab511452187a134599d4d633e68c9e35b1d66145775f2e830c2",
+      "byteSize": 51386,
+      "background": {
+        "hasTransparency": false,
+        "alphaRange": [
+          255,
+          255
+        ]
+      }
+    },
+    {
+      "id": "31008",
+      "name": "Castor Wilds",
+      "section": "Maps",
+      "contributors": "Moon",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/31008/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/28/31008.png?updated=1755472648",
+      "originalPath": "assets/originals/31008.png",
+      "originalBytes": 170432,
+      "originalSha256": "ff3cbfe3b9adb9badd227855a28c5ef8ad65f6e5a2a6dfe7bc7c22f5f5df1346",
+      "status": "downloaded",
+      "path": "assets/sheets/31008-castor-wilds.png",
+      "thumbnail": "assets/thumbnails/31008-castor-wilds.png",
+      "width": 1008,
+      "height": 1082,
+      "format": "PNG",
+      "originalFormat": "PNG",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "ce5d90a418dddfceeef85022a26b156a07363248dbd69295aa4fe0cdff0f8c1b",
+      "rgbaSha256": "8d72606e78f34c8b892db53c3f2ebea4bd1c3fbfab1b6d354929f99646dca4a0",
+      "byteSize": 377390,
+      "background": {
+        "hasTransparency": false,
+        "alphaRange": [
+          255,
+          255
+        ]
+      }
+    },
+    {
+      "id": "6447",
+      "name": "Dampé's Shack",
+      "section": "Maps",
+      "contributors": "Aleclom",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6447/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/6/6447.png?updated=1755472426",
+      "originalPath": "assets/originals/6447.png",
+      "originalBytes": 19547,
+      "originalSha256": "75da6146f895e02071dda210af49a3655b6a3969d42d0737b0a29cee8e5c46c2",
+      "status": "downloaded",
+      "path": "assets/sheets/6447-dampe-s-shack.png",
+      "thumbnail": "assets/thumbnails/6447-dampe-s-shack.png",
+      "width": 520,
+      "height": 215,
+      "format": "PNG",
+      "originalFormat": "PNG",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "fd15881e7486c81ce56060944e188f2db0e788fc51f085342a86035acc436fce",
+      "rgbaSha256": "b2b1356f11bc2537ed52c6939f99ef6fce35b620a4ee980c04514535b8aed8ca",
+      "byteSize": 22520,
+      "background": {
+        "hasTransparency": false,
+        "alphaRange": [
+          255,
+          255
+        ],
+        "suggestedKeyColor": "#c0c0c0"
+      }
+    },
+    {
+      "id": "6563",
+      "name": "Elemental Sanctuary",
+      "section": "Maps",
+      "contributors": "EternalLight",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6563/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/6/6563.png?updated=1755472427",
+      "originalPath": "assets/originals/6563.png",
+      "originalBytes": 332177,
+      "originalSha256": "895c5afc0a3f38749315b0e7161704c3f65cadab0da87e2ffeca183f1846db19",
+      "status": "downloaded",
+      "path": "assets/sheets/6563-elemental-sanctuary.png",
+      "thumbnail": "assets/thumbnails/6563-elemental-sanctuary.png",
+      "width": 776,
+      "height": 2002,
+      "format": "PNG",
+      "originalFormat": "PNG",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "8814f367e1248966d8be0c946585c3b9e0de4010eb5a77e99b659e00bbd09a38",
+      "rgbaSha256": "9102d6001f97c3876f1cd057d8f8c51fcb1c67009c3e6da4e436e83f902e07b9",
+      "byteSize": 339031,
+      "background": {
+        "hasTransparency": false,
+        "alphaRange": [
+          255,
+          255
+        ],
+        "suggestedKeyColor": "#dddfff"
+      }
+    },
+    {
+      "id": "6434",
+      "name": "Ezlo's House",
+      "section": "Maps",
+      "contributors": "EternalLight",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6434/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/6/6434.png?updated=1755472426",
+      "originalPath": "assets/originals/6434.png",
+      "originalBytes": 35768,
+      "originalSha256": "71f1286b00084a4b90760f567d17af8941cc192bef23b8619521945f1a33d164",
+      "status": "downloaded",
+      "path": "assets/sheets/6434-ezlo-s-house.png",
+      "thumbnail": "assets/thumbnails/6434-ezlo-s-house.png",
+      "width": 509,
+      "height": 340,
+      "format": "PNG",
+      "originalFormat": "PNG",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "2bb528fa43c8b583a3d91676e4ed7438731121fd0e67cf4ceeb002b7e3e93c41",
+      "rgbaSha256": "f9fb32b7afc02a63d784e59704a2bf1e322718300d18f8ec7db0c431a93062c2",
+      "byteSize": 36416,
+      "background": {
+        "hasTransparency": false,
+        "alphaRange": [
+          255,
+          255
+        ],
+        "suggestedKeyColor": "#00c0c0"
+      }
+    },
+    {
+      "id": "6543",
+      "name": "Fairy Fountain 1",
+      "section": "Maps",
+      "contributors": "EDGE",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6543/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/6/6543.png?updated=1755472427",
+      "originalPath": "assets/originals/6543.png",
+      "originalBytes": 10616,
+      "originalSha256": "4f0fc7e0f6733d6c5b3ab6452d2ebcece62cf909840e51240ffa87b88dd6e812",
+      "status": "downloaded",
+      "path": "assets/sheets/6543-fairy-fountain-1.png",
+      "thumbnail": "assets/thumbnails/6543-fairy-fountain-1.png",
+      "width": 240,
+      "height": 190,
+      "format": "PNG",
+      "originalFormat": "PNG",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "09df6508913697f8c6143a0a8bfa2af2a2aa7453201d2f87ba7e3c82b890d697",
+      "rgbaSha256": "74f832ccf4d3ea249f7f8998de82445380c9625bdb4c1eaf2a37787820ea7be0",
+      "byteSize": 12763,
+      "background": {
+        "hasTransparency": false,
+        "alphaRange": [
+          255,
+          255
+        ]
+      }
+    },
+    {
+      "id": "6446",
+      "name": "Festari's Abbey",
+      "section": "Maps",
+      "contributors": "Dixet",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6446/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/6/6446.gif?updated=1755472426",
+      "originalPath": "assets/originals/6446.gif",
+      "originalBytes": 38936,
+      "originalSha256": "786d2a9a12126cffc3cbae624528b673dd90182e037bac0dac55c804a736ce34",
+      "status": "downloaded",
+      "path": "assets/sheets/6446-festari-s-abbey.png",
+      "thumbnail": "assets/thumbnails/6446-festari-s-abbey.png",
+      "width": 476,
+      "height": 390,
+      "format": "PNG",
+      "originalFormat": "GIF",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "090e44ff1d7d4fbeae035c1c1de7ac58f04642a596140f631b7d477f5a4c8b50",
+      "rgbaSha256": "d3c4dd12b2b7338320d8f5a5d445556db5c5fca83ff1b0240b67824d6248a7a2",
+      "byteSize": 57213,
+      "background": {
+        "hasTransparency": true,
+        "alphaRange": [
+          0,
+          255
+        ]
+      }
+    },
+    {
+      "id": "16014",
+      "name": "Figurine Gallery",
+      "section": "Maps",
+      "contributors": "10V2",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/16014/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/15/16014.png?updated=1755472498",
+      "originalPath": "assets/originals/16014.png",
+      "originalBytes": 107224,
+      "originalSha256": "ca1b026fc05c06d09b2ea19565772d47386fea7425d9b4010a98487617a0a9bb",
+      "status": "downloaded",
+      "path": "assets/sheets/16014-figurine-gallery.png",
+      "thumbnail": "assets/thumbnails/16014-figurine-gallery.png",
+      "width": 1079,
+      "height": 717,
+      "format": "PNG",
+      "originalFormat": "PNG",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "668e4705c8886f825f8ad340f72201b3a999da6abe4fff4e40915ef1aa1e8bcc",
+      "rgbaSha256": "aed6161b2f258d54705729d4f34751909320ee1e7352c54354ca1cb5d8745bd0",
+      "byteSize": 122614,
+      "background": {
+        "hasTransparency": false,
+        "alphaRange": [
+          255,
+          255
+        ]
+      }
+    },
+    {
+      "id": "34658",
+      "name": "Funday School",
+      "section": "Maps",
+      "contributors": "peltos",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/34658/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/32/34658.png?updated=1755472701",
+      "originalPath": "assets/originals/34658.png",
+      "originalBytes": 19737,
+      "originalSha256": "b6765b38d1049d33e0f2495225ec3f62336b379c1fd4669bdb55da37dc643152",
+      "status": "downloaded",
+      "path": "assets/sheets/34658-funday-school.png",
+      "thumbnail": "assets/thumbnails/34658-funday-school.png",
+      "width": 565,
+      "height": 240,
+      "format": "PNG",
+      "originalFormat": "PNG",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "ea9ee8f7c56f31118e1c5dfa9a2738d7f2df362a3b87742f0c21e3636d788977",
+      "rgbaSha256": "a199a8959ed8ac2818fc5990b701d12cfb392eff28a128f50e52faecdd5b49bf",
+      "byteSize": 31583,
+      "background": {
+        "hasTransparency": false,
+        "alphaRange": [
+          255,
+          255
+        ]
+      }
+    },
+    {
+      "id": "31009",
+      "name": "Home of the Wind Tribe",
+      "section": "Maps",
+      "contributors": "Moon",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/31009/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/28/31009.png?updated=1755472648",
+      "originalPath": "assets/originals/31009.png",
+      "originalBytes": 152343,
+      "originalSha256": "b8c1d5fad6101bd8ecbf3d37671a83c49593075571e5f7eac55c3da4865918a7",
+      "status": "downloaded",
+      "path": "assets/sheets/31009-home-of-the-wind-tribe.png",
+      "thumbnail": "assets/thumbnails/31009-home-of-the-wind-tribe.png",
+      "width": 1533,
+      "height": 1785,
+      "format": "PNG",
+      "originalFormat": "PNG",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "2faf2cf24c1ddfc2fb2f9f4b760fb955954cb8ca3f4bd0b01470400a349a7d8f",
+      "rgbaSha256": "62f10a60330552b241b54c90cface1d4ebc7aed22267c0849fb684b14fc57131",
+      "byteSize": 265300,
+      "background": {
+        "hasTransparency": false,
+        "alphaRange": [
+          255,
+          255
+        ]
+      }
+    },
+    {
+      "id": "6440",
+      "name": "Hyrule Castle (1st Floor)",
+      "section": "Maps",
+      "contributors": "darkphantom",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6440/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/6/6440.gif?updated=1755472426",
+      "originalPath": "assets/originals/6440.gif",
+      "originalBytes": 124630,
+      "originalSha256": "d8917b406f5d15165185a955e73c8e5c7388883e383a2239b115e09020850f87",
+      "status": "downloaded",
+      "path": "assets/sheets/6440-hyrule-castle-1st-floor.png",
+      "thumbnail": "assets/thumbnails/6440-hyrule-castle-1st-floor.png",
+      "width": 647,
+      "height": 1453,
+      "format": "PNG",
+      "originalFormat": "GIF",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "6b75e38a6b69c40368a4087b2fa2c4f7ec7ba2839f99e038a9c8c6f99b4bd44c",
+      "rgbaSha256": "b1c8f9f555b4ffdcf4024ba7b1ccf8427f232132079e106ed03fe2bf2da8aa05",
+      "byteSize": 156379,
+      "background": {
+        "hasTransparency": false,
+        "alphaRange": [
+          255,
+          255
+        ],
+        "suggestedKeyColor": "#ffffff"
+      }
+    },
+    {
+      "id": "6441",
+      "name": "Hyrule Castle Garden",
+      "section": "Maps",
+      "contributors": "Caffeine Ripper",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6441/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/6/6441.png?updated=1755472426",
+      "originalPath": "assets/originals/6441.png",
+      "originalBytes": 57172,
+      "originalSha256": "5c7add2c9327f4255cf2a8b4068532e194b11ca52cea92b2e3e4c4684027fd93",
+      "status": "downloaded",
+      "path": "assets/sheets/6441-hyrule-castle-garden.png",
+      "thumbnail": "assets/thumbnails/6441-hyrule-castle-garden.png",
+      "width": 1009,
+      "height": 545,
+      "format": "PNG",
+      "originalFormat": "PNG",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "32c27b7fc8a831b3092885450c31d9afceb0ccb768b5c6cc1f7baca6dc6648a6",
+      "rgbaSha256": "1fb57173d065942e960cc1ed434ada00c233e9cf89d1ec4d2594d1ea609b9b70",
+      "byteSize": 122795,
+      "background": {
+        "hasTransparency": false,
+        "alphaRange": [
+          255,
+          255
+        ]
+      }
+    },
+    {
+      "id": "6526",
+      "name": "Hyrule Town",
+      "section": "Maps",
+      "contributors": "Bacon",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6526/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/6/6526.gif?updated=1755472426",
+      "originalPath": "assets/originals/6526.gif",
+      "originalBytes": 248439,
+      "originalSha256": "2031bbb5e2d7b8c5c599099b8d87b9e13f70a955ee55b8f7d257897bed53cb39",
+      "status": "downloaded",
+      "path": "assets/sheets/6526-hyrule-town.png",
+      "thumbnail": "assets/thumbnails/6526-hyrule-town.png",
+      "width": 1008,
+      "height": 1218,
+      "format": "PNG",
+      "originalFormat": "GIF",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "31c2637e032ad70cbc679163632e0651f645bfb7b8cebbdb23f5545a474b6ff8",
+      "rgbaSha256": "9d7e128e1924dcc8bc3f4c445dae0ebbac9f320080e8252ccc95ff02e31ae99a",
+      "byteSize": 288059,
+      "background": {
+        "hasTransparency": true,
+        "alphaRange": [
+          0,
+          255
+        ]
+      }
+    },
+    {
+      "id": "142448",
+      "name": "Inner Mazaal",
+      "section": "Maps",
+      "contributors": "Urathros",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/142448/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/139/142448.png?updated=1755482065",
+      "originalPath": "assets/originals/142448.png",
+      "originalBytes": 49018,
+      "originalSha256": "6ff32c5113b86d27fe34c9cbbb14b9940b9260e5a3b67246ca6469a351676522",
+      "status": "downloaded",
+      "path": "assets/sheets/142448-inner-mazaal.png",
+      "thumbnail": "assets/thumbnails/142448-inner-mazaal.png",
+      "width": 549,
+      "height": 711,
+      "format": "PNG",
+      "originalFormat": "PNG",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "78c1520753dc91afd180a160e92cf4291b2b5cab6ea3a589ac9242254a905fa6",
+      "rgbaSha256": "16ee8b1acb14927ea89cc73c392b22293c454f9588a8633bc5be03759a656063",
+      "byteSize": 45452,
+      "background": {
+        "hasTransparency": false,
+        "alphaRange": [
+          255,
+          255
+        ]
+      }
+    },
+    {
+      "id": "6550",
+      "name": "Librari's Bookshelf",
+      "section": "Maps",
+      "contributors": "Moon",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6550/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/6/6550.png?updated=1755472427",
+      "originalPath": "assets/originals/6550.png",
+      "originalBytes": 39699,
+      "originalSha256": "e8681297ccc73e0852560b52b51f6bb6ad6eac6c8915fcb431f1ad5530bda643",
+      "status": "downloaded",
+      "path": "assets/sheets/6550-librari-s-bookshelf.png",
+      "thumbnail": "assets/thumbnails/6550-librari-s-bookshelf.png",
+      "width": 700,
+      "height": 500,
+      "format": "PNG",
+      "originalFormat": "PNG",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "6e50f776db83b3673a143f4c20b9eb5c19677e725c09f79fd93738497a50b833",
+      "rgbaSha256": "7ca0fc1a2eb9cbfd50a6105596bb5cc37b6d884cd681a08c968b7613788bab1a",
+      "byteSize": 62614,
+      "background": {
+        "hasTransparency": false,
+        "alphaRange": [
+          255,
+          255
+        ]
+      }
+    },
+    {
+      "id": "6490",
+      "name": "Lon Lon Ranch",
+      "section": "Maps",
+      "contributors": "Broojo02",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6490/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/6/6490.png?updated=1755472426",
+      "originalPath": "assets/originals/6490.png",
+      "originalBytes": 261359,
+      "originalSha256": "b3b4e732a493911eacd8058bb70cefd01cba896052420c936d02389dbb37ceb4",
+      "status": "downloaded",
+      "path": "assets/sheets/6490-lon-lon-ranch.png",
+      "thumbnail": "assets/thumbnails/6490-lon-lon-ranch.png",
+      "width": 800,
+      "height": 960,
+      "format": "PNG",
+      "originalFormat": "PNG",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "394dfb818cdc9920bfb25bc454c8a632361d1eae930793898864a2abe4b6188c",
+      "rgbaSha256": "478937844c27cfca42b9e9bbd7206bcdccc707b09f94bc8147430db3e8b21ea3",
+      "byteSize": 258123,
+      "background": {
+        "hasTransparency": true,
+        "alphaRange": [
+          0,
+          255
+        ]
+      }
+    },
+    {
+      "id": "34087",
+      "name": "Mama's Cafe",
+      "section": "Maps",
+      "contributors": "peltos",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/34087/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/31/34087.png?updated=1755472687",
+      "originalPath": "assets/originals/34087.png",
+      "originalBytes": 11907,
+      "originalSha256": "44d348ec1995d86d586756931a0e7ff714651f356f97ddbe1ae044f5d98f96d5",
+      "status": "downloaded",
+      "path": "assets/sheets/34087-mama-s-cafe.png",
+      "thumbnail": "assets/thumbnails/34087-mama-s-cafe.png",
+      "width": 240,
+      "height": 320,
+      "format": "PNG",
+      "originalFormat": "PNG",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "866dc6029f111e39d68dda22be2261f6f0976ec56a946432e8bbd60f2e47b2bc",
+      "rgbaSha256": "27501c019c2e659f43fabe090ee5c55fbc959ad854ce38d77c105c0510da371a",
+      "byteSize": 19232,
+      "background": {
+        "hasTransparency": false,
+        "alphaRange": [
+          255,
+          255
+        ]
+      }
+    },
+    {
+      "id": "6560",
+      "name": "Melari's Mine",
+      "section": "Maps",
+      "contributors": "EternalLight",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6560/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/6/6560.png?updated=1755472427",
+      "originalPath": "assets/originals/6560.png",
+      "originalBytes": 155391,
+      "originalSha256": "13320dc02f48e360e28533a8a08ffff4a494eb857d7a387507924e0cda4d2cf7",
+      "status": "downloaded",
+      "path": "assets/sheets/6560-melari-s-mine.png",
+      "thumbnail": "assets/thumbnails/6560-melari-s-mine.png",
+      "width": 1078,
+      "height": 774,
+      "format": "PNG",
+      "originalFormat": "PNG",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "d1ef2ff0a974c64d71f94c75e4b739f1689ebb312d344b224363c3cf29b1160d",
+      "rgbaSha256": "37d5f69d4042513e2e3d87f0a29f28bc2e6c389b89da78522210019973f65023",
+      "byteSize": 160892,
+      "background": {
+        "hasTransparency": false,
+        "alphaRange": [
+          255,
+          255
+        ],
+        "suggestedKeyColor": "#e5e6ff"
+      }
+    },
+    {
+      "id": "6450",
+      "name": "Minish Elder's House",
+      "section": "Maps",
+      "contributors": "Dixet",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6450/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/6/6450.gif?updated=1755472426",
+      "originalPath": "assets/originals/6450.gif",
+      "originalBytes": 20908,
+      "originalSha256": "7c2dae75c9690eae9346279e2989610a5f4dd5ebc6ec97c233928506f0b201d5",
+      "status": "downloaded",
+      "path": "assets/sheets/6450-minish-elder-s-house.png",
+      "thumbnail": "assets/thumbnails/6450-minish-elder-s-house.png",
+      "width": 245,
+      "height": 308,
+      "format": "PNG",
+      "originalFormat": "GIF",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "17dea5cd77886a6d828660864feaefc9b5bd4482f348a8d02d5667a03ffcc776",
+      "rgbaSha256": "8be21a0b62bb9ce2f8ccd47bc12c30f0b18a918270845f2db18d654f496e73b8",
+      "byteSize": 32625,
+      "background": {
+        "hasTransparency": true,
+        "alphaRange": [
+          0,
+          255
+        ]
+      }
+    },
+    {
+      "id": "37861",
+      "name": "Minish Forest Minish Path",
+      "section": "Maps",
+      "contributors": "peltos",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/37861/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/35/37861.png?updated=1755472759",
+      "originalPath": "assets/originals/37861.png",
+      "originalBytes": 100544,
+      "originalSha256": "0b2cbcecc45a68274ac9a46cb2ac6a71aff1b038285d3bacaea5af1d771343af",
+      "status": "downloaded",
+      "path": "assets/sheets/37861-minish-forest-minish-path.png",
+      "thumbnail": "assets/thumbnails/37861-minish-forest-minish-path.png",
+      "width": 760,
+      "height": 1070,
+      "format": "PNG",
+      "originalFormat": "PNG",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "8ff21b637b2f4d48e53fe7c341d78e33193568a1dd2b7a359341f3d7d8bcab39",
+      "rgbaSha256": "f51c0787f6ce93a12b5a3e6bf54d2d72eddf99bb9f0ed88ea2687f6743c12a06",
+      "byteSize": 155050,
+      "background": {
+        "hasTransparency": false,
+        "alphaRange": [
+          255,
+          255
+        ]
+      }
+    },
+    {
+      "id": "6548",
+      "name": "Minish Houses",
+      "section": "Maps",
+      "contributors": "EDGE",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6548/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/6/6548.png?updated=1755472427",
+      "originalPath": "assets/originals/6548.png",
+      "originalBytes": 94414,
+      "originalSha256": "960eed0ebaf477f4618688c6e30cc48378552b5dffe666871dd77aff2be33e72",
+      "status": "downloaded",
+      "path": "assets/sheets/6548-minish-houses.png",
+      "thumbnail": "assets/thumbnails/6548-minish-houses.png",
+      "width": 598,
+      "height": 402,
+      "format": "PNG",
+      "originalFormat": "PNG",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "c9c836af0fd1486e805d4342d1c6e9cd4e1dc7549783f504d71410cab37ac75e",
+      "rgbaSha256": "317d1d776bcaa6cd69871d6a555282ce4c38a341e271d9769e4bb20ecb0bedb1",
+      "byteSize": 124305,
+      "background": {
+        "hasTransparency": false,
+        "alphaRange": [
+          255,
+          255
+        ],
+        "suggestedKeyColor": "#ff00ff"
+      }
+    },
+    {
+      "id": "6431",
+      "name": "Minish Portals",
+      "section": "Maps",
+      "contributors": "Bacon",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6431/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/6/6431.gif?updated=1755472426",
+      "originalPath": "assets/originals/6431.gif",
+      "originalBytes": 234061,
+      "originalSha256": "67f740244875d01953b99893e00bba816731df9ac53fd15e744479f9c2828e93",
+      "status": "downloaded",
+      "path": "assets/sheets/6431-minish-portals.png",
+      "thumbnail": "assets/thumbnails/6431-minish-portals.png",
+      "width": 1015,
+      "height": 778,
+      "format": "PNG",
+      "originalFormat": "GIF",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "496ee6be1dc778d927b6e58b4f3b7450d2b317bd9336a391a05700f9f0739395",
+      "rgbaSha256": "32720e7a2f35e805acbcd88ba1665bc9daecb4b02035fa67945c20501ab81249",
+      "byteSize": 317617,
+      "background": {
+        "hasTransparency": true,
+        "alphaRange": [
+          0,
+          255
+        ]
+      }
+    },
+    {
+      "id": "6540",
+      "name": "Minish Village",
+      "section": "Maps",
+      "contributors": "Bacon",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6540/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/6/6540.gif?updated=1755472426",
+      "originalPath": "assets/originals/6540.gif",
+      "originalBytes": 256524,
+      "originalSha256": "3545431a51d2f8170eb12e32073c72fcfa6d653e0b70198105bbe6e1b990351c",
+      "status": "downloaded",
+      "path": "assets/sheets/6540-minish-village.png",
+      "thumbnail": "assets/thumbnails/6540-minish-village.png",
+      "width": 1008,
+      "height": 984,
+      "format": "PNG",
+      "originalFormat": "GIF",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "80277096f2a935de3d6ff14ccac49ad327526de5c1b7d2eeaefb520b3266334a",
+      "rgbaSha256": "0fb1f91f65c82184167ce2424ac6f76c9ffd8cceb1236e81c59a555535374bd6",
+      "byteSize": 330555,
+      "background": {
+        "hasTransparency": false,
+        "alphaRange": [
+          255,
+          255
+        ],
+        "suggestedKeyColor": "#629ede"
+      }
+    },
+    {
+      "id": "142449",
+      "name": "Minish Village (Lake)",
+      "section": "Maps",
+      "contributors": "Urathros",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/142449/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/139/142449.png?updated=1755482065",
+      "originalPath": "assets/originals/142449.png",
+      "originalBytes": 60415,
+      "originalSha256": "ab77b5c13e17da41e46780d8f09795973e797b5376016d56a6666a884a04b258",
+      "status": "downloaded",
+      "path": "assets/sheets/142449-minish-village-lake.png",
+      "thumbnail": "assets/thumbnails/142449-minish-village-lake.png",
+      "width": 480,
+      "height": 416,
+      "format": "PNG",
+      "originalFormat": "PNG",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "d9a8372891da535fbfed64c81af3ac0a3ac893a4b1057cf0ded19b131c59a5e9",
+      "rgbaSha256": "24511cae37737739ae27493f31dde08a56e207ccfa55ebffe76f722186d8c45b",
+      "byteSize": 44988,
+      "background": {
+        "hasTransparency": false,
+        "alphaRange": [
+          255,
+          255
+        ],
+        "suggestedKeyColor": "#285038"
+      }
+    },
+    {
+      "id": "6554",
+      "name": "Minish Woods",
+      "section": "Maps",
+      "contributors": "Moon",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6554/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/6/6554.png?updated=1755472427",
+      "originalPath": "assets/originals/6554.png",
+      "originalBytes": 207216,
+      "originalSha256": "d9588fa196c80b5aad0cd85dd101a73ec1459ec616c956e768db12de0dd0c3c4",
+      "status": "downloaded",
+      "path": "assets/sheets/6554-minish-woods.png",
+      "thumbnail": "assets/thumbnails/6554-minish-woods.png",
+      "width": 1058,
+      "height": 1250,
+      "format": "PNG",
+      "originalFormat": "PNG",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "5fefa4a47f0c4d6d34425fa7d1f282a8633b85626e9472a5b4eb388966e6a385",
+      "rgbaSha256": "2ace15dadc123183ab317704d0263ba77fcc4274285027fdb3457b92c9591041",
+      "byteSize": 457201,
+      "background": {
+        "hasTransparency": true,
+        "alphaRange": [
+          0,
+          255
+        ]
+      }
+    },
+    {
+      "id": "6553",
+      "name": "Mount Crenel Minish Path",
+      "section": "Maps",
+      "contributors": "BigGoron",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6553/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/6/6553.png?updated=1755472427",
+      "originalPath": "assets/originals/6553.png",
+      "originalBytes": 102076,
+      "originalSha256": "a73505f0793cb44fe5c840b6a583cc82498548f422b1f0a2c9f697e3e592d644",
+      "status": "downloaded",
+      "path": "assets/sheets/6553-mount-crenel-minish-path.png",
+      "thumbnail": "assets/thumbnails/6553-mount-crenel-minish-path.png",
+      "width": 816,
+      "height": 904,
+      "format": "PNG",
+      "originalFormat": "PNG",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "eb08874c94e26e05d7afef02e8159ee691f019d1aa23ee3af337dbbf5a7c3fcb",
+      "rgbaSha256": "77b6d7d6be58ad4a1d0880d500959f0acb96627651800e7d125ea64c2372ed95",
+      "byteSize": 105441,
+      "background": {
+        "hasTransparency": false,
+        "alphaRange": [
+          255,
+          255
+        ],
+        "suggestedKeyColor": "#e2e2e2"
+      }
+    },
+    {
+      "id": "6555",
+      "name": "Post Office",
+      "section": "Maps",
+      "contributors": "Rakia",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6555/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/6/6555.png?updated=1755472427",
+      "originalPath": "assets/originals/6555.png",
+      "originalBytes": 23314,
+      "originalSha256": "1fc6dba46d2ad63419e36f0239413cb0009035f3a32f68529087c989dbdcbb1b",
+      "status": "downloaded",
+      "path": "assets/sheets/6555-post-office.png",
+      "thumbnail": "assets/thumbnails/6555-post-office.png",
+      "width": 453,
+      "height": 356,
+      "format": "PNG",
+      "originalFormat": "PNG",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "26c6fad19555d8e31c1ff0cbe8d0581389f49647b97a01f7d72961246328c48c",
+      "rgbaSha256": "84fea17932d3bcd45d4a630f928cda79ecf3060615fcde49a3bdd29ee7c56e18",
+      "byteSize": 28062,
+      "background": {
+        "hasTransparency": false,
+        "alphaRange": [
+          255,
+          255
+        ],
+        "suggestedKeyColor": "#ffffff"
+      }
+    },
+    {
+      "id": "6521",
+      "name": "Rem's Shoe Store",
+      "section": "Maps",
+      "contributors": "Bacon",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6521/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/6/6521.gif?updated=1755472426",
+      "originalPath": "assets/originals/6521.gif",
+      "originalBytes": 18932,
+      "originalSha256": "93de0b0b452270dda1c704a39908415e3499ac468acaf8f517e155c3bd07ebd5",
+      "status": "downloaded",
+      "path": "assets/sheets/6521-rem-s-shoe-store.png",
+      "thumbnail": "assets/thumbnails/6521-rem-s-shoe-store.png",
+      "width": 320,
+      "height": 396,
+      "format": "PNG",
+      "originalFormat": "GIF",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "629daa5692504c01216a5e9f926ac0fe0f5ebc5e2e03fbf0d6256260c9288585",
+      "rgbaSha256": "6cb32ee4931a6c19e06ba8cfd9c79ddeceaab8467b643d1fd293557b3be22ccb",
+      "byteSize": 23205,
+      "background": {
+        "hasTransparency": true,
+        "alphaRange": [
+          0,
+          255
+        ]
+      }
+    },
+    {
+      "id": "34627",
+      "name": "Rem's Shoe Store",
+      "section": "Maps",
+      "contributors": "peltos",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/34627/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/32/34627.png?updated=1755472701",
+      "originalPath": "assets/originals/34627.png",
+      "originalBytes": 13074,
+      "originalSha256": "9975e9cd558a09de507b894a1d62bcd8602d13f4daddceca94797917ad6db101",
+      "status": "downloaded",
+      "path": "assets/sheets/34627-rem-s-shoe-store.png",
+      "thumbnail": "assets/thumbnails/34627-rem-s-shoe-store.png",
+      "width": 240,
+      "height": 425,
+      "format": "PNG",
+      "originalFormat": "PNG",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "3b1e721ef2e66a9d699ffd21445c2e3d1207926b11507650af4cd89da3e06715",
+      "rgbaSha256": "4210a7235da687e018e068782005e303215014245c581096f80dc1683d63a85c",
+      "byteSize": 20813,
+      "background": {
+        "hasTransparency": false,
+        "alphaRange": [
+          255,
+          255
+        ]
+      }
+    },
+    {
+      "id": "6518",
+      "name": "Royal Crypt",
+      "section": "Maps",
+      "contributors": "Bacon",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6518/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/6/6518.gif?updated=1755472426",
+      "originalPath": "assets/originals/6518.gif",
+      "originalBytes": 123839,
+      "originalSha256": "1df2f4eb845db2a0c27bdfabb4ce8247fae6f236f2706bf832275c9c38ce1936",
+      "status": "downloaded",
+      "path": "assets/sheets/6518-royal-crypt.png",
+      "thumbnail": "assets/thumbnails/6518-royal-crypt.png",
+      "width": 592,
+      "height": 1744,
+      "format": "PNG",
+      "originalFormat": "GIF",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "755cb1a1064035fb051f987de20cc5911bb78b3c38e4214eafe9907aab801010",
+      "rgbaSha256": "a7b9a54935bdfb92774a62957bb7e3eb8646f63909e9d6eb94a63b97a205bd59",
+      "byteSize": 152457,
+      "background": {
+        "hasTransparency": true,
+        "alphaRange": [
+          0,
+          255
+        ]
+      }
+    },
+    {
+      "id": "6479",
+      "name": "Royal Hyrule Library",
+      "section": "Maps",
+      "contributors": "Aleclom",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6479/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/6/6479.png?updated=1755472426",
+      "originalPath": "assets/originals/6479.png",
+      "originalBytes": 48844,
+      "originalSha256": "3b0f5693aaf4bc2c120e19386690631540b9efd0a9670410a416ed7176ceca2a",
+      "status": "downloaded",
+      "path": "assets/sheets/6479-royal-hyrule-library.png",
+      "thumbnail": "assets/thumbnails/6479-royal-hyrule-library.png",
+      "width": 566,
+      "height": 454,
+      "format": "PNG",
+      "originalFormat": "PNG",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "c98e946c6d0eac05b5378f31390b4e94760c94e702390d55b6b7d001edd49ef7",
+      "rgbaSha256": "f7f6f6d5a1b1f5cb273e46983cab3ce7eccb0c73240ecaf77e4056d593eac552",
+      "byteSize": 58400,
+      "background": {
+        "hasTransparency": false,
+        "alphaRange": [
+          255,
+          255
+        ],
+        "suggestedKeyColor": "#c0c0c0"
+      }
+    },
+    {
+      "id": "6519",
+      "name": "Royal Valley",
+      "section": "Maps",
+      "contributors": "EternalLight",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6519/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/6/6519.png?updated=1755472426",
+      "originalPath": "assets/originals/6519.png",
+      "originalBytes": 231044,
+      "originalSha256": "2b29140e9ab1dcca6b085ef5e789bca1717ab03ee7c932b262025aee8ba58a0d",
+      "status": "downloaded",
+      "path": "assets/sheets/6519-royal-valley.png",
+      "thumbnail": "assets/thumbnails/6519-royal-valley.png",
+      "width": 793,
+      "height": 1012,
+      "format": "PNG",
+      "originalFormat": "PNG",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "b2a70df1f1369ca318c67bf17535d1532d89c519ab36ffddc92f0571f29f1ac9",
+      "rgbaSha256": "a6109815005bbea292d1bc57df8409fbbadd1e71b392944bd1fac12fb8752b55",
+      "byteSize": 235895,
+      "background": {
+        "hasTransparency": false,
+        "alphaRange": [
+          255,
+          255
+        ],
+        "suggestedKeyColor": "#a7a7ff"
+      }
+    },
+    {
+      "id": "34626",
+      "name": "Simon's Simulations",
+      "section": "Maps",
+      "contributors": "peltos",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/34626/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/32/34626.png?updated=1755472701",
+      "originalPath": "assets/originals/34626.png",
+      "originalBytes": 9109,
+      "originalSha256": "a5bb8002d61e487bf69db82df2957719df3b3f571e4180b28a32b8f1f7393b79",
+      "status": "downloaded",
+      "path": "assets/sheets/34626-simon-s-simulations.png",
+      "thumbnail": "assets/thumbnails/34626-simon-s-simulations.png",
+      "width": 240,
+      "height": 260,
+      "format": "PNG",
+      "originalFormat": "PNG",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "0121857371491522d8c8e788f67f9ebf4c3fde557c65bfd5b07e066a2c69f494",
+      "rgbaSha256": "0838e3d670daa0121ae79a48b53d984a2c196029eaff82ccc125326a30975ec6",
+      "byteSize": 14047,
+      "background": {
+        "hasTransparency": false,
+        "alphaRange": [
+          255,
+          255
+        ]
+      }
+    },
+    {
+      "id": "6483",
+      "name": "South Hyrule Field",
+      "section": "Maps",
+      "contributors": "Marnic",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6483/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/6/6483.png?updated=1755472426",
+      "originalPath": "assets/originals/6483.png",
+      "originalBytes": 216172,
+      "originalSha256": "79849fb4f51f0bc52a3c20e9755808e30e62b1ddd228f557d4fe5affdb188007",
+      "status": "downloaded",
+      "path": "assets/sheets/6483-south-hyrule-field.png",
+      "thumbnail": "assets/thumbnails/6483-south-hyrule-field.png",
+      "width": 1011,
+      "height": 848,
+      "format": "PNG",
+      "originalFormat": "PNG",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "fb6cf261c3474596944ef3b8df3c1d8f502706c29b93d8dfb9b97b68bf6cdf2b",
+      "rgbaSha256": "926c137c0d3bb4404f6f7a7b4ede6296cee8aba1034ac9e631263e7c8f1644cd",
+      "byteSize": 252817,
+      "background": {
+        "hasTransparency": false,
+        "alphaRange": [
+          255,
+          255
+        ],
+        "suggestedKeyColor": "#70d8f8"
+      }
+    },
+    {
+      "id": "6470",
+      "name": "Stockwell's Shop",
+      "section": "Maps",
+      "contributors": "Aleclom",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6470/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/6/6470.png?updated=1755472426",
+      "originalPath": "assets/originals/6470.png",
+      "originalBytes": 22193,
+      "originalSha256": "eb72c4206a5c533556651a31b6be2d5ecbad0f760733599bc82cc6c7b7b110ce",
+      "status": "downloaded",
+      "path": "assets/sheets/6470-stockwell-s-shop.png",
+      "thumbnail": "assets/thumbnails/6470-stockwell-s-shop.png",
+      "width": 529,
+      "height": 234,
+      "format": "PNG",
+      "originalFormat": "PNG",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "0ff73a5b2c60f978c531351c8010129148b7d04974634d83ea54f1dd8eaf70ec",
+      "rgbaSha256": "362581577d2dcea20f945c846bcf2d26fb685b42b9ff12ed1ddbd635544fc1ef",
+      "byteSize": 26995,
+      "background": {
+        "hasTransparency": false,
+        "alphaRange": [
+          255,
+          255
+        ],
+        "suggestedKeyColor": "#c0c0c0"
+      }
+    },
+    {
+      "id": "6488",
+      "name": "Talon and Malon's House",
+      "section": "Maps",
+      "contributors": "Aleclom",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6488/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/6/6488.png?updated=1755472426",
+      "originalPath": "assets/originals/6488.png",
+      "originalBytes": 28940,
+      "originalSha256": "5963ebe1bea11cbe288b3d0160a11334f7c7bc7415279af35838fba0d4e53da6",
+      "status": "downloaded",
+      "path": "assets/sheets/6488-talon-and-malon-s-house.png",
+      "thumbnail": "assets/thumbnails/6488-talon-and-malon-s-house.png",
+      "width": 863,
+      "height": 164,
+      "format": "PNG",
+      "originalFormat": "PNG",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "149ed55497d7feea755ac2fc533031a3405cc680506b54420755a07ca9c8ff72",
+      "rgbaSha256": "f6701133b1c07af1ec6a3391c51d23232a6f8469e00bf4b515c14a9e484ac02d",
+      "byteSize": 34158,
+      "background": {
+        "hasTransparency": false,
+        "alphaRange": [
+          255,
+          255
+        ],
+        "suggestedKeyColor": "#c0c0c0"
+      }
+    },
+    {
+      "id": "142447",
+      "name": "Vaati's Arms",
+      "section": "Maps",
+      "contributors": "Urathros",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/142447/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/139/142447.png?updated=1755482065",
+      "originalPath": "assets/originals/142447.png",
+      "originalBytes": 55568,
+      "originalSha256": "0082cdeab84640cac570fd6c8a730d612cccd6d6a92591b613e6479b079bc9b6",
+      "status": "downloaded",
+      "path": "assets/sheets/142447-vaati-s-arms.png",
+      "thumbnail": "assets/thumbnails/142447-vaati-s-arms.png",
+      "width": 920,
+      "height": 372,
+      "format": "PNG",
+      "originalFormat": "PNG",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "1ab4223b4ae76849f99632bb9ad80ba934e8c9aa06bdee9cdf6eef2ed6e39f32",
+      "rgbaSha256": "571e2e16b0114dfb4bad43c9203cc7fd5eb1c2ae1417013ba80657e25fdced9f",
+      "byteSize": 46642,
+      "background": {
+        "hasTransparency": false,
+        "alphaRange": [
+          255,
+          255
+        ]
+      }
+    },
+    {
+      "id": "6566",
+      "name": "Wind Shrine",
+      "section": "Maps",
+      "contributors": "Bacon",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6566/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/6/6566.gif?updated=1755472427",
+      "originalPath": "assets/originals/6566.gif",
+      "originalBytes": 41694,
+      "originalSha256": "4f166267860b2a6ba1adaad169329dcae6b3ec9b3bf2049b88766d483b19fa87",
+      "status": "downloaded",
+      "path": "assets/sheets/6566-wind-shrine.png",
+      "thumbnail": "assets/thumbnails/6566-wind-shrine.png",
+      "width": 591,
+      "height": 537,
+      "format": "PNG",
+      "originalFormat": "GIF",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "91e05b67d929009ec5cfb02be9296b6dda613594f3337f50d548afe550f4870f",
+      "rgbaSha256": "9ceaae678b9f8c51471618bf1e91523b23375a72e3d48273990444f73753b87a",
+      "byteSize": 56955,
+      "background": {
+        "hasTransparency": true,
+        "alphaRange": [
+          0,
+          255
+        ]
+      }
+    },
+    {
+      "id": "86016",
+      "name": "Witch's Hut",
+      "section": "Maps",
+      "contributors": "TomoKuroki",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/86016/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/83/86016.png?updated=1755474997",
+      "originalPath": "assets/originals/86016.png",
+      "originalBytes": 18625,
+      "originalSha256": "1f7bd5fb54d884398eb33be4e9e47dae78d694cda040610eae1584288519bc2a",
+      "status": "downloaded",
+      "path": "assets/sheets/86016-witch-s-hut.png",
+      "thumbnail": "assets/thumbnails/86016-witch-s-hut.png",
+      "width": 367,
+      "height": 209,
+      "format": "PNG",
+      "originalFormat": "PNG",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "884e62a93f4306b1897c9f933b6f88c8d52ffe95b4abb3a50cea72646c6cc55a",
+      "rgbaSha256": "1d48eff0b4b84c1c143bbaf269582a35ef350786ae69ed81b2b2119654464422",
+      "byteSize": 23183,
+      "background": {
+        "hasTransparency": false,
+        "alphaRange": [
+          255,
+          255
+        ]
+      }
+    },
+    {
+      "id": "6496",
+      "name": "Area Maps",
+      "section": "Miscellaneous",
+      "contributors": "Bacon",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6496/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/6/6496.gif?updated=1755472426",
+      "originalPath": "assets/originals/6496.gif",
+      "originalBytes": 109729,
+      "originalSha256": "23e75b066a6a4a07647216d6316d379441e7108a8703575be65712329df82817",
+      "status": "downloaded",
+      "path": "assets/sheets/6496-area-maps.png",
+      "thumbnail": "assets/thumbnails/6496-area-maps.png",
+      "width": 712,
+      "height": 744,
+      "format": "PNG",
+      "originalFormat": "GIF",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "528409adf0fe25ddfd3ad38480828de2ae8214f4e0564a246d21380cb0944152",
+      "rgbaSha256": "800444c6a3f4abd717e5c0cc16b882c1a626697c1cd8f0a7b02f354d9101a388",
+      "byteSize": 135386,
+      "background": {
+        "hasTransparency": true,
+        "alphaRange": [
+          0,
+          255
+        ]
+      }
+    },
+    {
+      "id": "6430",
+      "name": "Backgrounds and Overlays",
+      "section": "Miscellaneous",
+      "contributors": "Chaotic Death",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6430/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/6/6430.png?updated=1755472426",
+      "originalPath": "assets/originals/6430.png",
+      "originalBytes": 185719,
+      "originalSha256": "0b4c128c0f12d104047bcd0ac448947fcca5ee35e71cab1ad2c1107629f05cec",
+      "status": "downloaded",
+      "path": "assets/sheets/6430-backgrounds-and-overlays.png",
+      "thumbnail": "assets/thumbnails/6430-backgrounds-and-overlays.png",
+      "width": 850,
+      "height": 1532,
+      "format": "PNG",
+      "originalFormat": "PNG",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "a45fbbedfd6170ee69339fc74adc03f2507d0fb2cf8937b152423aee6d92cca4",
+      "rgbaSha256": "c005627d0f93f117d0dee9859978848f968db8993c7c11c9366864ec66cf3df8",
+      "byteSize": 178890,
+      "background": {
+        "hasTransparency": false,
+        "alphaRange": [
+          255,
+          255
+        ],
+        "suggestedKeyColor": "#ffffff"
+      }
+    },
+    {
+      "id": "604585",
+      "name": "Bakery Products",
+      "section": "Miscellaneous",
+      "contributors": "ChaosSandwich",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/604585/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/582/604585.png?updated=1789063835",
+      "originalPath": "assets/originals/604585.png",
+      "originalBytes": 1200,
+      "originalSha256": "7fb446b8aa42202d50ae4340ad67f162648607180f430d408addb7950e52489a",
+      "status": "downloaded",
+      "path": "assets/sheets/604585-bakery-products.png",
+      "thumbnail": "assets/thumbnails/604585-bakery-products.png",
+      "width": 63,
+      "height": 17,
+      "format": "PNG",
+      "originalFormat": "PNG",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "ac071ec6e8c87e5977486e9587a22c1804b52c6f34ae52b87d01cf068f4aae71",
+      "rgbaSha256": "47a5c20ef3e4dd9716d56afd9089deb582c8d002fabef023a6ba164f516e801a",
+      "byteSize": 857,
+      "background": {
+        "hasTransparency": true,
+        "alphaRange": [
+          0,
+          255
+        ]
+      }
+    },
+    {
+      "id": "37862",
+      "name": "Bomb Explosion",
+      "section": "Miscellaneous",
+      "contributors": "peltos",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/37862/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/35/37862.png?updated=1755472759",
+      "originalPath": "assets/originals/37862.png",
+      "originalBytes": 4073,
+      "originalSha256": "eb73402de381431feef143640bb41c48b41c4f678e790ddefa0b6b3189894d9c",
+      "status": "downloaded",
+      "path": "assets/sheets/37862-bomb-explosion.png",
+      "thumbnail": "assets/thumbnails/37862-bomb-explosion.png",
+      "width": 423,
+      "height": 75,
+      "format": "PNG",
+      "originalFormat": "PNG",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "87eb6c9b190c6867eecd92ea561694e03165a51fa767284c67046f216a959a9d",
+      "rgbaSha256": "5c3e4e3122f342fdeda4b773844c5157a39cf0af80dd0f20daeae8b2a0f19c2a",
+      "byteSize": 5569,
+      "background": {
+        "hasTransparency": false,
+        "alphaRange": [
+          255,
+          255
+        ],
+        "suggestedKeyColor": "#00137f"
+      }
+    },
+    {
+      "id": "6514",
+      "name": "Bound Chest",
+      "section": "Miscellaneous",
+      "contributors": "Sonikku",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6514/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/6/6514.png?updated=1755472426",
+      "originalPath": "assets/originals/6514.png",
+      "originalBytes": 8472,
+      "originalSha256": "fa690a85d7fdc9f73bc292f080b40cf99b99dab8d8cfe6fda4e833ca9dc9f414",
+      "status": "downloaded",
+      "path": "assets/sheets/6514-bound-chest.png",
+      "thumbnail": "assets/thumbnails/6514-bound-chest.png",
+      "width": 315,
+      "height": 144,
+      "format": "PNG",
+      "originalFormat": "PNG",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "0efaf4511ee856af94810e6f2c252380c7107317d266d300c330885b49c70944",
+      "rgbaSha256": "ed79cdab55fef2a7e6e27612ffb501a150b190e237203b117bc7060c081b953e",
+      "byteSize": 10039,
+      "background": {
+        "hasTransparency": false,
+        "alphaRange": [
+          255,
+          255
+        ],
+        "suggestedKeyColor": "#ffffff"
+      }
+    },
+    {
+      "id": "6451",
+      "name": "Credits Art",
+      "section": "Miscellaneous",
+      "contributors": "Nemu",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6451/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/6/6451.png?updated=1755472426",
+      "originalPath": "assets/originals/6451.png",
+      "originalBytes": 177060,
+      "originalSha256": "0d0aa5b2745de70ad62d2baaffcdf7dedd5aec3802c8718b30450d6e95b1c3a0",
+      "status": "downloaded",
+      "path": "assets/sheets/6451-credits-art.png",
+      "thumbnail": "assets/thumbnails/6451-credits-art.png",
+      "width": 621,
+      "height": 326,
+      "format": "PNG",
+      "originalFormat": "PNG",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "a083f4a9c7718fa18ac5b0a931d28cacc10a0641742ff118e5c9be63065789bc",
+      "rgbaSha256": "a295e398e7eb9c5e20cd51dfe1e32e838d846b960d4f6bb904e4bab84c8c7b97",
+      "byteSize": 215666,
+      "background": {
+        "hasTransparency": false,
+        "alphaRange": [
+          255,
+          255
+        ]
+      }
+    },
+    {
+      "id": "6435",
+      "name": "Figurines",
+      "section": "Miscellaneous",
+      "contributors": "EternalLight",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6435/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/6/6435.png?updated=1755472426",
+      "originalPath": "assets/originals/6435.png",
+      "originalBytes": 281671,
+      "originalSha256": "a1cc189791b829e14592032db9253287778eb16cfa28ef358103abb29d5fc293",
+      "status": "downloaded",
+      "path": "assets/sheets/6435-figurines.png",
+      "thumbnail": "assets/thumbnails/6435-figurines.png",
+      "width": 674,
+      "height": 1445,
+      "format": "PNG",
+      "originalFormat": "PNG",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "58515be0be8da44cd0bfea221ec670a0775e32d93a85ccd9624cb309f95a5f71",
+      "rgbaSha256": "96e56724d1186989dd86803e4982c5938115b5c522cc3bddc33b5dad59c1cc51",
+      "byteSize": 293439,
+      "background": {
+        "hasTransparency": false,
+        "alphaRange": [
+          255,
+          255
+        ],
+        "suggestedKeyColor": "#a7a7e3"
+      }
+    },
+    {
+      "id": "6436",
+      "name": "File Select",
+      "section": "Miscellaneous",
+      "contributors": "EternalLight",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6436/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/6/6436.png?updated=1755472426",
+      "originalPath": "assets/originals/6436.png",
+      "originalBytes": 45500,
+      "originalSha256": "fd5589ca35d7f8c47e3902865dc1da5f07835a1b33976be9654730f85fa1d5bb",
+      "status": "downloaded",
+      "path": "assets/sheets/6436-file-select.png",
+      "thumbnail": "assets/thumbnails/6436-file-select.png",
+      "width": 485,
+      "height": 991,
+      "format": "PNG",
+      "originalFormat": "PNG",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "2cda825c2b2de9b9e886360d11d1c71336dd8bb562b6ca8f35c3fe191544cb23",
+      "rgbaSha256": "fbdd66ea3d5fc5e5872714fea80cd2c86a0a84357cd4e9ef23b88005ff81a7e4",
+      "byteSize": 78795,
+      "background": {
+        "hasTransparency": false,
+        "alphaRange": [
+          255,
+          255
+        ],
+        "suggestedKeyColor": "#a7a7e3"
+      }
+    },
+    {
+      "id": "6452",
+      "name": "Fireball SFX",
+      "section": "Miscellaneous",
+      "contributors": "Sonikku",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6452/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/6/6452.png?updated=1755472426",
+      "originalPath": "assets/originals/6452.png",
+      "originalBytes": 1649,
+      "originalSha256": "a2af5cae2cd18bbb0bb5968dadb8a49a13c941f6ef2b402321249950b4f30922",
+      "status": "downloaded",
+      "path": "assets/sheets/6452-fireball-sfx.png",
+      "thumbnail": "assets/thumbnails/6452-fireball-sfx.png",
+      "width": 71,
+      "height": 69,
+      "format": "PNG",
+      "originalFormat": "PNG",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "495358b4a252a9ecb96a16e2ed783b7399407b3b55632e9cec7392c91c0d5d05",
+      "rgbaSha256": "4f49d8f38dc4ac22d861b42c8efa3e3ccf02b1fa60ae291f3423ed6606440dd3",
+      "byteSize": 1851,
+      "background": {
+        "hasTransparency": false,
+        "alphaRange": [
+          255,
+          255
+        ],
+        "suggestedKeyColor": "#ffffff"
+      }
+    },
+    {
+      "id": "6437",
+      "name": "Items",
+      "section": "Miscellaneous",
+      "contributors": "EternalLight",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6437/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/6/6437.png?updated=1755472426",
+      "originalPath": "assets/originals/6437.png",
+      "originalBytes": 44737,
+      "originalSha256": "9dc57bfb6df8376e6bfcab3a5ba505e30d344f5860c1de2de62db039682dbc2e",
+      "status": "downloaded",
+      "path": "assets/sheets/6437-items.png",
+      "thumbnail": "assets/thumbnails/6437-items.png",
+      "width": 614,
+      "height": 616,
+      "format": "PNG",
+      "originalFormat": "PNG",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "ac5b3c96329b9a02c7f7afaff1fa095214d5477237878dd43ecbd2bf449c8433",
+      "rgbaSha256": "8deff0b6c765510912d156b097dbac278a732d3ea57f21d76f4acf8c25864132",
+      "byteSize": 49850,
+      "background": {
+        "hasTransparency": false,
+        "alphaRange": [
+          255,
+          255
+        ],
+        "suggestedKeyColor": "#c0c0ff"
+      }
+    },
+    {
+      "id": "6561",
+      "name": "Kinstones",
+      "section": "Miscellaneous",
+      "contributors": "EternalLight",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6561/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/6/6561.png?updated=1755472427",
+      "originalPath": "assets/originals/6561.png",
+      "originalBytes": 15281,
+      "originalSha256": "0c38a66bb230738d545b0dce33a9cef4c7cb73fe21f7c52a3f0a6250ffc85358",
+      "status": "downloaded",
+      "path": "assets/sheets/6561-kinstones.png",
+      "thumbnail": "assets/thumbnails/6561-kinstones.png",
+      "width": 740,
+      "height": 314,
+      "format": "PNG",
+      "originalFormat": "PNG",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "fe50d32cb81132b2dad27cc63999e9fd8b5f87fdc68150cff3f5054881cf87ef",
+      "rgbaSha256": "3f2559f44c3c66cef7c1eeec9d424f3a0de97c407e23cecd78567e3e5731a155",
+      "byteSize": 33169,
+      "background": {
+        "hasTransparency": false,
+        "alphaRange": [
+          255,
+          255
+        ],
+        "suggestedKeyColor": "#e5e6ff"
+      }
+    },
+    {
+      "id": "37189",
+      "name": "The Legend of The Minish",
+      "section": "Miscellaneous",
+      "contributors": "Bacon, Vaati",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/37189/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/34/37189.png?updated=1755472740",
+      "originalPath": "assets/originals/37189.png",
+      "originalBytes": 148401,
+      "originalSha256": "4aa9a9b7a10d571f6f7952a1e81ab04f8ce311bc00ddc340fb45d4ded76a0920",
+      "status": "downloaded",
+      "path": "assets/sheets/37189-the-legend-of-the-minish.png",
+      "thumbnail": "assets/thumbnails/37189-the-legend-of-the-minish.png",
+      "width": 502,
+      "height": 445,
+      "format": "PNG",
+      "originalFormat": "PNG",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "b80fb8f098d8cc6c0b06e0e9d5c64e3bb5c55bb39e234431310a0d30140686fc",
+      "rgbaSha256": "849d58ea2e6d91adbe77a75ec7861b574c19d31538470ac7bb7448f93ea8e6f2",
+      "byteSize": 147760,
+      "background": {
+        "hasTransparency": false,
+        "alphaRange": [
+          255,
+          255
+        ],
+        "suggestedKeyColor": "#709ad1"
+      }
+    },
+    {
+      "id": "6562",
+      "name": "Miscellaneous Objects",
+      "section": "Miscellaneous",
+      "contributors": "fear",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6562/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/6/6562.png?updated=1755472427",
+      "originalPath": "assets/originals/6562.png",
+      "originalBytes": 22179,
+      "originalSha256": "1b0510a5a0ca0c7000177660690f41d33427f0d12bb2ecfc2131620a6ac2b0c2",
+      "status": "downloaded",
+      "path": "assets/sheets/6562-miscellaneous-objects.png",
+      "thumbnail": "assets/thumbnails/6562-miscellaneous-objects.png",
+      "width": 243,
+      "height": 412,
+      "format": "PNG",
+      "originalFormat": "PNG",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "cad0fdf45c1cdda659b7b7e3a728ceb71d948a9ff92b7bbbbefe5d6b91223cdc",
+      "rgbaSha256": "826c8fc6881bc4a2751f27d4ae1276bac3ef5f92294b02c04502912d1d1be36f",
+      "byteSize": 25890,
+      "background": {
+        "hasTransparency": false,
+        "alphaRange": [
+          255,
+          255
+        ],
+        "suggestedKeyColor": "#ffffff"
+      }
+    },
+    {
+      "id": "6499",
+      "name": "Mushroom",
+      "section": "Miscellaneous",
+      "contributors": "Sonikku",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6499/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/6/6499.png?updated=1755472426",
+      "originalPath": "assets/originals/6499.png",
+      "originalBytes": 6619,
+      "originalSha256": "ba7300adda4d38b6779b04c2ffb06fe557cab02c104033cc563aa2c2aa2b79d3",
+      "status": "downloaded",
+      "path": "assets/sheets/6499-mushroom.png",
+      "thumbnail": "assets/thumbnails/6499-mushroom.png",
+      "width": 181,
+      "height": 201,
+      "format": "PNG",
+      "originalFormat": "PNG",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "f241a598b8dce96f209d61ca5539a5d300603bbd8d81474d1d6e679142575589",
+      "rgbaSha256": "1577481b0d38a295bb2b84d608f78cafabb6ab5ee27d241aba6622f4419a5ed5",
+      "byteSize": 7106,
+      "background": {
+        "hasTransparency": false,
+        "alphaRange": [
+          255,
+          255
+        ],
+        "suggestedKeyColor": "#ffffff"
+      }
+    },
+    {
+      "id": "6492",
+      "name": "Overworld Map",
+      "section": "Miscellaneous",
+      "contributors": "Bacon",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6492/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/6/6492.gif?updated=1755472426",
+      "originalPath": "assets/originals/6492.gif",
+      "originalBytes": 29487,
+      "originalSha256": "5cae0c474eb886111cf15fe30e28bcdcc998a16e0dedadad75020bf1e1dbbef5",
+      "status": "downloaded",
+      "path": "assets/sheets/6492-overworld-map.png",
+      "thumbnail": "assets/thumbnails/6492-overworld-map.png",
+      "width": 748,
+      "height": 311,
+      "format": "PNG",
+      "originalFormat": "GIF",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "64f436528ad8406c349299b666e79c186fa9f3749d21b1dc0f4f12b9041b1e50",
+      "rgbaSha256": "c72a4434af47f0ecebb45e3158e285e1c8cd8b842a04aaa9b3701ed8bd705f2d",
+      "byteSize": 45171,
+      "background": {
+        "hasTransparency": true,
+        "alphaRange": [
+          0,
+          255
+        ]
+      }
+    },
+    {
+      "id": "241527",
+      "name": "Startup Screen",
+      "section": "Miscellaneous",
+      "contributors": "Alxala",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/241527/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/238/241527.png?updated=1755492554",
+      "originalPath": "assets/originals/241527.png",
+      "originalBytes": 7598,
+      "originalSha256": "3aa3b4251f00d05e8fd2b9c2e15d9c3b760d6499d98fdcffb813e2b2a0423a7f",
+      "status": "downloaded",
+      "path": "assets/sheets/241527-startup-screen.png",
+      "thumbnail": "assets/thumbnails/241527-startup-screen.png",
+      "width": 486,
+      "height": 195,
+      "format": "PNG",
+      "originalFormat": "PNG",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "f939f3c5c0cc7335f5472eadd22aca8ca346dceb33a91c53f36e2a1282241833",
+      "rgbaSha256": "9195f0e13fa2dda0048834dd40ff52fccad9d3f05d5ac99d41163dba4c5cf96d",
+      "byteSize": 7202,
+      "background": {
+        "hasTransparency": false,
+        "alphaRange": [
+          255,
+          255
+        ],
+        "suggestedKeyColor": "#ffaec9"
+      }
+    },
+    {
+      "id": "180815",
+      "name": "Sword (Attacking)",
+      "section": "Miscellaneous",
+      "contributors": "Fallen Star",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/180815/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/178/180815.png?updated=1755486925",
+      "originalPath": "assets/originals/180815.png",
+      "originalBytes": 4349,
+      "originalSha256": "bc3b1d55356223fc6864ca12a2bccd88d5a6702f9f4d520e839e02a2aac650fb",
+      "status": "downloaded",
+      "path": "assets/sheets/180815-sword-attacking.png",
+      "thumbnail": "assets/thumbnails/180815-sword-attacking.png",
+      "width": 228,
+      "height": 196,
+      "format": "PNG",
+      "originalFormat": "PNG",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "e1831301200d374a7e43f2717f78c257e05677d428764040652118c02027fbb2",
+      "rgbaSha256": "e8b29208cfc57a7b88f90dc9fde848c40437d3e9a817c8db3a23a487bb752fa9",
+      "byteSize": 5511,
+      "background": {
+        "hasTransparency": false,
+        "alphaRange": [
+          255,
+          255
+        ],
+        "suggestedKeyColor": "#30a078"
+      }
+    },
+    {
+      "id": "6565",
+      "name": "Sword Scrolls",
+      "section": "Miscellaneous",
+      "contributors": "EternalLight",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6565/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/6/6565.png?updated=1755472427",
+      "originalPath": "assets/originals/6565.png",
+      "originalBytes": 24753,
+      "originalSha256": "a7b53b9703bf3b0738a6cf29a07a297d8f7731784afb166d5891efa53309d49a",
+      "status": "downloaded",
+      "path": "assets/sheets/6565-sword-scrolls.png",
+      "thumbnail": "assets/thumbnails/6565-sword-scrolls.png",
+      "width": 474,
+      "height": 655,
+      "format": "PNG",
+      "originalFormat": "PNG",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "c13e0fd90bd5d45e811a968235de9b30e99dae627f80bdd29625177a3c307a06",
+      "rgbaSha256": "80d776ee75b1fca644be73a41767b12ce6fe1ca1ef026c44c20ac215d26431f8",
+      "byteSize": 25408,
+      "background": {
+        "hasTransparency": false,
+        "alphaRange": [
+          255,
+          255
+        ],
+        "suggestedKeyColor": "#e5e6ff"
+      }
+    },
+    {
+      "id": "6455",
+      "name": "Text",
+      "section": "Miscellaneous",
+      "contributors": "aquatics64",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6455/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/6/6455.png?updated=1755472426",
+      "originalPath": "assets/originals/6455.png",
+      "originalBytes": 30518,
+      "originalSha256": "f49ececb3662d972fcf693c6a0670c361fcab3b146749298a5619d0e03501bee",
+      "status": "downloaded",
+      "path": "assets/sheets/6455-text.png",
+      "thumbnail": "assets/thumbnails/6455-text.png",
+      "width": 618,
+      "height": 494,
+      "format": "PNG",
+      "originalFormat": "PNG",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "92268106dafb27df0f4f56af30997f5cfd5ef2ccf4cc7eb20748613d89a19b2f",
+      "rgbaSha256": "a414de53769eaa9ba106890c12853fb4068d947139afd29b78ea4b5412ca747a",
+      "byteSize": 32712,
+      "background": {
+        "hasTransparency": false,
+        "alphaRange": [
+          255,
+          255
+        ],
+        "suggestedKeyColor": "#40b088"
+      }
+    },
+    {
+      "id": "6559",
+      "name": "Title Screen (JPN)",
+      "section": "Miscellaneous",
+      "contributors": "Yue",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6559/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/6/6559.png?updated=1755472427",
+      "originalPath": "assets/originals/6559.png",
+      "originalBytes": 53204,
+      "originalSha256": "76c2cd7aec6b2a03db6a4d951eaf0a814a5fbbb3db4552b74500bb4824155fe9",
+      "status": "downloaded",
+      "path": "assets/sheets/6559-title-screen-jpn.png",
+      "thumbnail": "assets/thumbnails/6559-title-screen-jpn.png",
+      "width": 497,
+      "height": 682,
+      "format": "PNG",
+      "originalFormat": "PNG",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "9006e4aa67bbe100193d34cd5010c8aa04445662b0db756c848d5b203045d789",
+      "rgbaSha256": "1eafc7096ca2824ce1169edcbf65eb702f7d3ff9fdb170b84ea660d63163bbec",
+      "byteSize": 57824,
+      "background": {
+        "hasTransparency": false,
+        "alphaRange": [
+          255,
+          255
+        ],
+        "suggestedKeyColor": "#ffffff"
+      }
+    },
+    {
+      "id": "6558",
+      "name": "Title Screen (USA)",
+      "section": "Miscellaneous",
+      "contributors": "Yue",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6558/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/6/6558.png?updated=1755472427",
+      "originalPath": "assets/originals/6558.png",
+      "originalBytes": 52400,
+      "originalSha256": "3d923b0e7cff514d7c9f9ff3c7fa35e0724f95a7e764a967baed195d514b0f84",
+      "status": "downloaded",
+      "path": "assets/sheets/6558-title-screen-usa.png",
+      "thumbnail": "assets/thumbnails/6558-title-screen-usa.png",
+      "width": 497,
+      "height": 682,
+      "format": "PNG",
+      "originalFormat": "PNG",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "3d8c359646f10c473a9d4ce9c2c0752ebe6ca0541c8c77b5ae4d54fd391378d1",
+      "rgbaSha256": "d90fd754515db35cdcb22b3e5708fd1cee5b3da9916199c77e18365ae6037697",
+      "byteSize": 56562,
+      "background": {
+        "hasTransparency": false,
+        "alphaRange": [
+          255,
+          255
+        ],
+        "suggestedKeyColor": "#ffffff"
+      }
+    },
+    {
+      "id": "6541",
+      "name": "Water Droplet",
+      "section": "Miscellaneous",
+      "contributors": "Sonikku",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6541/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/6/6541.png?updated=1755472427",
+      "originalPath": "assets/originals/6541.png",
+      "originalBytes": 4843,
+      "originalSha256": "6aebbd88d84067d4109cf7a47229886afbbae149467035cafff4beb4417aee20",
+      "status": "downloaded",
+      "path": "assets/sheets/6541-water-droplet.png",
+      "thumbnail": "assets/thumbnails/6541-water-droplet.png",
+      "width": 298,
+      "height": 116,
+      "format": "PNG",
+      "originalFormat": "PNG",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "132ec2f6bbbb07351676b58cca80b27dcc8a4804dde63f14461c4f8daa940991",
+      "rgbaSha256": "1b9cc825571cf37a0072f7f49c9aa81e3c01fbb85b44fc728fda648c4510d668",
+      "byteSize": 3939,
+      "background": {
+        "hasTransparency": false,
+        "alphaRange": [
+          255,
+          255
+        ],
+        "suggestedKeyColor": "#ffffff"
+      }
+    },
+    {
+      "id": "142451",
+      "name": "Minish Cave",
+      "section": "Unused Content",
+      "contributors": "Urathros",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/142451/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/139/142451.png?updated=1755482065",
+      "originalPath": "assets/originals/142451.png",
+      "originalBytes": 54293,
+      "originalSha256": "6f2c8679d7816980b14b56d82a31f840f994026b1d84225b36c51083feceb7c7",
+      "status": "downloaded",
+      "path": "assets/sheets/142451-minish-cave.png",
+      "thumbnail": "assets/thumbnails/142451-minish-cave.png",
+      "width": 514,
+      "height": 533,
+      "format": "PNG",
+      "originalFormat": "PNG",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "8b24bb92142a7c2595d2c6ad1ff2bde6daa5a49b58e84a0d9668de15987e323a",
+      "rgbaSha256": "a43e00ba3e714cc3436448b28f81c3a46cbeca847be6e9f645ef12e5deb04b83",
+      "byteSize": 51195,
+      "background": {
+        "hasTransparency": false,
+        "alphaRange": [
+          255,
+          255
+        ]
+      }
+    },
+    {
+      "id": "6502",
+      "name": "Naked Man",
+      "section": "Unused Content",
+      "contributors": "Sonikku",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6502/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/6/6502.png?updated=1755472426",
+      "originalPath": "assets/originals/6502.png",
+      "originalBytes": 5759,
+      "originalSha256": "9b4847e2fe91c6acccd9c5d5868cefe11ebd515cb96009973a371684d909322d",
+      "status": "downloaded",
+      "path": "assets/sheets/6502-naked-man.png",
+      "thumbnail": "assets/thumbnails/6502-naked-man.png",
+      "width": 373,
+      "height": 116,
+      "format": "PNG",
+      "originalFormat": "PNG",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "1345936f03e420a97784c2681c0935c8b55b3061b718bff2ee03385df2c8ea6d",
+      "rgbaSha256": "89bd9f375910ee209ddbb74986bc673aa3c1a36ac80e569520f3951c14410191",
+      "byteSize": 4825,
+      "background": {
+        "hasTransparency": false,
+        "alphaRange": [
+          255,
+          255
+        ],
+        "suggestedKeyColor": "#ffffff"
+      }
+    },
+    {
+      "id": "6528",
+      "name": "Zol and Fireball",
+      "section": "Unused Content",
+      "contributors": "Sonikku",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6528/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/6/6528.png?updated=1755472426",
+      "originalPath": "assets/originals/6528.png",
+      "originalBytes": 6037,
+      "originalSha256": "14320224e1d03744f009968b5c33d4fc2cb8c91a0454cb92215c83b7f9f320e6",
+      "status": "downloaded",
+      "path": "assets/sheets/6528-zol-and-fireball.png",
+      "thumbnail": "assets/thumbnails/6528-zol-and-fireball.png",
+      "width": 230,
+      "height": 173,
+      "format": "PNG",
+      "originalFormat": "PNG",
+      "frameCount": 1,
+      "animated": false,
+      "sha256": "233daa5d4387e17816f71ed3ddbda4e277891cb76923eb5905d657badf3cf389",
+      "rgbaSha256": "54fa5a903fa0ee7078323076c68fa0760cc2d8db687ca686f213eb73663c7894",
+      "byteSize": 5794,
+      "background": {
+        "hasTransparency": false,
+        "alphaRange": [
+          255,
+          255
+        ],
+        "suggestedKeyColor": "#ffffff"
+      }
+    }
+  ],
+  "tilePacks": [
+    {
+      "tileSize": 8,
+      "archive": "tiles/tiles-8x8.zip",
+      "index": "tiles/tiles-8x8-index.json",
+      "byteSize": 100129717,
+      "sha256": "34a9ff5175f2a32f1d139defab2ac565e652b4a613aea1c4a4ff9ba45501113a",
+      "atlases": [
+        {
+          "page": 0,
+          "path": "tiles/atlas-8x8-000.png",
+          "tsx": "tiles/atlas-8x8-000.tsx",
+          "width": 2048,
+          "height": 2048,
+          "columns": 256,
+          "tileCount": 65536,
+          "firstTileId": 0,
+          "sha256": "507f16b2fe80d5da8618319c644767e0e0e8254bec4c6af5cfed174454ff62b8"
+        },
+        {
+          "page": 1,
+          "path": "tiles/atlas-8x8-001.png",
+          "tsx": "tiles/atlas-8x8-001.tsx",
+          "width": 2048,
+          "height": 2048,
+          "columns": 256,
+          "tileCount": 65536,
+          "firstTileId": 65536,
+          "sha256": "70fac33d1a6300186e61d8ed8d5ae99e995fbddff98a14e8eba7f7da9ba93457"
+        },
+        {
+          "page": 2,
+          "path": "tiles/atlas-8x8-002.png",
+          "tsx": "tiles/atlas-8x8-002.tsx",
+          "width": 2048,
+          "height": 2048,
+          "columns": 256,
+          "tileCount": 65536,
+          "firstTileId": 131072,
+          "sha256": "8ac2eafd844a38b56d4d983aa2d9671f41c5f59b340585a4b8b1323b4aac1d37"
+        },
+        {
+          "page": 3,
+          "path": "tiles/atlas-8x8-003.png",
+          "tsx": "tiles/atlas-8x8-003.tsx",
+          "width": 2048,
+          "height": 1056,
+          "columns": 256,
+          "tileCount": 33702,
+          "firstTileId": 196608,
+          "sha256": "e06a729aec4621d0c10d63d9d979811e46d7e1011ed8d005917e0961db316ff4"
+        }
+      ],
+      "stats": {
+        "sheetCount": 134,
+        "gridCellCount": 720340,
+        "transparentCellCount": 104418,
+        "nontransparentCellCount": 615922,
+        "repeatedCellCount": 385612,
+        "uniqueTileCount": 230310,
+        "atlasPageCount": 4
+      }
+    },
+    {
+      "tileSize": 16,
+      "archive": "tiles/tiles-16x16.zip",
+      "index": "tiles/tiles-16x16-index.json",
+      "byteSize": 47749576,
+      "sha256": "214cdaa463cb57a72fc3379c7771999a81e5760b15ffb478a29616f16af4be32",
+      "atlases": [
+        {
+          "page": 0,
+          "path": "tiles/atlas-16x16-000.png",
+          "tsx": "tiles/atlas-16x16-000.tsx",
+          "width": 2048,
+          "height": 2048,
+          "columns": 128,
+          "tileCount": 16384,
+          "firstTileId": 0,
+          "sha256": "6ce52c9ba462dab0e0fdf300a7ee970df54505229dd3cfc1638086abac02f983"
+        },
+        {
+          "page": 1,
+          "path": "tiles/atlas-16x16-001.png",
+          "tsx": "tiles/atlas-16x16-001.tsx",
+          "width": 2048,
+          "height": 2048,
+          "columns": 128,
+          "tileCount": 16384,
+          "firstTileId": 16384,
+          "sha256": "c2b6e59f0b9cdbec34fc474c7564392ebb269eee86b453f66f2be4a622d14d8b"
+        },
+        {
+          "page": 2,
+          "path": "tiles/atlas-16x16-002.png",
+          "tsx": "tiles/atlas-16x16-002.tsx",
+          "width": 2048,
+          "height": 2048,
+          "columns": 128,
+          "tileCount": 16384,
+          "firstTileId": 32768,
+          "sha256": "b8e6ee911437596fd679579cbfe430b5188a83d182f847245dd7c854c13a16c8"
+        },
+        {
+          "page": 3,
+          "path": "tiles/atlas-16x16-003.png",
+          "tsx": "tiles/atlas-16x16-003.tsx",
+          "width": 2048,
+          "height": 2048,
+          "columns": 128,
+          "tileCount": 16384,
+          "firstTileId": 49152,
+          "sha256": "4987019d606bbed7a1356181a89e5bccef9e2b192a91571525495e4148dfa028"
+        },
+        {
+          "page": 4,
+          "path": "tiles/atlas-16x16-004.png",
+          "tsx": "tiles/atlas-16x16-004.tsx",
+          "width": 2048,
+          "height": 2048,
+          "columns": 128,
+          "tileCount": 16384,
+          "firstTileId": 65536,
+          "sha256": "ad74ef6348565c4f819b46008a934386f34d4ee3b8571335f0cfdca9074650d9"
+        },
+        {
+          "page": 5,
+          "path": "tiles/atlas-16x16-005.png",
+          "tsx": "tiles/atlas-16x16-005.tsx",
+          "width": 2048,
+          "height": 976,
+          "columns": 128,
+          "tileCount": 7688,
+          "firstTileId": 81920,
+          "sha256": "02c64677ee59251a1ad76c30772ae9efaba2aed7e063eeaca3f8c05d91a463f0"
+        }
+      ],
+      "stats": {
+        "sheetCount": 134,
+        "gridCellCount": 182356,
+        "transparentCellCount": 21415,
+        "nontransparentCellCount": 160941,
+        "repeatedCellCount": 71333,
+        "uniqueTileCount": 89608,
+        "atlasPageCount": 6
+      }
+    }
+  ],
+  "sourceStatuses": [
+    {
+      "id": "6465",
+      "name": "Link's House Tiles",
+      "status": "processed"
+    },
+    {
+      "id": "6369",
+      "name": "Link (Cap)",
+      "status": "processed"
+    },
+    {
+      "id": "6370",
+      "name": "Link (Capless)",
+      "status": "processed"
+    },
+    {
+      "id": "19728",
+      "name": "Link (Minish)",
+      "status": "processed"
+    },
+    {
+      "id": "6399",
+      "name": "Biggoron",
+      "status": "processed"
+    },
+    {
+      "id": "6396",
+      "name": "Blade Brothers",
+      "status": "processed"
+    },
+    {
+      "id": "6384",
+      "name": "Carpenters",
+      "status": "processed"
+    },
+    {
+      "id": "6402",
+      "name": "Cats",
+      "status": "processed"
+    },
+    {
+      "id": "6403",
+      "name": "Cuccos",
+      "status": "processed"
+    },
+    {
+      "id": "6542",
+      "name": "Deku Scrub",
+      "status": "processed"
+    },
+    {
+      "id": "24932",
+      "name": "Din, Nayru & Farore (Oracles)",
+      "status": "processed"
+    },
+    {
+      "id": "6400",
+      "name": "Dogs",
+      "status": "processed"
+    },
+    {
+      "id": "6372",
+      "name": "Ezlo (Hat)",
+      "status": "processed"
+    },
+    {
+      "id": "6373",
+      "name": "Ezlo (Minish)",
+      "status": "processed"
+    },
+    {
+      "id": "6389",
+      "name": "Field NPCs 1",
+      "status": "processed"
+    },
+    {
+      "id": "6392",
+      "name": "Forest Minish",
+      "status": "processed"
+    },
+    {
+      "id": "6379",
+      "name": "Hyrule Town Residents 1",
+      "status": "processed"
+    },
+    {
+      "id": "6381",
+      "name": "Hyrule Town Residents 2",
+      "status": "processed"
+    },
+    {
+      "id": "6387",
+      "name": "Hyrule Town Residents 3",
+      "status": "processed"
+    },
+    {
+      "id": "6375",
+      "name": "King Daltus",
+      "status": "processed"
+    },
+    {
+      "id": "6394",
+      "name": "Mountain Minish",
+      "status": "processed"
+    },
+    {
+      "id": "22716",
+      "name": "Princess Zelda",
+      "status": "processed"
+    },
+    {
+      "id": "6391",
+      "name": "Royal Guards",
+      "status": "processed"
+    },
+    {
+      "id": "6398",
+      "name": "Royal Valley NPCs",
+      "status": "processed"
+    },
+    {
+      "id": "6377",
+      "name": "Smith",
+      "status": "processed"
+    },
+    {
+      "id": "6393",
+      "name": "Town Minish",
+      "status": "processed"
+    },
+    {
+      "id": "6530",
+      "name": "Vaati (Sorcerer & Minish)",
+      "status": "processed"
+    },
+    {
+      "id": "6406",
+      "name": "Acrobandits",
+      "status": "processed"
+    },
+    {
+      "id": "6411",
+      "name": "Beetle",
+      "status": "processed"
+    },
+    {
+      "id": "6413",
+      "name": "Bob-omb",
+      "status": "processed"
+    },
+    {
+      "id": "6414",
+      "name": "Chuchu",
+      "status": "processed"
+    },
+    {
+      "id": "6443",
+      "name": "Cloud Piranha",
+      "status": "processed"
+    },
+    {
+      "id": "6445",
+      "name": "Crow",
+      "status": "processed"
+    },
+    {
+      "id": "64168",
+      "name": "Darknut",
+      "status": "processed"
+    },
+    {
+      "id": "6449",
+      "name": "Door Trap",
+      "status": "processed"
+    },
+    {
+      "id": "6409",
+      "name": "Eyegore Statue",
+      "status": "processed"
+    },
+    {
+      "id": "49617",
+      "name": "Floormaster & Wallmaster",
+      "status": "processed"
+    },
+    {
+      "id": "6459",
+      "name": "Ghini",
+      "status": "processed"
+    },
+    {
+      "id": "6472",
+      "name": "Keaton",
+      "status": "processed"
+    },
+    {
+      "id": "6475",
+      "name": "Keese",
+      "status": "processed"
+    },
+    {
+      "id": "6405",
+      "name": "Lakitu",
+      "status": "processed"
+    },
+    {
+      "id": "6478",
+      "name": "Leever",
+      "status": "processed"
+    },
+    {
+      "id": "6480",
+      "name": "Like Like",
+      "status": "processed"
+    },
+    {
+      "id": "6497",
+      "name": "Moldorms",
+      "status": "processed"
+    },
+    {
+      "id": "6498",
+      "name": "Moldworm",
+      "status": "processed"
+    },
+    {
+      "id": "6504",
+      "name": "Octorok",
+      "status": "processed"
+    },
+    {
+      "id": "6509",
+      "name": "Peahat",
+      "status": "processed"
+    },
+    {
+      "id": "6511",
+      "name": "Pesto",
+      "status": "processed"
+    },
+    {
+      "id": "6512",
+      "name": "Puffstool",
+      "status": "processed"
+    },
+    {
+      "id": "6515",
+      "name": "Rollobite",
+      "status": "processed"
+    },
+    {
+      "id": "6517",
+      "name": "Rope",
+      "status": "processed"
+    },
+    {
+      "id": "6520",
+      "name": "Rupee Like",
+      "status": "processed"
+    },
+    {
+      "id": "6564",
+      "name": "Sluggula",
+      "status": "processed"
+    },
+    {
+      "id": "6407",
+      "name": "Spark",
+      "status": "processed"
+    },
+    {
+      "id": "6556",
+      "name": "Spear Moblin",
+      "status": "processed"
+    },
+    {
+      "id": "6523",
+      "name": "Spiked Beetle",
+      "status": "processed"
+    },
+    {
+      "id": "6524",
+      "name": "Stalfos",
+      "status": "processed"
+    },
+    {
+      "id": "6557",
+      "name": "Tektike",
+      "status": "processed"
+    },
+    {
+      "id": "6448",
+      "name": "Wisp",
+      "status": "processed"
+    },
+    {
+      "id": "6460",
+      "name": "Big Blue Chuchu",
+      "status": "processed"
+    },
+    {
+      "id": "6415",
+      "name": "Big Green Chuchu",
+      "status": "processed"
+    },
+    {
+      "id": "6506",
+      "name": "Big Octorok",
+      "status": "processed"
+    },
+    {
+      "id": "6546",
+      "name": "Gleerok",
+      "status": "processed"
+    },
+    {
+      "id": "6461",
+      "name": "Gyorg Pair",
+      "status": "processed"
+    },
+    {
+      "id": "535841",
+      "name": "Mazaal",
+      "status": "processed"
+    },
+    {
+      "id": "6534",
+      "name": "Vaati Reborn",
+      "status": "processed"
+    },
+    {
+      "id": "31116",
+      "name": "Vaati Transfigured",
+      "status": "processed"
+    },
+    {
+      "id": "6535",
+      "name": "Vaati's Wrath",
+      "status": "processed"
+    },
+    {
+      "id": "142450",
+      "name": "Armos Interiors",
+      "status": "processed"
+    },
+    {
+      "id": "6507",
+      "name": "Bakery",
+      "status": "processed"
+    },
+    {
+      "id": "6439",
+      "name": "Barrel House",
+      "status": "processed"
+    },
+    {
+      "id": "31008",
+      "name": "Castor Wilds",
+      "status": "processed"
+    },
+    {
+      "id": "6447",
+      "name": "Dampé's Shack",
+      "status": "processed"
+    },
+    {
+      "id": "6563",
+      "name": "Elemental Sanctuary",
+      "status": "processed"
+    },
+    {
+      "id": "6434",
+      "name": "Ezlo's House",
+      "status": "processed"
+    },
+    {
+      "id": "6543",
+      "name": "Fairy Fountain 1",
+      "status": "processed"
+    },
+    {
+      "id": "6446",
+      "name": "Festari's Abbey",
+      "status": "processed"
+    },
+    {
+      "id": "16014",
+      "name": "Figurine Gallery",
+      "status": "processed"
+    },
+    {
+      "id": "34658",
+      "name": "Funday School",
+      "status": "processed"
+    },
+    {
+      "id": "31009",
+      "name": "Home of the Wind Tribe",
+      "status": "processed"
+    },
+    {
+      "id": "6440",
+      "name": "Hyrule Castle (1st Floor)",
+      "status": "processed"
+    },
+    {
+      "id": "6441",
+      "name": "Hyrule Castle Garden",
+      "status": "processed"
+    },
+    {
+      "id": "6526",
+      "name": "Hyrule Town",
+      "status": "processed"
+    },
+    {
+      "id": "142448",
+      "name": "Inner Mazaal",
+      "status": "processed"
+    },
+    {
+      "id": "6550",
+      "name": "Librari's Bookshelf",
+      "status": "processed"
+    },
+    {
+      "id": "6490",
+      "name": "Lon Lon Ranch",
+      "status": "processed"
+    },
+    {
+      "id": "34087",
+      "name": "Mama's Cafe",
+      "status": "processed"
+    },
+    {
+      "id": "6560",
+      "name": "Melari's Mine",
+      "status": "processed"
+    },
+    {
+      "id": "6450",
+      "name": "Minish Elder's House",
+      "status": "processed"
+    },
+    {
+      "id": "37861",
+      "name": "Minish Forest Minish Path",
+      "status": "processed"
+    },
+    {
+      "id": "6548",
+      "name": "Minish Houses",
+      "status": "processed"
+    },
+    {
+      "id": "6431",
+      "name": "Minish Portals",
+      "status": "processed"
+    },
+    {
+      "id": "6540",
+      "name": "Minish Village",
+      "status": "processed"
+    },
+    {
+      "id": "142449",
+      "name": "Minish Village (Lake)",
+      "status": "processed"
+    },
+    {
+      "id": "6554",
+      "name": "Minish Woods",
+      "status": "processed"
+    },
+    {
+      "id": "6553",
+      "name": "Mount Crenel Minish Path",
+      "status": "processed"
+    },
+    {
+      "id": "6555",
+      "name": "Post Office",
+      "status": "processed"
+    },
+    {
+      "id": "6521",
+      "name": "Rem's Shoe Store",
+      "status": "processed"
+    },
+    {
+      "id": "34627",
+      "name": "Rem's Shoe Store",
+      "status": "processed"
+    },
+    {
+      "id": "6518",
+      "name": "Royal Crypt",
+      "status": "processed"
+    },
+    {
+      "id": "6479",
+      "name": "Royal Hyrule Library",
+      "status": "processed"
+    },
+    {
+      "id": "6519",
+      "name": "Royal Valley",
+      "status": "processed"
+    },
+    {
+      "id": "34626",
+      "name": "Simon's Simulations",
+      "status": "processed"
+    },
+    {
+      "id": "6483",
+      "name": "South Hyrule Field",
+      "status": "processed"
+    },
+    {
+      "id": "6470",
+      "name": "Stockwell's Shop",
+      "status": "processed"
+    },
+    {
+      "id": "6488",
+      "name": "Talon and Malon's House",
+      "status": "processed"
+    },
+    {
+      "id": "142447",
+      "name": "Vaati's Arms",
+      "status": "processed"
+    },
+    {
+      "id": "6566",
+      "name": "Wind Shrine",
+      "status": "processed"
+    },
+    {
+      "id": "86016",
+      "name": "Witch's Hut",
+      "status": "processed"
+    },
+    {
+      "id": "6496",
+      "name": "Area Maps",
+      "status": "processed"
+    },
+    {
+      "id": "6430",
+      "name": "Backgrounds and Overlays",
+      "status": "processed"
+    },
+    {
+      "id": "604585",
+      "name": "Bakery Products",
+      "status": "processed"
+    },
+    {
+      "id": "37862",
+      "name": "Bomb Explosion",
+      "status": "processed"
+    },
+    {
+      "id": "6514",
+      "name": "Bound Chest",
+      "status": "processed"
+    },
+    {
+      "id": "6451",
+      "name": "Credits Art",
+      "status": "processed"
+    },
+    {
+      "id": "6435",
+      "name": "Figurines",
+      "status": "processed"
+    },
+    {
+      "id": "6436",
+      "name": "File Select",
+      "status": "processed"
+    },
+    {
+      "id": "6452",
+      "name": "Fireball SFX",
+      "status": "processed"
+    },
+    {
+      "id": "6437",
+      "name": "Items",
+      "status": "processed"
+    },
+    {
+      "id": "6561",
+      "name": "Kinstones",
+      "status": "processed"
+    },
+    {
+      "id": "37189",
+      "name": "The Legend of The Minish",
+      "status": "processed"
+    },
+    {
+      "id": "6562",
+      "name": "Miscellaneous Objects",
+      "status": "processed"
+    },
+    {
+      "id": "6499",
+      "name": "Mushroom",
+      "status": "processed"
+    },
+    {
+      "id": "6492",
+      "name": "Overworld Map",
+      "status": "processed"
+    },
+    {
+      "id": "241527",
+      "name": "Startup Screen",
+      "status": "processed"
+    },
+    {
+      "id": "180815",
+      "name": "Sword (Attacking)",
+      "status": "processed"
+    },
+    {
+      "id": "6565",
+      "name": "Sword Scrolls",
+      "status": "processed"
+    },
+    {
+      "id": "6455",
+      "name": "Text",
+      "status": "processed"
+    },
+    {
+      "id": "6559",
+      "name": "Title Screen (JPN)",
+      "status": "processed"
+    },
+    {
+      "id": "6558",
+      "name": "Title Screen (USA)",
+      "status": "processed"
+    },
+    {
+      "id": "6541",
+      "name": "Water Droplet",
+      "status": "processed"
+    },
+    {
+      "id": "142451",
+      "name": "Minish Cave",
+      "status": "processed"
+    },
+    {
+      "id": "6502",
+      "name": "Naked Man",
+      "status": "processed"
+    },
+    {
+      "id": "6528",
+      "name": "Zol and Fireball",
+      "status": "processed"
+    }
+  ],
+  "stats": {
+    "sourceCount": 134,
+    "sheetCount": 134,
+    "sourceFailureCount": 0,
+    "normalizedBytes": 9005020,
+    "animatedSourceCount": 0,
+    "uniqueTiles": {
+      "8": 230310,
+      "16": 89608
+    }
+  },
+  "notes": [
+    "This collection covers the downloaded source manifest, not every game scene or layer.",
+    "Grid cuts start at the top-left corner. Sheet labels, backgrounds, and baked objects remain intact.",
+    "Original downloads are unchanged. Animated sources use frame 1 in normalized sheets and tile packs."
+  ]
+}

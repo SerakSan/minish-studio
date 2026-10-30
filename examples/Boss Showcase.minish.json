@@ -1,0 +1,110 @@
+{
+  "format": "minish-cap-studio",
+  "version": 4,
+  "name": "Vaati Encounter",
+  "activeSlide": "yxlu6og0s8oh",
+  "slides": [
+    {
+      "id": "yxlu6og0s8oh",
+      "name": "Vaati Encounter",
+      "width": 240,
+      "height": 160,
+      "preset": "game",
+      "exportScale": 4,
+      "color": "#182a25",
+      "transparent": false,
+      "objects": [
+        {
+          "id": "hr8tirv3s8oh",
+          "kind": "sprite",
+          "assetId": "env-6535-arena",
+          "sx": 0,
+          "sy": 0,
+          "sw": 240,
+          "sh": 160,
+          "x": 0,
+          "y": 0,
+          "scale": 1,
+          "flipX": false,
+          "flipY": false,
+          "keyColor": null,
+          "layer": "terrain",
+          "background": true,
+          "sourceId": "env-6535-arena",
+          "pieceName": "Dark Hyrule Castle: Vaati encounter",
+          "generationRole": "background"
+        },
+        {
+          "id": "zmupyzqds8oh",
+          "kind": "sprite",
+          "assetId": "boss-v4-6535-armed-body-14",
+          "sx": 0,
+          "sy": 0,
+          "sw": 159,
+          "sh": 104,
+          "x": 41,
+          "y": 7,
+          "scale": 1,
+          "flipX": false,
+          "flipY": false,
+          "keyColor": null,
+          "layer": "objects",
+          "sourceId": "full-boss-6535",
+          "pieceId": "boss-v4-6535-armed-body-14-piece",
+          "pieceName": "Two arms · body frame 14",
+          "generationRole": "boss"
+        },
+        {
+          "id": "wihfwkfqs8oh",
+          "kind": "sprite",
+          "assetId": "clean-6369",
+          "sx": 79,
+          "sy": 10,
+          "sw": 17,
+          "sh": 21,
+          "x": 112,
+          "y": 129,
+          "scale": 1,
+          "flipX": false,
+          "flipY": false,
+          "keyColor": null,
+          "layer": "objects",
+          "sourceId": "6369",
+          "pieceId": "piece-6369-79-10-17-21",
+          "pieceName": "Pose 003 · 17 × 21",
+          "generationRole": "actors"
+        }
+      ],
+      "generated": {
+        "version": 1,
+        "seed": "boss-review-17",
+        "theme": "boss",
+        "templateId": "wrath-arena",
+        "sourceId": null,
+        "libraryRevision": "2026-10-26T09:45:23+00:00",
+        "note": "An original scene composed from game artwork in an audited setting. Sprite placement is new, rather than a reconstructed gameplay moment."
+      }
+    }
+  ],
+  "savedAt": "2026-10-26T09:51:32.612Z",
+  "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/",
+  "assets": [
+    {
+      "id": "clean-6369",
+      "name": "Link (Cap) · cutouts",
+      "path": "assets/pieces/clean-6369.png"
+    },
+    {
+      "id": "env-6535-arena",
+      "name": "Vaati's Wrath arena floor",
+      "path": "assets/curated/environments/env-6535-arena.png",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6535/"
+    },
+    {
+      "id": "boss-v4-6535-armed-body-14",
+      "name": "Vaati's Wrath · Two arms · body frame 14",
+      "path": "assets/bosses/boss-v4-6535-armed-body-14.png",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6535/"
+    }
+  ]
+}

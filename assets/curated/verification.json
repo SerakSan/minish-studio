@@ -1,0 +1,14 @@
+{
+  "status": "passed",
+  "verifiedAt": "2026-10-26T09:45:36+00:00",
+  "originalSourceChecksumsVerified": 134,
+  "sourceRgbRegionsVerified": 119,
+  "intactSource16pxTilesVerified": 360,
+  "cleanEnvironmentRegions": 103,
+  "reviewedExclusions": 759,
+  "randomSceneCameraBoundsVerified": 6,
+  "foregroundPngCropsAndTransparentPaddingVerified": 7093,
+  "foregroundZipChecksumsVerified": 7093,
+  "gameplayVisualCrossChecks": 1,
+  "scope": "Exact source-RGB preservation, reviewed presentation-alpha edits, map bounds, regular tile mappings and PNG/ZIP source-crop equality verified. This is not a ROM-level authenticity or complete-pose inventory claim."
+}

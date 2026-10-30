@@ -1,0 +1,14 @@
+{
+  "passed": true,
+  "frames": 7,
+  "foregroundPixels": 1477,
+  "allFrameRGBAEqualToReviewedSourceCrops": true,
+  "everyVisibleRGBMatchesOriginalSource": true,
+  "sourceOriginalChecksumUnchanged": true,
+  "sourceSheetChecksumUnchanged": true,
+  "alphaValues": [
+    0,
+    255
+  ],
+  "spriteSheetSha256": "fa1448ef58e5cc0f1dc11f85b582b6cc5bc8f9af8e77c7e436a77e8e66aa8547"
+}

@@ -1,0 +1,24 @@
+.venv/
+__pycache__/
+*.py[cod]
+.DS_Store
+*.part
+.versions/
+release/
+_site/
+*.minish.json
+!examples/My Hyrule Story.minish.json
+!examples/Boss Showcase.minish.json
+*.minish-animation.json
+!examples/Walking Adventure.minish-animation.json
+AGENTS.md
+.agents/
+.codex/
+.aws/
+.ssh/
+.env
+.env.*
+*.pem
+*.key
+*.p12
+*.pfx

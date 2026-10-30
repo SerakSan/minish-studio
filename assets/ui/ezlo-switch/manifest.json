@@ -1,0 +1,209 @@
+{
+  "version": 1,
+  "name": "Ezlo workspace switch",
+  "creator": "SerakSan",
+  "game": "The Legend of Zelda: The Minish Cap",
+  "artwork": "Nintendo / Capcom",
+  "sourceContributor": "Sonikku",
+  "sourceId": "6372",
+  "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6372/",
+  "downloadUrl": "https://www.spriters-resource.com/media/assets/6/6372.png?updated=1755472425",
+  "originalPath": "assets/originals/6372.png",
+  "originalSha256": "6bdd9a7412609dc52c15af441b5d14f6a0a3b71f326fc1d49be4aafda34aacb3",
+  "sourcePath": "assets/sheets/6372-ezlo-hat.png",
+  "sourceSha256": "9c1fc4ab531ca9b73d650e612662e920ad08eb0c6b8600dcab0174588530c9ad",
+  "cleanPath": "assets/pieces/clean-6372.png",
+  "cleanSha256": "3afbb83a6be9752299d69af0774e15fd29c1a68df4be3b48ca2db8e019939b37",
+  "sourceTransparencyRecord": "assets/curated.json sheets.6372.coverage",
+  "image": "assets/ui/ezlo-switch/ezlo-switch.png",
+  "imageSha256": "fa1448ef58e5cc0f1dc11f85b582b6cc5bc8f9af8e77c7e436a77e8e66aa8547",
+  "frames": [
+    {
+      "id": "ezlo-076",
+      "pieceId": "piece-6372-128-238-15-23",
+      "sourceId": "6372",
+      "sourceRect": {
+        "x": 128,
+        "y": 238,
+        "w": 15,
+        "h": 23
+      },
+      "atlasRect": {
+        "x": 0,
+        "y": 0,
+        "w": 24,
+        "h": 28
+      },
+      "contentRect": {
+        "x": 4,
+        "y": 5,
+        "w": 15,
+        "h": 23
+      }
+    },
+    {
+      "id": "ezlo-077",
+      "pieceId": "piece-6372-144-235-16-26",
+      "sourceId": "6372",
+      "sourceRect": {
+        "x": 144,
+        "y": 235,
+        "w": 16,
+        "h": 26
+      },
+      "atlasRect": {
+        "x": 24,
+        "y": 0,
+        "w": 24,
+        "h": 28
+      },
+      "contentRect": {
+        "x": 4,
+        "y": 2,
+        "w": 16,
+        "h": 26
+      }
+    },
+    {
+      "id": "ezlo-078",
+      "pieceId": "piece-6372-162-235-15-26",
+      "sourceId": "6372",
+      "sourceRect": {
+        "x": 162,
+        "y": 235,
+        "w": 15,
+        "h": 26
+      },
+      "atlasRect": {
+        "x": 48,
+        "y": 0,
+        "w": 24,
+        "h": 28
+      },
+      "contentRect": {
+        "x": 4,
+        "y": 2,
+        "w": 15,
+        "h": 26
+      }
+    },
+    {
+      "id": "ezlo-079",
+      "pieceId": "piece-6372-208-237-19-20",
+      "sourceId": "6372",
+      "sourceRect": {
+        "x": 208,
+        "y": 237,
+        "w": 19,
+        "h": 20
+      },
+      "atlasRect": {
+        "x": 72,
+        "y": 0,
+        "w": 24,
+        "h": 28
+      },
+      "contentRect": {
+        "x": 2,
+        "y": 8,
+        "w": 19,
+        "h": 20
+      }
+    },
+    {
+      "id": "ezlo-080",
+      "pieceId": "piece-6372-233-239-19-22",
+      "sourceId": "6372",
+      "sourceRect": {
+        "x": 233,
+        "y": 239,
+        "w": 19,
+        "h": 22
+      },
+      "atlasRect": {
+        "x": 96,
+        "y": 0,
+        "w": 24,
+        "h": 28
+      },
+      "contentRect": {
+        "x": 2,
+        "y": 6,
+        "w": 19,
+        "h": 22
+      }
+    },
+    {
+      "id": "ezlo-081",
+      "pieceId": "piece-6372-257-237-20-24",
+      "sourceId": "6372",
+      "sourceRect": {
+        "x": 257,
+        "y": 237,
+        "w": 20,
+        "h": 24
+      },
+      "atlasRect": {
+        "x": 120,
+        "y": 0,
+        "w": 24,
+        "h": 28
+      },
+      "contentRect": {
+        "x": 2,
+        "y": 4,
+        "w": 20,
+        "h": 24
+      }
+    },
+    {
+      "id": "ezlo-082",
+      "pieceId": "piece-6372-283-239-19-22",
+      "sourceId": "6372",
+      "sourceRect": {
+        "x": 283,
+        "y": 239,
+        "w": 19,
+        "h": 22
+      },
+      "atlasRect": {
+        "x": 144,
+        "y": 0,
+        "w": 24,
+        "h": 28
+      },
+      "contentRect": {
+        "x": 2,
+        "y": 6,
+        "w": 19,
+        "h": 22
+      }
+    }
+  ],
+  "display": {
+    "integerScale": 2,
+    "rightFacing": "horizontal mirror of source art",
+    "leftFacing": "source orientation",
+    "position": "integer native pixels on the editor rail"
+  },
+  "choreography": {
+    "durationMs": 640,
+    "indices": [
+      6,
+      5,
+      4,
+      3,
+      2,
+      1,
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "note": "Genuine Ezlo pose crops with timing and travel authored for the software toggle. This UI arrangement is not presented as an extracted ROM animation cycle."
+  },
+  "transparency": "Copies the existing reviewed clean-6372 RGBA pixels exactly; transparent cell padding is outside source rectangles. No additional source colors or pixels are removed."
+}

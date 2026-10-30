@@ -1,0 +1,14 @@
+{
+  "status": "passed",
+  "verifiedAt": "2026-10-26T09:07:42+00:00",
+  "unchangedSourceSheets": 134,
+  "bossSourcesCovered": 9,
+  "rgbaPngsVerified": 382,
+  "completePresetsVerified": 206,
+  "exactSourceCompositionsVerified": 206,
+  "explodedPartReconstructionsVerified": 206,
+  "embeddedPngsVerified": 382,
+  "originalGameColorPalettesVerified": 382,
+  "zipCrcVerified": true,
+  "scope": "Available published complete frames and reference-informed editable multipart presets for all nine boss sheets. Continuous affine transforms, joint curves, hidden ROM states and exact animation timelines are not exhaustively reconstructed. No community labels or example collages are included as boss artwork."
+}

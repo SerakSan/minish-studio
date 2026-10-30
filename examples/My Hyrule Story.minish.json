@@ -1,0 +1,245 @@
+{
+  "format": "minish-cap-studio",
+  "version": 4,
+  "name": "My Hyrule Story",
+  "activeSlide": "starter-town",
+  "slides": [
+    {
+      "id": "starter-town",
+      "name": "01 Hyrule Town",
+      "preset": "portrait",
+      "width": 216,
+      "height": 270,
+      "exportScale": 5,
+      "color": "#819452",
+      "transparent": false,
+      "objects": [
+        {
+          "id": "town-map",
+          "kind": "sprite",
+          "assetId": "env-6526-town",
+          "sx": 0,
+          "sy": 0,
+          "sw": 1008,
+          "sh": 960,
+          "x": -396,
+          "y": -304,
+          "scale": 1,
+          "flipX": false,
+          "flipY": false,
+          "keyColor": null,
+          "layer": "terrain",
+          "background": true,
+          "sourceId": "6526",
+          "pieceName": "Hyrule Town",
+          "sourceRect": {
+            "x": 0,
+            "y": 0,
+            "w": 1008,
+            "h": 960
+          }
+        },
+        {
+          "id": "town-link",
+          "kind": "sprite",
+          "assetId": "clean-6369",
+          "sx": 15,
+          "sy": 9,
+          "sw": 18,
+          "sh": 23,
+          "x": 100,
+          "y": 102,
+          "scale": 1,
+          "flipX": false,
+          "flipY": false,
+          "keyColor": null,
+          "layer": "objects",
+          "sourceId": "6369",
+          "pieceId": "piece-6369-15-9-18-23",
+          "pieceName": "Link (Cap)"
+        },
+        {
+          "id": "town-dialogue",
+          "kind": "dialogue",
+          "x": 10,
+          "y": 200,
+          "w": 196,
+          "h": 58,
+          "text": "A new adventure begins.\nMake this little world your own.",
+          "fontSize": 9,
+          "color": "#fff7d3",
+          "box": true,
+          "layer": "overlay",
+          "scale": 1
+        }
+      ]
+    },
+    {
+      "id": "starter-woods",
+      "name": "02 Minish Woods",
+      "preset": "portrait",
+      "width": 216,
+      "height": 270,
+      "exportScale": 5,
+      "color": "#819452",
+      "transparent": false,
+      "objects": [
+        {
+          "id": "woods-map",
+          "kind": "sprite",
+          "assetId": "env-6554-woods",
+          "sx": 0,
+          "sy": 0,
+          "sw": 1008,
+          "sh": 1008,
+          "x": -726,
+          "y": -128,
+          "scale": 1,
+          "flipX": false,
+          "flipY": false,
+          "keyColor": null,
+          "layer": "terrain",
+          "background": true,
+          "sourceId": "6554",
+          "pieceName": "Minish Woods",
+          "sourceRect": {
+            "x": 50,
+            "y": 0,
+            "w": 1008,
+            "h": 1008
+          }
+        },
+        {
+          "id": "woods-link",
+          "kind": "sprite",
+          "assetId": "clean-6369",
+          "sx": 15,
+          "sy": 9,
+          "sw": 18,
+          "sh": 23,
+          "x": 142,
+          "y": 156,
+          "scale": 1,
+          "flipX": false,
+          "flipY": false,
+          "keyColor": null,
+          "layer": "objects",
+          "sourceId": "6369",
+          "pieceId": "piece-6369-15-9-18-23",
+          "pieceName": "Link (Cap)"
+        },
+        {
+          "id": "woods-dialogue",
+          "kind": "dialogue",
+          "x": 10,
+          "y": 200,
+          "w": 196,
+          "h": 58,
+          "text": "Take the scenic route.\nSome stories need a little magic.",
+          "fontSize": 9,
+          "color": "#fff7d3",
+          "box": true,
+          "layer": "overlay",
+          "scale": 1
+        }
+      ]
+    },
+    {
+      "id": "starter-village",
+      "name": "03 Minish Village",
+      "preset": "portrait",
+      "width": 216,
+      "height": 270,
+      "exportScale": 5,
+      "color": "#819452",
+      "transparent": false,
+      "objects": [
+        {
+          "id": "village-map",
+          "kind": "sprite",
+          "assetId": "env-6540-village",
+          "sx": 0,
+          "sy": 0,
+          "sw": 1008,
+          "sh": 984,
+          "x": -320,
+          "y": -176,
+          "scale": 1,
+          "flipX": false,
+          "flipY": false,
+          "keyColor": null,
+          "layer": "terrain",
+          "background": true,
+          "sourceId": "6540",
+          "pieceName": "Minish Village",
+          "sourceRect": {
+            "x": 0,
+            "y": 0,
+            "w": 1008,
+            "h": 984
+          }
+        },
+        {
+          "id": "village-link",
+          "kind": "sprite",
+          "assetId": "clean-6369",
+          "sx": 15,
+          "sy": 9,
+          "sw": 18,
+          "sh": 23,
+          "x": 114,
+          "y": 67,
+          "scale": 1,
+          "flipX": false,
+          "flipY": false,
+          "keyColor": null,
+          "layer": "objects",
+          "sourceId": "6369",
+          "pieceId": "piece-6369-15-9-18-23",
+          "pieceName": "Link (Cap)"
+        },
+        {
+          "id": "village-dialogue",
+          "kind": "dialogue",
+          "x": 10,
+          "y": 200,
+          "w": 196,
+          "h": 58,
+          "text": "Small world. Big ideas.\nYour next chapter starts here.",
+          "fontSize": 9,
+          "color": "#fff7d3",
+          "box": true,
+          "layer": "overlay",
+          "scale": 1
+        }
+      ]
+    }
+  ],
+  "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/",
+  "assets": [
+    {
+      "id": "clean-6369",
+      "name": "Link (Cap) · cutouts",
+      "path": "assets/pieces/clean-6369.png",
+      "sourceUrl": null
+    },
+    {
+      "id": "env-6526-town",
+      "name": "Hyrule Town",
+      "path": "assets/curated/environments/env-6526-town.png",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6526/"
+    },
+    {
+      "id": "env-6540-village",
+      "name": "Minish Village",
+      "path": "assets/curated/environments/env-6540-village.png",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6540/"
+    },
+    {
+      "id": "env-6554-woods",
+      "name": "Minish Woods",
+      "path": "assets/curated/environments/env-6554-woods.png",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6554/"
+    }
+  ]
+}

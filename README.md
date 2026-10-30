@@ -8,9 +8,9 @@ Build your own Zelda scenes with genuine game sprites and environment tiles. Arr
 
 **[Launch Minish Studio](https://seraksan.github.io/minish-studio/)** · [Download the offline ZIP](https://github.com/SerakSan/minish-studio/releases/latest/download/Minish-Studio-Offline.zip)
 
-![Minish Studio showing Hyrule Town, the game artwork collection, scene canvas, and editing tools](examples/minish-studio-name-preview.png)
+![Minish Studio showing Hyrule Town, the game artwork collection, scene canvas, and editing tools](examples/minish-studio-preview.png)
 
-[Get started](#get-started) · [User guide](GUIDE.md) · [Publish your copy](PUBLISHING.md) · [Credits](CREDITS.md)
+[Get started](#get-started) · [User guide](GUIDE.md) · [Credits](CREDITS.md)
 
 ## What you can make
 
@@ -42,7 +42,7 @@ No command line, build step, or local server is required to use the editor. Wind
 
 Open [Minish Studio](https://seraksan.github.io/minish-studio/) to start creating in your browser. The same included artwork loads with the app. Editing and exports happen on your device.
 
-Supported browsers can install the hosted app in its own window. Load it once online before using the cached editor offline. The extracted offline ZIP is the most predictable way to keep every supplied file available without a connection. See [installation and publishing](PUBLISHING.md#install-and-use-offline).
+Supported browsers can install the hosted app in its own window. Load it once online before using the cached editor offline. The extracted offline ZIP is the most predictable way to keep every supplied file available without a connection. See the [installation instructions](START-HERE.txt).
 
 ## Your first scene
 
@@ -126,6 +126,6 @@ python3 tools/build_public_release.py --output release/minish-studio-github --ar
 
 For optional local preview, run `python3 tools/preview.py` and open `http://127.0.0.1:8765`. Stop the preview when finished.
 
-Use [PUBLISHING.md](PUBLISHING.md) to publish the prepared GitHub package, enable GitHub Pages, and offer the offline ZIP. It also includes the repository description and suggested discovery topics. Native Windows EXE and macOS DMG installers are not included in this release.
+The GitHub source edition includes a GitHub Pages workflow and a release builder. Native Windows EXE and macOS DMG installers are not included in this release.
 
 [Changelog](CHANGELOG.md) · [Asset structure and verification](GUIDE.md#files-and-verification) · [Artwork rights](ASSET_RIGHTS.md)

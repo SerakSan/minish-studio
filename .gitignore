@@ -12,6 +12,7 @@ _site/
 *.minish-animation.json
 !examples/Walking Adventure.minish-animation.json
 AGENTS.md
+PUBLISHING.md
 .agents/
 .codex/
 .aws/

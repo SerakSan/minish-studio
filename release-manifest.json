@@ -3,7 +3,7 @@
   "author": "SerakSan",
   "edition": "github",
   "fileCount": 8351,
-  "bytes": 135167326,
+  "bytes": 137804904,
   "localPathsAndCredentialsCheck": "passed",
   "files": [
     {
@@ -13,8 +13,8 @@
     },
     {
       "path": ".gitignore",
-      "bytes": 311,
-      "sha256": "1872052730603ae65112f898f58050be9299452eee3aeec4538619ccb59fd2d2"
+      "bytes": 325,
+      "sha256": "6d6bb1a39fa186a836a5b525b8cd2b4041471a84e19a80c6b7111eee49e469fe"
     },
     {
       "path": ".nojekyll",
@@ -38,8 +38,8 @@
     },
     {
       "path": "GUIDE.md",
-      "bytes": 24464,
-      "sha256": "094d7150bbbc505debe5a0fcbb532425111aa311b94136b1acd4cb5a73823ece"
+      "bytes": 24181,
+      "sha256": "11e9ed9e65f7c551debc8626c19be70bc839913c8ecdcd316e8efb9f97112532"
     },
     {
       "path": "LICENSE",
@@ -52,14 +52,9 @@
       "sha256": "a2b9876db592b9f271aa4b5f6e1e88e4bf6fb6c08f65eede5f5070f465ec6b16"
     },
     {
-      "path": "PUBLISHING.md",
-      "bytes": 12957,
-      "sha256": "398f54b3476516ab87b403db7a86ee92933a22ad82a189986edb776d7a4fd516"
-    },
-    {
       "path": "README.md",
-      "bytes": 10913,
-      "sha256": "143b0a9b783ba3b3178614f70b2d6fb201cea6c78dd6f8a1b3e101ac6e1ae550"
+      "bytes": 10732,
+      "sha256": "0b29be9476d80b7d2bbb40b9b40c321e782565e781051fa350ec7d289e8d08fe"
     },
     {
       "path": "START-HERE.txt",
@@ -41542,6 +41537,11 @@
       "sha256": "a06eb48e86c849fba68d75df7890c80699a99a5eb189637f93d975079d6489ea"
     },
     {
+      "path": "examples/minish-studio-preview.png",
+      "bytes": 2650985,
+      "sha256": "2398b2e64121e4487be4b88a40c1b0e6ff3a0785d2fd876903aaf4ee4d3bf4fd"
+    },
+    {
       "path": "examples/starter.js",
       "bytes": 3722,
       "sha256": "5b667022d3083566ae1f7e9e960b9f68ab55154c2c738d5ae93f313ba29f27f0"
@@ -41573,8 +41573,8 @@
     },
     {
       "path": "index.html",
-      "bytes": 57265,
-      "sha256": "f3bf6558e61e329c00d5d447e98a3f925668c2916f5760ce6f0769a669e5d351"
+      "bytes": 57261,
+      "sha256": "ed9063a6859f7a7fa3407188d1c6aa8bf67ee060634bdbbbeedeed9d7db3d73f"
     },
     {
       "path": "library.js",
@@ -41703,8 +41703,8 @@
     },
     {
       "path": "tools/build_public_release.py",
-      "bytes": 7076,
-      "sha256": "4c0f17c2e17b79e0319c30e6f73147ade01f6c1ba194c2c27cbaba81882f0920"
+      "bytes": 7097,
+      "sha256": "61c85c0ec4d802b0ed41b8ff527b245515f7a7ed52939d06ff93dc27180fcbc7"
     },
     {
       "path": "tools/build_transparent_sprites.py",
@@ -41733,8 +41733,8 @@
     },
     {
       "path": "tools/preview.py",
-      "bytes": 2117,
-      "sha256": "b4cabf17b77ad74012fc8f6e88b93ddabc403c343eaf36f37dd1121b6fce6eb7"
+      "bytes": 2100,
+      "sha256": "110dd6a1e0e9d9890e01fef8e8841fdc14a331d80ed0eb4401d2c2318e2431f4"
     },
     {
       "path": "tools/process_assets.py",

@@ -71,7 +71,9 @@ function fixedPartPosition(object, label) {
   let x = part.at.x + part.sourceRect.w / 2 - crop.x + crop.padding;
   let y = part.at.y + part.sourceRect.h / 2 - crop.y + crop.padding;
   if (object.flipX) x = pose.sw - x; if (object.flipY) y = pose.sh - y;
-  return { x: object.x + x * object.scale, y: object.y + y * object.scale };
+  const radians = (object.rotation || 0) * Math.PI / 180, dx = (x - pose.sw / 2) * object.scale, dy = (y - pose.sh / 2) * object.scale;
+  return { x: object.x + pose.sw * object.scale / 2 + dx * Math.cos(radians) - dy * Math.sin(radians),
+    y: object.y + pose.sh * object.scale / 2 + dx * Math.sin(radians) + dy * Math.cos(radians) };
 }
 for (const [source, presetId, anchorPart] of [
   ['full-boss-6546', 'gleerok-look-around', 'Rocky shell/body'],
@@ -82,18 +84,20 @@ for (const [source, presetId, anchorPart] of [
   const h = harness(), first = bosses.sheets[source].pieces[0];
   const actor = h.engine.addObject({ kind: 'sprite', assetId: first.assetId, pieceId: first.id, sourceId: source, sx: first.sx, sy: first.sy, sw: first.sw, sh: first.sh, x: 37, y: 61, scale: 1, layer: 'objects' });
   h.simple.apply(actor.id, { presetId, motion: 'none' });
-  for (const transform of [{ scale: 1, flipX: false }, { scale: 2, flipX: false }, { scale: 2, flipX: true, flipY: true }]) {
+  for (const transform of [{ scale: 1, flipX: false }, { scale: 2, flipX: false }, { scale: 2, flipX: true, flipY: true }, { scale: 1, rotation: 45, flipX: false, flipY: false }, { scale: 2, rotation: 270, flipX: true, flipY: true }]) {
     h.simple.place(actor.id, transform);
     const start = fixedPartPosition(h.engine.getObjectAt(actor.id, 0), anchorPart);
     for (let frame = 0; frame < h.engine.currentClip.duration; frame++) {
       const point = fixedPartPosition(h.engine.getObjectAt(actor.id, frame), anchorPart);
-      assert(Math.abs(point.x - start.x) <= .5 && Math.abs(point.y - start.y) <= .5, 'Changing crop bounds keeps the fixed boss component anchored: ' + JSON.stringify({ source, frame, transform, start, point }));
+      const tolerance = transform.rotation ? 1 : .5;
+      assert(Math.abs(point.x - start.x) <= tolerance && Math.abs(point.y - start.y) <= tolerance, 'Changing crop bounds keeps the fixed boss component anchored: ' + JSON.stringify({ source, frame, transform, start, point }));
     }
     h.simple.apply(actor.id, { motion: 'right', distance: 24 });
     const movingStart = fixedPartPosition(h.engine.getObjectAt(actor.id, 0), anchorPart);
     for (const frame of [0, 7, 19, 30, 47]) {
       const point = fixedPartPosition(h.engine.getObjectAt(actor.id, frame), anchorPart);
-      assert(Math.abs(point.x - movingStart.x - Math.round(24 * Math.min(1, frame / 24))) <= .5 && Math.abs(point.y - movingStart.y) <= .5, 'Whole-boss movement combines with component anchoring');
+      const tolerance = transform.rotation ? 1 : .5;
+      assert(Math.abs(point.x - movingStart.x - Math.round(24 * Math.min(1, frame / 24))) <= tolerance && Math.abs(point.y - movingStart.y) <= tolerance, 'Whole-boss movement combines with component anchoring');
     }
     h.simple.apply(actor.id, { motion: 'none' });
   }

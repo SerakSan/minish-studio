@@ -6,6 +6,8 @@ The Legend of Zelda: The Minish Cap and its original game artwork are credited t
 
 The sheets were obtained from [The Spriters Resource's Minish Cap collection](https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/). [CREDITS.md](CREDITS.md) lists every included source sheet, its credited contributor, and its original source page. Those credits are also searchable in the app.
 
+The complete playable Hyrule atlas comes from [VGMaps](https://www.vgmaps.com/atlas/GBA/index.htm), mapped by rocktyt. Its original source and reviewed removal of presentation annotations are recorded separately in `assets/world/source-manifest.json`. The illustrated world map comes from the credited Overworld Map sheet. These map images have the same separate game-art rights described above.
+
 The transparent PNGs, animation examples and exports, assembled boss examples, tile packs, bitmap lettering, and menu frames are derivatives of these source images. Their creation does not transfer ownership or turn the underlying artwork into MIT-licensed content. Source coordinates, contributor credits, and checksums are retained in the asset manifests.
 
 The game UI is derived from the Text sheet (6455), Items sheet (6437), and USA Title Screen (6558). See `assets/ui/credits.json` and `assets/logo.json` for exact source regions. The animated workspace switch uses seven genuine Ezlo (Hat) poses from sheet 6372, contributed by Sonikku. Its cropping, source hashes, and authored switch choreography are recorded in `assets/ui/ezlo-switch/manifest.json`. Full boss assemblies record their component images, nearest-neighbor transforms, placements, and gameplay references in `assets/bosses/`.
@@ -15,3 +17,5 @@ The curated gallery omits reviewed source annotations and ambiguous edited mater
 The collection contains the published sheets in its manifest, rather than a verified complete extraction of every frame in the game's ROM. Some maps have objects baked into their backgrounds, and some sprite rips overlap or omit frames. Manual crop and exact color removal remain available for those cases.
 
 Before publishing a copy that includes the artwork, assess your rights to distribute that artwork and follow the source contributors' applicable requests. The publishing kit prepares the software technically; it does not provide an artwork license.
+
+The monochrome hand tool icon is original editor UI covered by the editor's code license. Combat assemblies combine genuine game pixels; they retain the rights and contributor credits of their recorded sources. Held inventory props and editor-authored timing are identified in the combat manifest.

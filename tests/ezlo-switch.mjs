@@ -166,4 +166,5 @@ assert.match(markup, /role="group"/);
 assert.equal((markup.match(/type="button"/g) || []).length, 2);
 assert.match(markup, />Scene<\/button>/);
 assert.match(markup, />Animate<\/button>/);
+assert.doesNotMatch(markup, /experimental/i);
 console.log('Ezlo switch: source provenance, embedded PNG, direction, interruption, narrow screens, native buttons, and reduced motion pass.');

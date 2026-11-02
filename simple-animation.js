@@ -7,6 +7,16 @@
   const SPEED = { slow: .5, normal: 1, fast: 2 };
   const MOTIONS = ['none', 'left', 'right', 'up', 'down', 'bob', 'outback'];
   const clone = value => JSON.parse(JSON.stringify(value));
+  const normalizeRotation = value => ((Math.round((Number(value) || 0) / 45) * 45) % 360 + 360) % 360;
+  function rotateVector(x, y, degrees) {
+    const index = normalizeRotation(degrees) / 45, q = Math.SQRT1_2;
+    const cos = [1, q, 0, -q, -1, -q, 0, q][index], sin = [0, q, 1, q, 0, -q, -1, -q][index];
+    return { x: x * cos - y * sin, y: x * sin + y * cos };
+  }
+  function localOffset(width, height, point, scale, rotation) {
+    const turned = rotateVector((point.x - width / 2) * scale, (point.y - height / 2) * scale, rotation);
+    return { x: width * scale / 2 + turned.x, y: height * scale / 2 + turned.y };
+  }
   const range = (first, last) => Array.from({ length: last - first + 1 }, (_, i) => first + i);
   const reverse = values => [...values].reverse();
   const swing = values => [...values, ...values.slice(1, -1).reverse()];
@@ -109,15 +119,23 @@
   function presetList(sourceId) {
     ready();
     const id = String(sourceId || ''), sheet = window.MINISH_CURATED?.sheets?.[id] || window.MINISH_BOSSES?.sheets?.[id];
-    if (!sheet || sheet.hidden || sheet.excluded) return [];
-    const pieces = sheet.pieces || [];
-    return definitions.filter(definition => definition[1] === id).flatMap(([presetId, source, label, sequences, assembly, repeat = true]) => {
+    const pieces = sheet?.pieces || [];
+    const legacy = !sheet || sheet.hidden || sheet.excluded ? [] : definitions.filter(definition => definition[1] === id).flatMap(([presetId, source, label, sequences, assembly, repeat = true]) => {
       const selected = sequences.map(sequence => pieces.find(piece => piece.sequence === sequence));
       if (selected.some(piece => !piece || piece.excluded || piece.hidden || !studio.getPiece?.(piece.id))) return [];
       return [{ id: presetId, label, sourceId: source, poseIds: selected.map(piece => piece.id), fps: 6, defaultHold: 2, assembly: !!assembly, repeat,
         anchorPart: ASSEMBLY_ANCHORS[id] || null,
         description: assembly ? (repeat ? 'An editor loop of assembled game sprites.' : 'Plays once, then holds the last assembled pose. A short clip extends to fit.') + ' The assembly and timing are editable, not extracted game frames.' : 'A reviewed loop of genuine poses. Speed and movement are editor settings.' }];
     });
+    const combat = (window.MINISH_COMBAT_LIBRARY?.actions || []).filter(action => String(action.sourceId) === id).flatMap(action => {
+      const selected = (action.poseIds || []).map(pieceId => studio.getPiece?.(pieceId));
+      if (!selected.length || selected.some(piece => !piece || piece.excluded || piece.hidden)) return [];
+      return [{ ...clone(action), sourceId: id, poseIds: selected.map(piece => piece.id),
+        fps: action.fps || 6, defaultHold: action.defaultHold || 2, repeat: action.repeat !== false,
+        combat: true, assembly: !!action.assembly, anchorPart: '__combat__',
+        description: action.description || (action.inventoryDerivedProp ? 'Editor assembly: a genuine item sprite held by the character.' : action.assembly ? 'An editable weapon assembly made from genuine game parts.' : 'A reviewed weapon action using genuine game poses.') + ' Timing and movement are made for the editor.' }];
+    });
+    return [...legacy, ...combat];
   }
   function presetsFor(value) {
     ready();
@@ -135,8 +153,21 @@
     return recipe;
   }
   function previewHold(preset, speed = 'normal', fps = 12) {
-    const cadence = typeof preset === 'object' ? preset.fps || 6 : 6;
+    // Combat recipes use their reviewed reference hold at 12 FPS. This leaves
+    // readable time for release, travel and recovery rather than a 7-frame toss.
+    const cadence = typeof preset === 'object' ? preset.combat ? 12 / (preset.defaultHold || 2) : preset.fps || 6 : 6;
     return Math.max(1, Math.round(Number(fps) / (cadence * (SPEED[speed] || 1))));
+  }
+  const COMPANION_PROPS = [...POSE, ...MOVEMENT, 'visible', 'scale', 'rotation', 'flipX', 'flipY', 'layer'];
+  function ownedCompanions(value) {
+    const id = typeof value === 'object' ? value?.id : value;
+    return animation.currentClip.objects.filter(object => object.simpleCompanion?.version === 1 && object.simpleCompanion.ownerId === id);
+  }
+  function companionModified(base) {
+    const children = ownedCompanions(base), roles = base.simpleAnimation?.companionRoles || [];
+    if (roles.some(role => !children.some(child => child.simpleCompanion.role === role))) return true;
+    return children.some(child => JSON.stringify(projectKeys(animation.getTrack(child.id)?.keys, COMPANION_PROPS, animation.currentClip.duration)) !==
+      JSON.stringify(projectKeys(child.simpleCompanion.generated, COMPANION_PROPS, animation.currentClip.duration)));
   }
   const critical = base => base.kind === 'dialogue' ? [...MOVEMENT, 'text'] : [...POSE, ...MOVEMENT];
   function projectKeys(keys, properties, duration) {
@@ -151,7 +182,7 @@
     const keys = animation.getTrack(base.id)?.keys || [], properties = critical(base), metadata = base.simpleAnimation;
     const actual = projectKeys(keys, properties, animation.currentClip.duration);
     const expected = metadata?.version === 1 && Array.isArray(metadata.generated) ? projectKeys(metadata.generated, properties, animation.currentClip.duration) : [];
-    const modified = metadata?.version === 1 && JSON.stringify(actual) !== JSON.stringify(expected);
+    const modified = metadata?.version === 1 && (JSON.stringify(actual) !== JSON.stringify(expected) || companionModified(base));
     const hasCustomKeys = metadata?.version === 1 ? modified : !!actual.length;
     return { recipe: getRecipe(base), hasCustomKeys, modified: !!modified, needsReplacement: hasCustomKeys };
   }
@@ -170,6 +201,11 @@
     return result;
   }
   function assemblyPartPoint(piece, label, flipX, flipY) {
+    if (label === '__combat__') {
+      if (!piece) return null;
+      const point = piece.combatAnchor || { x: piece.sw / 2, y: piece.sh };
+      return { x: flipX ? piece.sw - point.x : point.x, y: flipY ? piece.sh - point.y : point.y };
+    }
     const part = piece?.sourceParts?.find(part => part.label === label), crop = piece?.compositionCrop;
     if (!part || !crop) return null;
     const x = part.at.x + part.sourceRect.w / 2 - crop.x + crop.padding;
@@ -182,12 +218,15 @@
     const from = assemblyPartPoint(basePiece, label, base.flipX, base.flipY), to = assemblyPartPoint(piece, label, base.flipX, base.flipY);
     if (!from || !to) return null;
     const scale = base.scale || 1;
-    const anchor = base.animationAnchor === 'top-left' ? 0 : base.animationAnchor === 'feet' ? 1 : .5;
-    const automaticX = base.animationAnchor === 'top-left' ? 0 : (base.sw - piece.sw) * scale / 2;
-    const automaticY = (base.sh - piece.sh) * scale * anchor;
+    const category = window.MINISH_CURATED?.sheets?.[String(base.sourceId)]?.category || window.MINISH_BOSSES?.sheets?.[String(base.sourceId)]?.category || '';
+    const centered = base.animationAnchor === 'center' || base.animationAnchor !== 'feet' && (base.layer === 'terrain' || ['objects', 'environments', 'full-bosses', 'complete-bosses'].includes(category));
+    const heightChange = (base.sh - piece.sh) * scale, automaticTurn = rotateVector(0, centered ? 0 : heightChange / 2, base.rotation);
+    const automaticX = base.animationAnchor === 'top-left' ? 0 : (base.sw - piece.sw) * scale / 2 + automaticTurn.x;
+    const automaticY = base.animationAnchor === 'top-left' ? 0 : heightChange / 2 + automaticTurn.y;
+    const fromOffset = localOffset(base.sw, base.sh, from, scale, base.rotation), toOffset = localOffset(piece.sw, piece.sh, to, scale, base.rotation);
     // Canonical key positions are whole pixels. Compensate for the engine's
     // rounded automatic pose offset rather than rounding two half-pixel shifts.
-    return { x: Math.round((from.x - to.x) * scale) - Math.round(automaticX), y: Math.round((from.y - to.y) * scale) - Math.round(automaticY) };
+    return { x: Math.round(fromOffset.x - toOffset.x) - Math.round(automaticX), y: Math.round(fromOffset.y - toOffset.y) - Math.round(automaticY) };
   }
   function compile(base, recipe, clip) {
     const map = new Map(), put = (at, values) => { const key = map.get(at) || { frame: at, values: {}, easing: 'hold' }; Object.assign(key.values, values); map.set(at, key); };
@@ -234,6 +273,95 @@
     }
     return { duration, keys: [...map.values()].sort((a, b) => a.frame - b.frame) };
   }
+  function companionPlans(base, recipe) {
+    const pack = window.MINISH_COMBAT_LIBRARY, preset = presetsFor(base).find(item => item.id === recipe.presetId);
+    if (!preset?.combat || !['throw', 'ranged', 'magic'].includes(preset.kind) || !preset.effectId || !pack) return [];
+    const effect = pack.getEffect?.(preset.effectId), impact = preset.impactEffectId && pack.getEffect?.(preset.impactEffectId);
+    if (!effect?.pieceIds?.length) throw new Error('This action needs its game effects. Reopen the complete app folder.');
+    const clip = animation.currentClip, hold = previewHold(preset, recipe.speed, clip.fps), period = Math.max(2, preset.poseIds.length * hold);
+    const release = Math.min(period - 1, Math.max(1, Math.round(period * (preset.releasePhase || .5))));
+    const flight = Math.max(2, Math.round(period * .3)), land = Math.min(period - 1, release + flight);
+    const burstLength = Math.min(period - 1, Math.max(2, Math.round(clip.fps * .5 / (SPEED[recipe.speed] || 1))));
+    const representative = studio.getPiece(preset.representativePoseId || preset.poseIds[0]);
+    const pivot = representative?.combatAnchor || { x: (representative?.sw || base.sw) / 2, y: representative?.sh || base.sh };
+    const muzzle = preset.releasePoint ? { x: preset.releasePoint.x - pivot.x, y: preset.releasePoint.y - pivot.y } : { x: 0, y: -12 };
+    const direction = { left: [-1, 0], right: [1, 0], up: [0, -1], down: [0, 1] }[preset.direction] || [1, 0];
+    const actorOnly = clone(base); delete actorOnly.simpleAnimation; delete actorOnly.simpleCompanion;
+    const actorClip = { ...clip, objects: [actorOnly], tracks: [animation.getTrack(base.id)].filter(Boolean) };
+    const actorFrames = Array.from({ length: clip.duration }, (_, frame) => animation.evaluateFrame(actorClip, frame, { includeHidden: true }).objects[0]);
+    function hand(frame) {
+      const actor = actorFrames[Math.min(clip.duration - 1, Math.max(0, frame))], piece = studio.getPiece(actor.pieceId);
+      const anchor = piece?.combatAnchor || { x: actor.sw / 2, y: actor.sh };
+      const offset = localOffset(actor.sw, actor.sh, { x: (actor.flipX ? actor.sw - anchor.x : anchor.x) + (actor.flipX ? -muzzle.x : muzzle.x),
+        y: (actor.flipY ? actor.sh - anchor.y : anchor.y) + (actor.flipY ? -muzzle.y : muzzle.y) }, actor.scale, actor.rotation);
+      return { actor, x: actor.x + offset.x, y: actor.y + offset.y };
+    }
+    function route(cycle) {
+      const start = hand(cycle * period + release), scale = start.actor.scale;
+      const vector = rotateVector(direction[0] * (start.actor.flipX ? -1 : 1), direction[1] * (start.actor.flipY ? -1 : 1), start.actor.rotation);
+      const up = rotateVector(0, start.actor.flipY ? 1 : -1, start.actor.rotation);
+      return { start, end: { x: start.x + vector.x * 48 * scale, y: start.y + vector.y * 48 * scale }, scale, up };
+    }
+    function plan(role, fx) {
+      const keys = [];
+      for (let at = 0; at < clip.duration; at++) {
+        let cycle = Math.floor(at / period), age = at - cycle * period, visible = false, progress = 0;
+        let path = route(cycle), point = path.start;
+        if (role === 'burst') {
+          cycle = Math.floor((at - land) / period); age = at - cycle * period - land;
+          path = route(Math.max(0, cycle)); point = path.end;
+          if (String(base.sourceId) === '6413') point = hand(at);
+          visible = cycle >= 0 && age >= 0 && age < burstLength;
+          progress = Math.max(0, Math.min(1, age / Math.max(1, burstLength - 1)));
+        } else if (preset.weapon === 'boomerang') {
+          visible = age >= release;
+          progress = Math.max(0, Math.min(1, (age - release) / Math.max(1, period - release - 1)));
+          const returnTo = hand(at), t = Math.sin(progress * Math.PI);
+          const home = { x: path.start.x * (1 - progress) + returnTo.x * progress, y: path.start.y * (1 - progress) + returnTo.y * progress };
+          const arc = Math.sin(progress * Math.PI * 2) * 7 * path.scale;
+          point = { x: home.x + (path.end.x - path.start.x) * t + path.up.x * arc, y: home.y + (path.end.y - path.start.y) * t + path.up.y * arc };
+        } else {
+          visible = age >= release && age < land;
+          progress = Math.max(0, Math.min(1, (age - release) / Math.max(1, land - release - 1)));
+          const t = preset.effectId === 'gust' ? 1 - progress : progress;
+          point = { x: path.start.x + (path.end.x - path.start.x) * t, y: path.start.y + (path.end.y - path.start.y) * t };
+          const arc = Math.sin(progress * Math.PI) * (preset.weapon === 'bomb' ? 14 : preset.weapon === 'bone' ? 6 : 0) * path.scale;
+          point.x += path.up.x * arc; point.y += path.up.y * arc;
+        }
+        const current = actorFrames[at], ids = fx.directions?.[preset.direction] || fx.pieceIds;
+        const phase = preset.effectId === 'gust' ? 1 - progress : progress;
+        const index = role === 'burst' || preset.effectId === 'gust' ? Math.min(ids.length - 1, Math.floor(phase * ids.length)) : Math.floor(at / Math.max(1, hold)) % ids.length;
+        const piece = studio.getPiece(ids[index]);
+        if (!piece) throw new Error('A game effect is missing from this action. Reopen the complete app folder.');
+        const anchor = piece.effectAnchor || { x: piece.sw / 2, y: piece.sh / 2 };
+        const offset = localOffset(piece.sw, piece.sh, { x: current.flipX ? piece.sw - anchor.x : anchor.x, y: current.flipY ? piece.sh - anchor.y : anchor.y }, current.scale, current.rotation);
+        keys.push({ frame: at, easing: 'hold', values: { pieceId: piece.id,
+          x: Math.round(point.x - offset.x), y: Math.round(point.y - offset.y),
+          scale: current.scale, rotation: normalizeRotation(current.rotation), flipX: current.flipX, flipY: current.flipY, visible: visible && current.visible && path.start.actor.visible, layer: current.layer } });
+      }
+      return { role, effect: fx, keys, actionId: preset.id };
+    }
+    // Bob-ombs are the bomb themselves. Give their fuse an explosion, not an
+    // unrelated second bomb thrown out of their face.
+    if (String(base.sourceId) === '6413') return [plan('burst', pack.getEffect('explosion'))];
+    return [plan('projectile', effect), ...(impact ? [plan('burst', impact)] : [])];
+  }
+  function syncCompanions(base, recipe) {
+    const plans = companionPlans(base, recipe), existing = ownedCompanions(base), keep = new Set();
+    for (const plan of plans) {
+      const first = studio.getPiece(plan.keys[0].values.pieceId);
+      const value = { kind: 'sprite', assetId: first.assetId, sourceId: first.sourceId, pieceId: first.id, pieceName: (base.pieceName || 'Action') + ' · ' + plan.role,
+        sx: first.sx, sy: first.sy, sw: first.sw, sh: first.sh, scale: base.scale, x: plan.keys[0].values.x, y: plan.keys[0].values.y,
+        rotation: normalizeRotation(base.rotation), flipX: base.flipX, flipY: base.flipY, layer: base.layer, visible: false, keyColor: first.keyColor || null, animationAnchor: 'top-left',
+        simpleCompanion: { version: 1, ownerId: base.id, actionId: plan.actionId, role: plan.role, generated: clone(plan.keys) } };
+      let child = existing.find(object => !keep.has(object.id) && object.simpleCompanion.role === plan.role);
+      if (child) { animation.clearKeyProperties(child.id, COMPANION_PROPS); child = animation.updateObject(child.id, value, { keyframe: false }); }
+      else child = animation.addObject(value);
+      animation.setKeys(child.id, plan.keys.map(key => ({ ...key, raw: true }))); keep.add(child.id);
+    }
+    for (const child of existing) if (!keep.has(child.id)) animation.removeObject(child.id);
+    return plans.map(plan => plan.role);
+  }
   function apply(value, input = {}, options = {}) {
     const base = requireBase(value), recipe = recipeFor(base, input);
     if (inspect(base).needsReplacement && !options.replaceCustom) throw replacementError();
@@ -249,13 +377,28 @@
       if (keys.length) animation.setKeys(base.id, keys);
       animation.updateObject(base.id, {
         ...(base.kind === 'dialogue' ? { text: recipe.fullText } : {}),
+        ...(base.simpleCompanion ? { simpleCompanion: null } : {}),
         simpleAnimation: { version: 1, recipe, generated: projectKeys(keys, properties, compiled.duration), fps: animation.currentClip.fps, duration: compiled.duration }
       }, { keyframe: false });
+      const roles = syncCompanions(baseFor(base.id), recipe), live = baseFor(base.id);
+      animation.updateObject(base.id, { simpleAnimation: { ...live.simpleAnimation, companionRoles: roles } }, { keyframe: false });
       // A longer message can extend the clip. Existing ready loops should keep
       // playing for that extra time, while custom timeline edits stay untouched.
       if (extended) for (const other of animation.currentClip.objects) if (other.id !== base.id && other.simpleAnimation?.version === 1 && !inspect(other).needsReplacement) apply(other.id, getRecipe(other), options);
+      animation.selectObject(base.id);
     });
     return getRecipe(base.id);
+  }
+  function compileRecipe(value, input = {}, clip = null) {
+    ready();
+    if (!value || !['sprite', 'dialogue'].includes(value.kind)) throw new Error('Choose a game sprite or dialogue to animate.');
+    const timing = clip || animation.currentClip;
+    if (!Number.isInteger(timing?.duration) || timing.duration < 1 || timing.duration > 600 || !Number.isInteger(timing.fps) || timing.fps < 1 || timing.fps > 60) throw new Error('Choose valid animation timing.');
+    // A detached input must never resolve to an edited live object whose ID
+    // happens to match a seeded generated clip. Compilation changes no state.
+    const base = clone(value); delete base.id;
+    const recipe = recipeFor(base, input);
+    return clone({ ...compile(base, recipe, timing), recipe });
   }
   function finitePosition(value, fallback) {
     if (value === undefined) return fallback;
@@ -266,10 +409,12 @@
   }
   function place(value, patch = {}, options = {}) {
     const base = requireBase(value), x = finitePosition(patch.x, base.x), y = finitePosition(patch.y, base.y), dx = x - base.x, dy = y - base.y;
-    const safe = ['scale', 'flipX', 'flipY', 'layer', 'visible', 'text', 'fontSize', 'w', 'h', 'color', 'box', 'animationAnchor'];
+    const safe = ['scale', 'rotation', 'flipX', 'flipY', 'layer', 'visible', 'text', 'fontSize', 'w', 'h', 'color', 'box', 'animationAnchor'];
     const changes = Object.fromEntries(safe.filter(prop => Object.prototype.hasOwnProperty.call(patch, prop)).map(prop => [prop, patch[prop]]));
     const metadata = base.simpleAnimation?.version === 1 ? clone(base.simpleAnimation) : null;
-    const recalibrate = !!metadata && !inspect(base).needsReplacement && ['scale', 'flipX', 'flipY', 'animationAnchor'].some(prop => prop in changes) &&
+    const transforming = ['scale', 'rotation', 'flipX', 'flipY', 'animationAnchor'].some(prop => prop in changes);
+    if (metadata && transforming && companionModified(base) && !options.replaceCustom) throw replacementError();
+    const recalibrate = !!metadata && (!inspect(base).needsReplacement || options.replaceCustom) && transforming &&
       presetsFor(base).some(preset => preset.id === metadata.recipe?.presetId && preset.anchorPart);
     const revealing = base.kind === 'dialogue' && metadata?.recipe?.presetId === 'text-reveal' && 'text' in changes;
     if (revealing && inspect(base).needsReplacement && !options.replaceCustom) throw replacementError();
@@ -286,6 +431,15 @@
       else if (base.kind === 'dialogue' && metadata && 'text' in changes) {
         metadata.recipe.fullText = String(changes.text || ''); animation.updateObject(base.id, { simpleAnimation: metadata }, { keyframe: false });
       }
+      if (!revealing && !recalibrate && ownedCompanions(base.id).length) {
+        if (metadata && !inspect(base.id).needsReplacement) syncCompanions(baseFor(base.id), metadata.recipe);
+        else if (dx || dy) for (const child of ownedCompanions(base.id)) {
+          const generated = clone(child.simpleCompanion); for (const key of generated.generated) { if ('x' in key.values) key.values.x += dx; if ('y' in key.values) key.values.y += dy; }
+          animation.updateObject(child.id, { x: child.x + dx, y: child.y + dy, simpleCompanion: generated }, { keyframe: false });
+          animation.setKeys(child.id, (animation.getTrack(child.id)?.keys || []).map(key => ({ ...key, raw: true, values: { ...key.values, ...('x' in key.values ? { x: key.values.x + dx } : {}), ...('y' in key.values ? { y: key.values.y + dy } : {}) } })));
+        }
+      }
+      animation.selectObject(base.id);
     });
     return baseFor(base.id);
   }
@@ -297,18 +451,28 @@
   function remove(value, options = {}) {
     const base = requireBase(value);
     if (inspect(base).needsReplacement && !options.replaceCustom) throw replacementError();
-    animation.batch(() => { animation.clearKeyProperties(base.id, critical(base)); animation.updateObject(base.id, { simpleAnimation: null }, { keyframe: false }); });
+    animation.batch(() => { for (const child of ownedCompanions(base)) animation.removeObject(child.id); animation.clearKeyProperties(base.id, critical(base)); animation.updateObject(base.id, { simpleAnimation: null }, { keyframe: false }); });
     return baseFor(base.id);
   }
   function duplicate(value) {
     const base = requireBase(value); let copy;
     animation.batch(() => {
       copy = animation.duplicateObject(base.id);
+      // A copied effect is an independent scene piece. Only duplicating its
+      // actor should create another effect owned by that actor's copy.
+      if (base.simpleCompanion) animation.updateObject(copy.id, { simpleCompanion: null }, { keyframe: false });
       if (copy.simpleAnimation?.version === 1) {
         const metadata = clone(copy.simpleAnimation), dx = copy.x - base.x, dy = copy.y - base.y;
         for (const key of metadata.generated || []) { if ('x' in key.values) key.values.x += dx; if ('y' in key.values) key.values.y += dy; }
         animation.updateObject(copy.id, { simpleAnimation: metadata }, { keyframe: false });
       }
+      for (const child of ownedCompanions(base)) {
+        const childCopy = animation.duplicateObject(child.id), dx = copy.x - base.x, dy = copy.y - base.y;
+        const metadata = clone(child.simpleCompanion); metadata.ownerId = copy.id;
+        for (const key of metadata.generated) { if ('x' in key.values) key.values.x += dx; if ('y' in key.values) key.values.y += dy; }
+        animation.updateObject(childCopy.id, { x: child.x + dx, y: child.y + dy, simpleCompanion: metadata }, { keyframe: false });
+      }
+      animation.selectObject(copy.id);
     });
     return baseFor(copy.id);
   }
@@ -319,10 +483,11 @@
     animation.batch(() => { for (const base of objects) apply(base.id, getRecipe(base), options); });
     return objects.length;
   }
-  const api = { init, presetsFor, cyclesFor, getRecipe, inspect, apply, place, moveBase, remove, duplicate, refreshAll, previewHold,
+  const api = { init, presetsFor, cyclesFor, getRecipe, inspect, apply, compileRecipe, place, moveBase, remove, duplicate, refreshAll, previewHold, ownedCompanions,
     hasCustomKeys: value => inspect(value).hasCustomKeys,
-    get coverage() { ready(); return { presets: definitions.flatMap(definition => presetList(definition[1]).filter(preset => preset.id === definition[0])).length,
-      sources: [...new Set(definitions.map(definition => definition[1]).filter(source => presetList(source).length))],
+    get coverage() { ready(); const sourceIds = [...new Set([...definitions.map(definition => definition[1]), ...(window.MINISH_COMBAT_LIBRARY?.actions || []).map(action => String(action.sourceId))])];
+      const sources = sourceIds.filter(source => presetList(source).length), presets = sources.flatMap(presetList);
+      return { presets: presets.length, sources, combatActions: presets.filter(preset => preset.combat).length,
       note: 'Reviewed ready actions from the downloaded collection, with movement for every piece. Multipart boss animations are editor assemblies. This is not a claim of complete game animation coverage.' }; } };
   window.MINISH_SIMPLE_ANIMATION = api;
 })();

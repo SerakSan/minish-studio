@@ -7,6 +7,11 @@ from urllib.parse import unquote, urlparse
 ROOT = Path(__file__).resolve().parents[1]
 FILES = {"index.html", "studio.css", "studio.js", "library.js", "controls.js", "animation-engine.js", "simple-animation.js", "ezlo-switch.js", "ezlo-switch.css", "animation-export.js", "animation-ui.js", "animation.css", "maker.css", "random-scenes.js", "pwa.js", "service-worker.js", "manifest.webmanifest", "README.md", "CREDITS.md", "ASSET_RIGHTS.md", "PRIVACY.md", "LICENSE", "assets/catalog.js", "assets/catalog.json", "assets/game-ui.js", "assets/pieces.js", "assets/pieces.json", "assets/full-bosses.js", "assets/full-bosses.json", "assets/sprites.js", "assets/legacy-bosses.js", "assets/curated.js", "assets/curated.json", "assets/logo.js", "assets/logo.json"}
 PREFIXES = ("assets/sheets/", "assets/thumbnails/", "assets/ui/", "assets/pieces/", "assets/bosses/", "assets/sprites/", "assets/curated/", "icons/", "examples/")
+FILES.update({"GUIDE.md", "START-HERE.txt", "Open Minish Studio.html", "world-scenes.js", "assets/world-maps.js", "assets/world-maps.json"})
+FILES.update({"world-animation.js", "world-animation-ui.js"})
+FILES.update({"combat-library.js"})
+PREFIXES += ("assets/world/",)
+PREFIXES += ("assets/combat/",)
 ART_ROOTS = [ROOT, (ROOT / "assets/sheets").resolve(), (ROOT / "assets/thumbnails").resolve()]
 
 

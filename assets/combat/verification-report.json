@@ -1,0 +1,11 @@
+{
+  "status": "passed",
+  "actions": 42,
+  "frames": 346,
+  "assemblyFrames": 156,
+  "effects": 9,
+  "originalChecksumsPreserved": true,
+  "sourceRgbaMatches": true,
+  "everyAssemblyReconstructed": true,
+  "opaqueSourcePixelsNotRecolored": true
+}

@@ -145,6 +145,83 @@ def intersects(piece,rect):
     return piece['sx']<x+w and piece['sy']<y+h and piece['sx']+piece['sw']>x and piece['sy']+piece['sh']>y
 
 
+def curate_minish_link(pieces, exclusions, reasons):
+    """Keep disconnected marker rays with their native frame, not as actors."""
+    ray_ids = {
+        'piece-19728-4-54-3-4', 'piece-19728-21-54-3-4',
+        'piece-19728-25-53-3-5', 'piece-19728-31-54-2-4',
+        'piece-19728-38-54-3-4', 'piece-19728-42-53-3-5',
+        'piece-19728-55-54-3-4', 'piece-19728-59-53-3-5',
+        'piece-19728-65-54-2-4', 'piece-19728-1-79-2-4',
+        'piece-19728-7-77-3-5', 'piece-19728-14-78-3-4',
+        'piece-19728-24-79-3-5', 'piece-19728-28-80-3-4',
+    }
+    # Full native cells were checked against the sheet, including every
+    # disconnected opaque pixel. The first burst frame was already complete.
+    frames = {
+        'piece-19728-2-53-14-23': ('piece-19728-2-53-14-23', (2,53,14,23), (0,52,17,25)),
+        'piece-19728-19-59-14-17': ('curated-19728-marker-burst-2', (19,53,14,23), (17,52,17,25)),
+        'piece-19728-36-55-14-21': ('curated-19728-marker-burst-3', (36,53,14,23), (34,52,17,25)),
+        'piece-19728-53-59-14-17': ('curated-19728-marker-burst-4', (53,53,14,23), (51,52,17,25)),
+        'piece-19728-2-85-14-16': ('curated-19728-marker-burst-5', (1,77,16,24), (0,77,17,25)),
+        'piece-19728-19-81-14-20': ('curated-19728-marker-burst-6', (19,79,14,22), (17,77,17,25)),
+        'piece-19728-2-371-7-4': ('curated-19728-water-ring-1', (2,370,7,5), (1,369,8,8)),
+    }
+    water_ids = {
+        'piece-19728-66-345-5-2', 'piece-19728-75-344-5-3',
+        'piece-19728-40-352-3-3', 'piece-19728-49-353-3-3',
+        'piece-19728-73-351-2-2', 'piece-19728-12-363-5-2',
+        'piece-19728-21-363-5-3', 'piece-19728-73-360-3-3',
+        'curated-19728-water-ring-1', 'curated-19728-blue-particle',
+        'piece-19728-11-371-6-3', 'piece-19728-21-371-5-5',
+        'piece-19728-30-371-5-4', 'piece-19728-39-369-5-5',
+        'piece-19728-48-372-5-2', 'piece-19728-57-371-5-3',
+        'piece-19728-65-371-7-3', 'piece-19728-74-371-7-3',
+        'piece-19728-84-371-5-3',
+    }
+    groups = {'Tiny Link': [], 'Water & splashes': [], 'Small effects': [], 'Large markers': []}
+    original = {p['id']: p for p in pieces}
+    assert ray_ids | set(frames) <= original.keys(), 'Minish Link source cuts changed; review their frame mappings'
+    for p in pieces:
+        if p['id'] in ray_ids:
+            exclusions.add(p['id'])
+            reasons[p['id']] = 'Disconnected burst mark belongs to a complete Minish marker frame; not a standalone character pose'
+            continue
+        p = {**p, 'sourceSequence': p['sequence']}
+        if p['id'] in frames:
+            pid, rect, cell = frames[p['id']]
+            if pid != p['id']:
+                exclusions.add(p['id'])
+                reasons[p['id']] = 'Partial connected-component crop replaced by its complete reviewed native source frame'
+            p.update({'id': pid, 'sx': rect[0], 'sy': rect[1], 'sw': rect[2], 'sh': rect[3],
+                'sourceRect': rect_dict(rect), 'sourceCell': rect_dict(cell),
+                'sourcePieceIds': [q['id'] for q in pieces if inside(q, cell)],
+                'representation': 'reviewed-source-frame', 'extraction': 'reviewed-source-rectangle'})
+        group = 'Large markers' if p['sy'] < 270 else 'Water & splashes' if p['id'] in water_ids else 'Tiny Link'
+        groups[group].append(p)
+    for pid, rect, group, cell in [
+        ('curated-19728-dust', (2,312,7,2), 'Small effects', (1,306,8,8)),
+        ('curated-19728-blue-particle', (82,360,2,2), 'Water & splashes', (82,360,8,8)),
+    ]:
+        groups[group].append({'id': pid, 'assetId': 'clean-19728', 'sourceId': '19728',
+            'sx': rect[0], 'sy': rect[1], 'sw': rect[2], 'sh': rect[3],
+            'sourceRect': rect_dict(rect), 'sourceCell': rect_dict(cell),
+            'representation': 'reviewed-source-frame', 'extraction': 'reviewed-source-rectangle'})
+    groups['Large markers'].sort(key=lambda p: (p.get('sourceRow', 0), p['sx']))
+    groups['Water & splashes'].sort(key=lambda p: (p['sy'], p['sx']))
+    labels = {'Tiny Link': 'Tiny Link · pose', 'Large markers': 'Minish marker · pose',
+        'Water & splashes': 'Minish water · frame', 'Small effects': 'Minish dust · frame'}
+    result = []
+    for group, entries in groups.items():
+        for n, p in enumerate(entries, 1):
+            if group != 'Large markers': p['previewBox'] = 8
+            p.update({'group': group, 'kind': 'marker' if group == 'Large markers' else 'pose' if group == 'Tiny Link' else 'effect',
+                'name': f'{labels[group]} {n:02}', 'sequence': len(result) + 1})
+            result.append(p)
+    assert [len(entries) for entries in groups.values()] == [95, 19, 1, 48]
+    return result
+
+
 def outside_transparent(image,colors):
     """Remove only the reviewed edge-connected presentation background."""
     if not colors:return image,0
@@ -194,6 +271,13 @@ def build():
             'referenceKind':'Original captured-gameplay gallery, image 005',
             'checkedFeatures':['Smith house thatch and green doorway','logs and stump at the left','stairs below the house','fence and crops to the right','native character scale'],
             'scope':'Visual cross-check of this exterior area, not a ROM comparison or verification of every map.'}]}
+    # References from earlier saved projects remain resolvable without putting
+    # incomplete Farore fragments back into either ready artwork gallery.
+    result['legacyPieces']=[{'id':pid,'name':'Farore source fragment (legacy)',
+        'assetId':'clean-24932','sourceId':'24932','sx':rect[0],'sy':rect[1],
+        'sw':rect[2],'sh':rect[3],'sourceRect':rect_dict(rect),'kind':'part'}
+        for pid,rect in [('curated-24932-farore-side-1',(147,38,17,25)),
+                         ('curated-24932-farore-side-2',(164,38,16,25))]]
     # Copy all pose sheets with exact exclusions, then replace maps and object
     # sheets with their explicitly audited regions below.
     for sid,sheet in base['sheets'].items():
@@ -205,6 +289,18 @@ def build():
         pieces=[p for p in pieces if not any(intersects(p,rect) for rect in ANNOTATION_AREAS.get(sid,[]))]
         if sid=='6375':pieces=[p for p in pieces if inside(p,(296,64,248,44))]
         if sid=='6530':pieces=[p for p in pieces if p['id']!='piece-6530-460-78-265-34']
+        if sid=='19728':pieces=curate_minish_link(pieces,exclusions,reasons)
+        if sid=='24932':
+            # The last two source cuts are open half-characters and detached
+            # head/body fragments. They cannot be offered as complete poses.
+            # Keep the unchanged source sheets and base IDs for manual work
+            # and old projects, without inventing a mirrored reconstruction.
+            fragments={'piece-24932-147-38-25-25','piece-24932-164-38-16-16'}
+            for p in pieces:
+                if p['id'] in fragments:
+                    exclusions.add(p['id'])
+                    reasons[p['id']]='Incomplete Farore half-character or detached source parts; source archive retained, not a ready character pose'
+            pieces=[p for p in pieces if p['id'] not in fragments]
         # This mixed rip explicitly contains edits and alternate tree colors.
         # Retain the normal green tree, shrub and recognizable game props;
         # orange tree recolors and comparison patches stay in the archive.

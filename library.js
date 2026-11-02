@@ -1,5 +1,19 @@
 (() => {
   'use strict';
+  function thumbnailLayout(sw, sh, width, height, padding = 3, previewBox = null) {
+    [sw, sh, width, height, padding] = [sw, sh, width, height, padding].map(Number);
+    if (![sw, sh, width, height, padding].every(Number.isFinite) || Math.min(sw, sh, width, height) <= 0) return null;
+    const availableWidth = Math.max(1, Math.floor(width - Math.max(0, padding) * 2)), availableHeight = Math.max(1, Math.floor(height - Math.max(0, padding) * 2));
+    const largest = Math.max(sw, sh), requestedBox = Number(previewBox);
+    const band = [8, 16, 32, 64, 128].includes(requestedBox) && requestedBox >= largest ? requestedBox : [32, 64, 128].find(size => largest <= size) || null;
+    // Comparable game pieces share a native-size box. A tiny fragment must not
+    // become as large as a whole character just because its crop is smaller.
+    let scale = band ? Math.min(availableWidth / band, availableHeight / band) : Math.min(availableWidth / sw, availableHeight / sh);
+    if (scale >= 1) scale = Math.floor(scale);
+    const drawnWidth = Math.max(1, Math.round(sw * scale)), drawnHeight = Math.max(1, Math.round(sh * scale));
+    return { x: Math.floor((width - drawnWidth) / 2), y: Math.floor((height - drawnHeight) / 2), width: drawnWidth, height: drawnHeight, scale, band };
+  }
+  window.MINISH_THUMBNAILS = Object.freeze({ layout: thumbnailLayout });
   const $ = id => document.getElementById(id);
   const studio = window.MINISH_STUDIO;
   if (!studio) return;
@@ -7,9 +21,12 @@
   const piecesData = window.MINISH_PIECES || { assets: [], sheets: {}, stats: {} };
   const curatedData = window.MINISH_CURATED || { assets: [], sheets: {}, hiddenSourceIds: [], excludedPieceIds: [] };
   const bossesData = window.MINISH_BOSSES || { catalog: [], assets: [], sheets: {} };
+  const worldsData = window.MINISH_WORLD_MAPS || { catalog: [], assets: [], sheets: {} };
+  const combatData = window.MINISH_COMBAT_LIBRARY || { assets: [], sheets: {} };
+  const combatSheets = combatData.mergeSheets?.({ ...(piecesData.sheets || {}), ...(curatedData.sheets || {}), ...(worldsData.sheets || {}), ...(bossesData.sheets || {}) });
   const bossSources = Array.isArray(bossesData.catalog) ? bossesData.catalog : (bossesData.catalog && bossesData.catalog.assets || []);
-  const allSources = [...catalog.assets, ...(curatedData.catalog || []), ...bossSources];
-  const allAssets = [...allSources, ...(piecesData.assets || []), ...(curatedData.assets || []), ...(bossesData.assets || [])];
+  const allSources = [...catalog.assets, ...(curatedData.catalog || []), ...(worldsData.catalog || []), ...bossSources];
+  const allAssets = [...allSources, ...(piecesData.assets || []), ...(curatedData.assets || []), ...(worldsData.assets || []), ...(combatData.assets || []), ...(bossesData.assets || [])];
   const assetMap = new Map(allAssets.map(a => [String(a.id), a]));
   const sourceMap = new Map(allSources.map(a => [String(a.id), a]));
   const images = new Map(), thumbnails = new Map();
@@ -89,17 +106,16 @@
       const image = keyed ? keyed.image : await getImage(piece.assetId);
       if (canvas.dataset.piece !== token) return;
       const sw = Number(piece.sw), sh = Number(piece.sh);
-      let scale = Math.min((canvas.width - padding * 2) / sw, (canvas.height - padding * 2) / sh);
-      if (scale >= 1) scale = Math.max(1, Math.floor(scale));
-      const dw = Math.max(1, Math.round(sw * scale)), dh = Math.max(1, Math.round(sh * scale));
+      const box = thumbnailLayout(sw, sh, canvas.width, canvas.height, padding, piece.previewBox);
+      if (!box) return;
       ctx.imageSmoothingEnabled = false;
-      ctx.drawImage(image, keyed ? keyed.sx : piece.sx, keyed ? keyed.sy : piece.sy, keyed ? keyed.sw : sw, keyed ? keyed.sh : sh, Math.floor((canvas.width - dw) / 2), Math.floor((canvas.height - dh) / 2), dw, dh);
+      ctx.drawImage(image, keyed ? keyed.sx : piece.sx, keyed ? keyed.sy : piece.sy, keyed ? keyed.sw : sw, keyed ? keyed.sh : sh, box.x, box.y, box.width, box.height);
     } catch (_) { /* The core source window reports missing local assets. */ }
   }
   function fullPiece(source) {
     return { id: 'full-' + source.id, name: source.name, sourceId: String(source.id), assetId: String(source.id), sx: 0, sy: 0, sw: source.width, sh: source.height, sourceRect: { x: 0, y: 0, w: source.width, h: source.height }, kind: 'region', group: 'Full sheet' };
   }
-  function sheetFor(source) { return bossesData.sheets[String(source.id)] || curatedData.sheets[String(source.id)] || piecesData.sheets[String(source.id)] || { category: normalize(source.section), pieces: [] }; }
+  function sheetFor(source) { return combatSheets?.[String(source.id)] || bossesData.sheets[String(source.id)] || worldsData.sheets[String(source.id)] || curatedData.sheets[String(source.id)] || piecesData.sheets[String(source.id)] || { category: normalize(source.section), pieces: [] }; }
   function sourcePieces(source) {
     if (hiddenSourceIds.has(String(source.id))) return [];
     // Raw sheet fallbacks can expose a ripper title or credit as a scene piece.
@@ -188,7 +204,7 @@
     w.more.textContent = 'More pieces (' + number(w.shown) + ' / ' + number(filtered.length) + ')';
     w.empty.hidden = filtered.length > 0;
     const source = sourceMap.get(w.sourceId), coverage = sheetFor(source || {}).coverageNote || source?.coverageNote;
-    w.note.textContent = w.id === 'full-bosses' ? (coverage || 'Choose a complete pose. Select a placed boss and use Edit boss parts to adjust its components.') : w.mode.value.startsWith('grid') ? 'Tiles come only from the clean game map region. Labels, palettes and source credits stay in the archive.' : w.id === 'environments' ? 'Place a game map region, or choose a tile size to build with its tiles. Select a placed map to frame another area.' : w.id === 'bosses' ? 'Individual game components. Use Full bosses for a complete starting pose.' : 'Drag a piece into the scene. Click to choose a brush; double-click to place it in the center.';
+    w.note.textContent = w.id === 'full-bosses' ? (coverage || 'Choose a complete pose. Select a placed boss and use Edit boss parts to adjust its components.') : w.mode.value.startsWith('grid') ? 'Tiles come only from the clean game map region. Labels, palettes and source credits stay in the archive.' : w.id === 'environments' ? 'Place a game map region, or choose a tile size to build with its tiles. Select a placed map to frame another area.' : w.id === 'bosses' ? 'Individual game components. Use Full bosses for a complete starting pose.' : 'Drag a piece into the scene. Click to choose a brush; double-click to place it.';
   }
   function updateRows(w) {
     const before = w.row.value, groups = [...new Set(getWindowPieces(w).map(p => p.group).filter(Boolean))];
@@ -210,7 +226,9 @@
     w.creditLink.textContent = 'Original sheet & credits ↗';
     w.sourceId = String(id); w.title.textContent = source.name; w.sourceSummary.textContent = source.name;
     w.sourceSummary.setAttribute('aria-label', 'Choose ' + (w.id === 'environments' ? 'a place' : w.id === 'objects' ? 'an object collection' : w.id.includes('boss') ? 'a boss' : w.id === 'enemies' ? 'an enemy' : 'a character') + '. Current: ' + source.name);
-    w.sourceButton.title = 'Open the original ' + source.name + ' sheet in the advanced source archive';
+    const worldMap = !!worldsData.sheets[String(id)];
+    w.sourceButton.textContent = worldMap ? 'Crop map' : 'Source archive';
+    w.sourceButton.title = worldMap ? 'Crop genuine terrain from the complete map' : 'Open the original ' + source.name + ' sheet in the advanced source archive';
     return source;
   }
   function chooseSource(w, id, initial = false) {
@@ -320,7 +338,10 @@
   async function placePiece(piece) {
     try { await studio.placePiece(piece); currentPiece = piece; updateSelected(); document.body.classList.remove('collection-open'); $('collectionToggle').setAttribute('aria-expanded', 'false'); } catch (error) { showToast(error.message || 'This piece could not be placed.'); }
   }
-  function originalSourceId(id) { const source = sourceMap.get(String(id)); return String(source && (source.originalSourceId || source.sourceId) || id || ''); }
+  function originalSourceId(id) {
+    if (worldsData.sheets[String(id)]) return String(id);
+    const source = sourceMap.get(String(id)); return String(source && (source.originalSourceId || source.sourceId) || id || '');
+  }
   async function openCrop(sourceId) {
     const dialog = $('cropDialog');
     if (!dialog.open) dialog.showModal();
@@ -380,9 +401,10 @@
   $('coverageBtn').addEventListener('click', () => { const details = document.querySelector('.source-credit'); details.open = !details.open; });
   function renderCredits() {
     const query = $('creditsSearch').value.trim().toLowerCase();
-    const sources = catalog.assets.filter(source => !query || [source.name, source.section, creditNames(source)].join(' ').toLowerCase().includes(query));
+    const creditedSources = [...catalog.assets, ...(worldsData.catalog || []).filter(source => !catalog.assets.some(original => String(original.id) === String(source.originalSourceId)))];
+    const sources = creditedSources.filter(source => !query || [source.name, source.section, creditNames(source)].join(' ').toLowerCase().includes(query));
     const list = $('creditsList'); list.replaceChildren();
-    $('creditsCount').textContent = number(sources.length) + ' of ' + number(catalog.assets.length) + ' source sheets';
+    $('creditsCount').textContent = number(sources.length) + ' of ' + number(creditedSources.length) + ' artwork sources';
     const fragment = document.createDocumentFragment();
     sources.forEach(source => {
       const row = create('article', 'credit-row'), copy = create('div');
@@ -422,9 +444,9 @@
   document.addEventListener('minish:custom-pieces-changed', renderCustomCrops);
   function updateModeHint() {
     const active = document.querySelector('[data-tool].active'), mode = active?.dataset.tool || 'paint';
-    const labels = { paint: 'Paint', select: 'Select', erase: 'Erase' };
+    const labels = { paint: 'Paint', select: 'Select', erase: 'Erase', hand: 'Hand' };
     $('modeLabel').textContent = labels[mode] || 'Scene';
-    $('modeHint').textContent = mode === 'select' ? 'Move pieces inside or outside the frame. ' + window.MINISH_CONTROLS.precisionLabel + ' places by 1 px.' : mode === 'erase' ? 'Remove whole pieces from the active layer. Undo restores them.' : currentPiece ? 'Drag a collection piece into the scene, or paint copies.' : 'Choose a piece, then drag it into the scene.';
+    $('modeHint').textContent = mode === 'hand' ? 'Drag to move the view. Pinch or Ctrl+wheel zooms. V returns to Select.' : mode === 'select' ? 'Move pieces inside or outside the frame. ' + window.MINISH_CONTROLS.precisionLabel + ' places by 1 px.' : mode === 'erase' ? 'Remove whole pieces from the active layer. Undo restores them.' : currentPiece ? 'Drag a collection piece into the scene, or paint copies.' : 'Choose a piece, then drag it into the scene.';
     document.querySelectorAll('[data-tool]').forEach(button => button.setAttribute('aria-pressed', String(button.dataset.tool === mode)));
   }
   if (typeof MutationObserver !== 'undefined') {

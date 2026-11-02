@@ -12,6 +12,10 @@ import zipfile
 
 ROOT = Path(__file__).resolve().parents[1]
 CORE = [
+    'Open Minish Studio.html',
+    'world-scenes.js', 'assets/world-maps.js', 'assets/world-maps.json',
+    'world-animation.js', 'world-animation-ui.js',
+    'combat-library.js',
     'index.html', 'studio.css', 'maker.css', 'studio.js', 'library.js', 'controls.js', 'animation-engine.js', 'simple-animation.js', 'animation-export.js', 'ezlo-switch.js', 'ezlo-switch.css', 'animation-ui.js', 'animation.css', 'animation-shell.html', 'animation-mode-switch.html', 'random-scenes.js', 'pwa.js',
     'service-worker.js', 'manifest.webmanifest', '.nojekyll', 'LICENSE',
     'README.md', 'GUIDE.md', 'START-HERE.txt', 'CREDITS.md', 'ASSET_RIGHTS.md', 'PRIVACY.md',
@@ -23,11 +27,27 @@ CORE = [
     'examples/starter.js', 'examples/animation-demo.js', 'examples/minish-studio-preview.png', 'examples/minish-studio-name-preview.png', 'examples/Walking Adventure.minish-animation.json', 'examples/exports/Walking-Adventure.gif', 'examples/exports/Walking-Adventure.mp4', 'examples/exports/Walking-Adventure-frames.zip', 'examples/My Hyrule Story.minish.json', 'examples/Boss Showcase.minish.json',
 ]
 ART_DIRS = ['assets/sheets', 'assets/thumbnails', 'assets/pieces', 'assets/ui',
-            'assets/bosses', 'assets/sprites', 'assets/curated', 'icons']
+            'assets/bosses', 'assets/sprites', 'assets/curated', 'assets/world', 'assets/combat', 'icons']
 REPO_FILES = ['.gitignore', 'requirements.txt', '.github/workflows/pages.yml']
 REPO_DIRS = ['tools', 'tests', 'assets/originals']
 SKIP = {'.DS_Store', '__pycache__', '.venv', '.git', '.versions', '_site', 'release'}
 TEXT_EXTENSIONS = {'.html', '.js', '.mjs', '.css', '.json', '.md', '.txt', '.yml', '.yaml', '.py', '.tsv', '.svg', '.webmanifest'}
+PUBLIC_PROJECT_FILES = {Path(name) for name in CORE if name.endswith(('.minish.json', '.minish-animation.json'))} | {Path('tests/fixtures/legacy-project.json')}
+
+
+def private_project_export(path, relative):
+    """Only deliberately bundled demos may contain an editable project."""
+    if relative in PUBLIC_PROJECT_FILES:
+        return False
+    if path.name.lower().endswith(('.minish.json', '.minish-animation.json')):
+        return True
+    if path.suffix.lower() == '.json':
+        try:
+            data = json.loads(path.read_text(encoding='utf-8-sig'))
+        except (UnicodeError, json.JSONDecodeError):
+            return False
+        return isinstance(data, dict) and isinstance(data.get('format'), str) and data['format'] in {'minish-cap-studio', 'minish-cap-animation'}
+    return False
 
 
 def archived_processing_output(relative):
@@ -49,7 +69,7 @@ def source_files(site_only):
             raise ValueError('Missing release directory: ' + directory)
         for path in base.rglob('*'):
             relative = path.relative_to(ROOT)
-            if path.is_file() and not set(relative.parts).intersection(SKIP) and not archived_processing_output(relative):
+            if path.is_file() and not set(relative.parts).intersection(SKIP) and not archived_processing_output(relative) and not private_project_export(path, relative):
                 files.add(relative)
     return sorted(files)
 
@@ -99,11 +119,15 @@ def main():
         for relative in files:
             source, target = ROOT / relative, temporary / relative
             target.parent.mkdir(parents=True, exist_ok=True)
-            shutil.copyfile(source, target)
+            if relative == Path('assets/curated.json'):
+                # Keep identical catalog data in a smaller portable file.
+                target.write_text(json.dumps(json.loads(source.read_text(encoding='utf-8')), ensure_ascii=False, separators=(',', ':')) + '\n', encoding='utf-8')
+            else:
+                shutil.copyfile(source, target)
             target.chmod(0o644)
             records.append({'path': relative.as_posix(), 'bytes': target.stat().st_size,
                             'sha256': hashlib.sha256(target.read_bytes()).hexdigest()})
-        report = {'version': '1.0', 'author': 'SerakSan', 'edition': 'site' if args.site_only else 'github',
+        report = {'version': '1.1', 'author': 'SerakSan', 'edition': 'site' if args.site_only else 'github',
                   'fileCount': len(records), 'bytes': sum(r['bytes'] for r in records),
                   'localPathsAndCredentialsCheck': 'passed', 'files': records}
         (temporary / 'release-manifest.json').write_text(json.dumps(report, indent=2) + '\n')

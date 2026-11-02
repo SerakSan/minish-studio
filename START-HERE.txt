@@ -5,11 +5,12 @@ USE THE DOWNLOADED APP
 
 1. Extract this entire ZIP into a folder on your computer.
    On Windows, choose Extract All. Do not open the app inside the ZIP.
-2. Open index.html in a current desktop browser.
+2. Double-click Open Minish Studio.html to launch it in your browser.
 3. Keep the app files and the assets folder together.
 
 No account, command line, server, or additional installation is required.
 The downloaded app can run without an internet connection.
+Opening index.html directly also works.
 
 YOUR PROJECTS STAY ON YOUR DEVICE
 
@@ -38,3 +39,10 @@ installers are not included.
 
 Game artwork and source contributors retain their separate rights.
 See CREDITS.md, ASSET_RIGHTS.md, and PRIVACY.md.
+
+CANVAS ZOOM ON WINDOWS, MAC, AND LINUX
+
+Use two-finger scrolling or the mouse wheel to pan up, down, left and right.
+Pinch out to zoom in and pinch in to zoom out when supported; Ctrl+wheel also zooms.
+Open Tools and choose Hand, or press H, then drag the view without moving artwork.
+Press V to return to moving pieces. Scrollbars also pan.

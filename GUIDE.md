@@ -6,7 +6,7 @@ An unofficial scene and animation editor for **The Legend of Zelda: The Minish C
 
 The original game logo sits at the top center. Game-derived lettering, stone frames, menu artwork, and dialogue borders give the tool its Minish Cap appearance. **SerakSan** is the creator credit. That software watermark is not burned into exported scenes.
 
-For the downloaded app, extract the entire offline ZIP and open `index.html`. No account or server is needed. [START-HERE.txt](START-HERE.txt) has the short installation and local-save instructions.
+For the downloaded app, extract the entire offline ZIP and double-click **Open Minish Studio.html**. No account or server is needed. [START-HERE.txt](START-HERE.txt) has the short installation and local-save instructions.
 
 ## Animation workspace
 
@@ -22,9 +22,11 @@ New animation work starts in **Simple**. Choose an action for each piece and arr
 4. **Add a message.** Add dialogue, write the complete text, and choose Text reveal as its action. Speed controls the reveal. The full message stays editable while the preview shows each prefix. A short clip extends to fit the reveal and a reading pause, within the 600-frame limit.
 5. **Play and save.** Set Length in seconds and playback style, then press Play or Space. Stop returns to the beginning. Save project keeps an editable `.minish-animation.json`; Export animation offers the formats below. Focus gives the canvas more room, and Show panels restores the tools.
 
-There are **66 reviewed ready actions across 21 sources**, including Link, Zelda, animals, enemies, effects, and all nine boss families. The 38 boss assembly actions use 202 of the 206 supplied complete-boss poses. Transformation and materialization actions play through once and hold the final pose, extending a short clip when needed. The other four supplied poses remain available as still artwork, with movement or Timeline editing. These lists use specific genuine poses, with timing authored for the editor. Source rows are never treated as automatic animation sequences. A source without a reviewed action remains available as a still pose, with movement and precise placement. Use Timeline to build another action from the supplied art.
+There are **108 reviewed ready actions across 28 sources**, including Link, Zelda, animals, armed enemies, effects, and all nine boss families. This includes 42 weapon and item actions. The 38 boss assembly actions use 202 of the 206 supplied complete-boss poses. Transformation and materialization actions play through once and hold the final pose, extending a short clip when needed. The other four supplied poses remain available as still artwork, with movement or Timeline editing. These lists use specific genuine poses, with timing authored for the editor. Source rows are never treated as automatic animation sequences. A source without a reviewed action remains available as a still pose, with movement and precise placement. Use Timeline to build another action from the supplied art.
 
 Simple and Timeline edit the same clip. Custom pose, movement, or dialogue keys are kept when switching modes. A piece with custom animation shows a notice: continue in Timeline, or explicitly choose **Replace this piece’s animation** to use a ready action. Replacement affects that piece's action and movement; its visibility and visual settings are retained. Undo restores the custom animation.
+
+Choose a sprite and use **Rotation** in Settings (or Appearance in Animate). Turn left or right by 45°, or choose an angle from 0° to 315°. In Simple, the whole action turns together, including thrown items. In Timeline, rotation follows the current keyframe editing setting. Saved projects and exports keep the angle.
 
 ### Timeline: direct every change
 
@@ -55,11 +57,13 @@ Exports show progress and can be cancelled. Video records in real time. GIF and 
 
 ![Walking example made with genuine game poses](examples/exports/Walking-Adventure.gif)
 
+For a whole-world animation, **Export animation → Frame area → Current view** exports a focused region, up to 1024 × 576 native pixels. Explore or zoom to an encounter first. The preview outlines the export region while the export dialog is open. **Whole clip** remains available within the format limits. The editable project keeps the full world.
+
 The editable [Walking Adventure example](examples/Walking%20Adventure.minish-animation.json) uses reviewed Link source poses. Its demo timing is authored for the editor. All media is rendered locally in the browser with no upload service.
 
 ## Make a scene
 
-Open `index.html` or visit your hosted copy. Keep the folder together for offline use. A saved browser project takes priority when reopening.
+Double-click **Open Minish Studio.html** or visit your hosted copy. Keep the folder together for offline use. Opening `index.html` directly also works. A saved browser project takes priority when reopening.
 
 1. **Choose a place.** Open Environments and choose a clean game region or recovered house tile. Place a region as your background, or use the tile views to build your own layout.
 2. **Choose your cast.** Characters, Full bosses, Objects, Enemies, and Boss parts have separate windows. Pick a source, then a visual pose. Click to make it your brush, or double-click to place it.
@@ -73,7 +77,7 @@ Add dialogue with the Dialogue button. Duplicate scenes to build a carousel. **D
 
 ## Place pieces precisely
 
-Drag a piece from the collection or its selected preview into the workspace. The drag cursor holds the middle of the piece. The scene preview shows its actual placement, including any grid snapping. For an exact centered drop, turn on **1 px precision** or hold **Alt on Windows / Option on Mac**. Odd-size pieces round to the nearest whole native pixel.
+Drag a piece from the collection or its selected preview into the workspace. The drag cursor holds the middle of the piece. The scene preview shows its actual placement, including any grid snapping. For an exact centered drop, turn on **1 px precision** or hold **Alt on Windows or Linux / Option on Mac**. Odd-size pieces round to the nearest whole native pixel.
 
 - Choose a tile to match its 8, 16, or 32 px grid automatically when snapping is enabled. Existing off-grid pieces retain their alignment when moved by grid steps.
 - Watch the live **X/Y** readout. Use Settings to enter exact coordinates, including negative positions.
@@ -94,19 +98,29 @@ In Game-inspired mode:
 
 Repeat a scene exposes an optional seed. The same seed, setting, story mood, cast size, and generator/library versions reproduce the same starting composition. Generated scenes are new compositions made with game art, rather than claims to reconstruct a moment from a playthrough. Each placed item stays editable.
 
-The generator offers **1,388 named setting and story combinations**: 200 Game-inspired adventures and 1,188 Wild mashups, drawn from 48 stories across 99 genuine game environments. Settings include outdoor places, houses, shops, royal rooms, Minish homes, dungeons, and unusual environments. Story mood and cast size give you control over the cast and arrangement.
+The generator offers **4,462 named setting and story combinations**: 304 Game-inspired adventures and 4,158 Wild mashups, drawn from 98 stories across 99 genuine game environments. Settings include outdoor places, houses, shops, royal rooms, Minish homes, dungeons, and unusual environments. Story mood and cast size give you control over the cast and arrangement. The expanded cast includes the Oracles, Ezlo, Vaati, swordmasters, Mountain Minish and graveyard visitors. Battle scenes arrange opposing teams, distinct boss rivals and projectiles with room between them.
 
 **Game-inspired** uses reviewed floor areas and compatible casts. **Wild mashups** creates intentionally unlikely adventures using genuine game artwork: boss summits, Cucco bodyguards, royal field trips, monster parades, portal parties, and treasure rushes. These are imaginative editor assemblies; Wild placement does not claim to follow the game's collision ground or reconstruct gameplay. **Surprise me with either** mixes both styles.
 
-Press **Surprise me again** beside Random scene to reroll in one click. It uses a fresh seed and the generated scene's last choices. The current generated scene changes in the same carousel slot, including any edits; one Undo restores the previous version. When a scene started from scratch is active, a new scene is added instead. The settings window still has Create random scene when you want an additional scene.
+Press **Surprise me again** beside Random scene to reroll in one click. It uses a fresh seed and the generated scene's last choices. The current generated scene changes in the same carousel slot, including any edits; one Undo restores the previous version. When a scene started from scratch is active, a new scene is added instead. The settings window still has Create random scene when you want an additional scene. New random scenes and rerolls open centered on their canvas.
 
 Repeat with the same seed, setting, story mood, cast size, adventure style, and generator/library versions to reproduce a composition.
 
-## Windows and Mac controls
+## Whole Hyrule canvases
 
-Open **Controls** beside the placement coordinates, or choose **More → Windows & Mac controls**. The guide compares both platforms and explains mouse, trackpad, collection, scene, export, and editing controls. Shortcut hints detect the platform automatically; choose Windows, Mac, or Show both in the guide to override the labels locally.
+Open **Settings → Canvas & background → Canvas format** and choose **Whole Hyrule · terrain atlas** or **Whole Hyrule · illustrated map**. This adds a new scene with the complete map, keeping your previous scene. Both maps are also available in Environments.
 
-| Action | Windows | Mac |
+The terrain atlas preserves the supplied 4,992 × 3,168 game pixels, including cloud-area insets. Its contributor title and contact panel are excluded from the placeable artwork. The illustrated game map uses an integer enlargement so there is room for character cameos. These are static maps; they do not include every interior, event state or hidden game layer.
+
+For a populated world, open **Random scene** and change **Canvas** to a Whole Hyrule option. Choose the cast size and create the scene. Small encounters leave buildings and routes readable. **Explore Easter eggs** zooms to each encounter. Every character, object and boss stays editable. **Surprise me again** rerolls the generated world with a fresh seed; Undo restores it.
+
+The large terrain canvas exports at its native 1× size. Zoom only changes your editing view. In Animate, choose **Random Hyrule animation** to create a whole-world animation with boss face-offs, creature dances and little character stories. Choose the terrain atlas or illustrated map and the number of discoveries. A new world is added as its own clip, preserving your other animations. **Explore animations** visits the encounters while they play. **Surprise me again** rerolls that generated clip; one Undo restores it. Open **Tools > Hand**, or press H, to drag the view without moving a piece, and V to return to piece selection. The movements use genuine supplied poses with choreography authored for the editor; multipart bosses remain editor assemblies.
+
+## Windows, Mac, and Linux controls
+
+Open **Controls** beside the placement coordinates, or choose **More → Windows, Mac & Linux controls**. The guide covers all three platforms and explains mouse, trackpad, collection, scene, export, and editing controls. Shortcut hints detect the platform automatically; choose Windows, Mac, Linux, or Show all in the guide to override the labels locally.
+
+| Action | Windows / Linux | Mac |
 | --- | --- | --- |
 | Open / Save project | Ctrl+O / Ctrl+S | Command+O / Command+S |
 | Undo | Ctrl+Z | Command+Z |
@@ -119,6 +133,7 @@ Open **Controls** beside the placement coordinates, or choose **More → Windows
 | Send to back / bring to front | Shift+[ / Shift+] | Shift+[ / Shift+] |
 | Zoom canvas / actual size / fit | + or − / 0 / F | + or − / 0 / F |
 | Paint / Select / Erase / Dialogue | B / V / E / T | B / V / E / T |
+| Hand: drag the view | Tools > Hand, or H; V returns to Select | Tools > Hand, or H; V returns to Select |
 | Nudge 1 px / one grid step | Arrows / Shift+Arrows | Arrows / Shift+Arrows |
 | Bypass snapping while dragging | Alt | Option (⌥) |
 | Deselect / close panels or dialogs | Esc | Esc |
@@ -126,7 +141,7 @@ Open **Controls** beside the placement coordinates, or choose **More → Windows
 | Focus controls / activate a button | Tab or Shift+Tab / Enter or Space | Tab or Shift+Tab / Enter or Space |
 | Navigate collection tabs | Left/Right, Home/End | Left/Right, Home/End |
 
-Use a primary mouse or trackpad click to choose controls. Drag collection pieces by their center, and scroll the workspace with the mouse wheel, scrollbars, or two fingers. Pinch with two fingers over the canvas to zoom around the pointer. Ctrl+mouse wheel is an alternative on Windows and Mac. Ordinary two-finger scrolling pans the workspace. Zoom also uses the −, +, actual-size, and Fit controls. Enlarged pixels settle at integer magnification. Mac Control-click and secondary clicks keep the browser context menu. On Mac, enable browser keyboard navigation if Tab skips controls.
+Use a primary mouse or trackpad click to choose controls. Drag collection pieces by their center. Over the canvas, use two-finger scrolling or the mouse wheel to pan vertically and horizontally. Pinch out to zoom in and pinch in to zoom out when your browser supports it; Ctrl+wheel also zooms around the pointer. Open Tools and choose Hand, or press H, then drag to move the view without moving artwork. Press V to return to moving pieces. Scrollbars also pan. These controls work on Windows, Mac, and Linux. Zoom freely from 5% to 1200%, or type any percentage, such as 137%, in the zoom box. Zoom is displayed as a whole percentage while scrolling stays smooth. Enter applies it, Escape cancels an edit, and leaving the box also applies it. The − and + controls change zoom by 10 percentage points, preserving custom values. Use 0 for actual size or F to fit. Manual zoom does not snap to preset sizes. Fit may choose a whole-pixel enlargement when there is room. Mac Control-click and secondary clicks keep the browser context menu. On Mac, enable browser keyboard navigation if Tab skips controls.
 
 Delete, Backspace, copy, cut, paste, and duplicate work from the placed-piece list as well as the canvas. Text fields keep native text editing, selection, arrow navigation, and Undo. Piece copying stays inside the editor and does not replace your system clipboard. Save and Open remain available. Scene shortcuts pause while a dialog is open, and composition and AltGr text entry never trigger scene commands. Tool buttons, X/Y fields, nudge buttons, and the precision toggle provide alternatives to shortcuts.
 
@@ -157,9 +172,9 @@ The environment images preserve the genuine game pixels within their recorded so
 - Terrain, Objects, and Overlay layers; precise X/Y; integer scale; flips; duplication; front/back ordering; and deletion.
 - Editable game-style dialogue with a fallback for unsupported characters.
 - Portrait, square, story, game-screen, and free canvas shapes.
-- Custom native dimensions: 16–2048 px per side. PNG enlargement: 1–8×, up to 8192 px per side and 16,777,216 export pixels.
+- Custom native dimensions: 16–8192 px per side, with a maximum area of 16,777,216 native pixels. PNG enlargement: 1–8×, up to 8192 px per side and 16,777,216 export pixels.
 - PNG scenes, transparent piece PNGs, editable JSON, and carousel ZIPs, created entirely in the browser.
-- Keyboard and mouse controls are listed for Windows and Mac in the Controls guide and the table above.
+- Keyboard and mouse controls are listed for Windows, Mac, and Linux in the Controls guide and the table above.
 - Narrow screens use Pieces and Settings drawers. Advanced file/help/source actions stay available through More and Source archive.
 
 ## Credit, privacy, and publishing
@@ -178,6 +193,8 @@ No repository is created or published by opening this folder. Supported browsers
 - `assets/curated.js`, `.json`, and `assets/curated/`: trusted gallery choices, clean map regions, tile masks, exclusions, random scene templates, and the current foreground PNG pack.
 - `assets/full-bosses.js`, `.json`, and `assets/bosses/`: current complete boss variants, transformed editable parts, exact source recipes, references, and verification.
 - `assets/legacy-bosses.js`: historical editor images retained for saved-project compatibility, never offered as current gameplay poses.
+- `assets/world-maps.*`, `assets/world/`, and `world-scenes.js`: whole-world images, source attribution, annotation exclusions, reviewed placement zones, and editable Easter egg generation.
+- `world-animation.js` and `world-animation-ui.js`: editable animated world encounters, exploration, safe rerolls, and complete Undo.
 - `assets/pieces.*` and `assets/sprites.*`: underlying extraction and transparency processing records. These base indices include historical source cuts; the curated index controls normal galleries.
 - `assets/game-ui.js`, `assets/logo.*`, and `assets/ui/`: source-derived typography, frames, and the original game logo with credits.
 - `random-scenes.js`: deterministic setting-aware composition.
@@ -206,3 +223,10 @@ python3 tools/build_public_release.py --output release/minish-studio-github --ar
 ```
 
 For optional local preview, run `python3 tools/preview.py`, open `http://127.0.0.1:8765`, and stop the preview when finished. The image builders in `tools/` retain exact source mappings and do not change the originals.
+
+
+### Weapon actions
+
+In Simple mode, choose Link or an enemy, then search the action collection for a weapon or tool. Set Speed and Movement before adding it. Dragging uses the same action, speed and movement as Add to canvas. Throwing and casting actions include their moving effects. Moving the character moves the complete action; Undo restores the whole change.
+
+Random battles mix armed enemies, Link's tools, projectiles, impacts and reactions. Whole-world animations stage wind-up, release, contact and recovery. Every pose and effect remains editable. Weapon combinations made from separate source parts are labeled editor assemblies. Some held props use genuine inventory item art. Bow actions ready the bow; no missing arrow artwork is invented. Source mappings and credits are in [the combat manifest](assets/combat/manifest.json).

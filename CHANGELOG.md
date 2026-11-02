@@ -1,5 +1,18 @@
 # Minish Studio changelog
 
+## 1.1: more Hyrule, better fights, smoother controls
+
+- Explore the whole Hyrule terrain map or the illustrated game map. Fill them with Easter eggs, reroll in one click, or try Random Hyrule animation.
+- More stories, familiar faces and boss battles in Surprise me. Link and enemies now use weapons and tools, with throws, impacts and reactions.
+- Added 42 weapon and item actions. Bombs fly and explode, boomerangs come back, and moving a character keeps its effects together.
+- Turn sprites left or right in 45° steps in Scene and Animate. Saving, Undo and exports keep the angle.
+- Pinch zoom feels more responsive. Two-finger scrolling pans, Hand is right in the Tools menu, and the zoom box accepts any percentage.
+- Dragging into Animate now keeps the action, speed and movement you picked, just like Add to canvas.
+- Cleaned up sprite backgrounds, fixed Minish Link and Farore pieces, and made similar-sized collection previews more consistent.
+- Random scenes open centered. The Hand symbol matches the other tools, and the Scene/Animate slider is easier to read.
+- The offline app now starts with **Open Minish Studio.html**. Everything is bundled, and your projects stay in your own browser unless you choose to export them.
+- Added clearer Windows, Mac and Linux controls, stronger checks for private files, and a note about AI help with parts of the code, especially debugging.
+
 ## 1.0: initial public release
 
 The first public release of Minish Studio, a free scene and animation editor for The Legend of Zelda: The Minish Cap, created by **SerakSan**.

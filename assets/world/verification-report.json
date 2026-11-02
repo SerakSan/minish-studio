@@ -1,0 +1,12 @@
+{
+  "status": "passed",
+  "worldMaps": 2,
+  "newSourceDownloadsVerified": 1,
+  "previousOriginalSourceChecksumsVerified": 134,
+  "sourceRgbPreserved": true,
+  "onlyRecordedAnnotationAlphaChanged": true,
+  "embeddedPngsMatchFiles": true,
+  "nativeDimensionsPreserved": true,
+  "placementLocationsChecked": 59,
+  "scope": "Source checksum, exact image pixels, annotation exclusions and placement bounds. Not ROM collision or layer/state completeness verification."
+}

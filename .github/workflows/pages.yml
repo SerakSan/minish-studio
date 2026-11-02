@@ -19,6 +19,8 @@ jobs:
     steps:
       - name: Check out the software
         uses: actions/checkout@v4
+      - name: Prepare image checks
+        run: python3 -m pip install -r requirements.txt
       - name: Check editor behavior
         run: |
           node tests/editor-smoke.mjs
@@ -26,9 +28,22 @@ jobs:
           node tests/random-scenes-variation.mjs
           node tests/animation-engine.mjs
           node tests/animation-ui-controls.mjs
+          node tests/thumbnail-scales.mjs
+          node tests/world-scenes.mjs
+          node tests/world-animation.mjs
+          node tests/world-animation-ui.mjs
           node tests/animation-export.mjs
           node tests/simple-animation.mjs
+          node tests/combat-library.mjs
+          node tests/combat-ready-actions.mjs
           node tests/ezlo-switch.mjs
+          node tests/project-privacy.mjs
+          python3 tests/public-release-privacy.py
+      - name: Check sprite backgrounds
+        run: |
+          python3 tests/transparency-backgrounds.py
+          python3 tools/build_world_maps.py --verify-only
+          python3 tools/build_combat_library.py --verify-only
       - name: Build and check the public site
         run: python3 tools/build_public_release.py --output _site --site-only
       - name: Configure Pages

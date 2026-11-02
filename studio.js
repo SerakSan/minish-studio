@@ -8,20 +8,33 @@
   const legacyBosses = window.MINISH_LEGACY_BOSSES || { assets: [] };
   const spriteCatalog = window.MINISH_SPRITES || { assets: [], assetOverrides: {} };
   const curatedCatalog = window.MINISH_CURATED || { assets: [], sheets: {} };
-  const assets = [...sourceAssets, ...(Array.isArray(piecesCatalog.assets) ? piecesCatalog.assets : []), ...(Array.isArray(spriteCatalog.assets) ? spriteCatalog.assets : []), ...(legacyBosses.assets || []), ...(curatedCatalog.assets || []), ...(Array.isArray(bossesCatalog.assets) ? bossesCatalog.assets : [])];
+  const worldCatalog = window.MINISH_WORLD_MAPS || { assets: [], sheets: {}, worlds: [] };
+  const combatCatalog = window.MINISH_COMBAT_LIBRARY || { assets: [], sheets: {} };
+  const assets = [...sourceAssets, ...(Array.isArray(piecesCatalog.assets) ? piecesCatalog.assets : []), ...(Array.isArray(spriteCatalog.assets) ? spriteCatalog.assets : []), ...(legacyBosses.assets || []), ...(curatedCatalog.assets || []), ...(worldCatalog.assets || []), ...(combatCatalog.assets || []), ...(Array.isArray(bossesCatalog.assets) ? bossesCatalog.assets : [])];
   const assetMap = new Map(assets.map(a => [String(a.id), a]));
-  const allSheets = { ...(piecesCatalog.sheets || {}), ...(curatedCatalog.sheets || {}), ...(bossesCatalog.sheets || {}) };
-  const pieceMap = new Map(Object.values(allSheets).flatMap(s => s.pieces || []).map(p => [String(p.id), p]));
+  const baseSheets = { ...(piecesCatalog.sheets || {}), ...(curatedCatalog.sheets || {}), ...(worldCatalog.sheets || {}), ...(bossesCatalog.sheets || {}) };
+  const allSheets = combatCatalog.mergeSheets?.(baseSheets) || baseSheets;
+  const pieceMap = new Map([
+    ...Object.values(piecesCatalog.sheets || {}).flatMap(s => s.pieces || []),
+    ...(curatedCatalog.legacyPieces || []),
+    ...Object.values(allSheets).flatMap(s => s.pieces || []),
+    ...Object.values(combatCatalog.sheets || {}).flatMap(s => s.pieces || [])
+  ].map(p => [String(p.id), p]));
   const PRESETS = {
     portrait: { width: 216, height: 270, exportScale: 5 },
     square: { width: 270, height: 270, exportScale: 4 },
     story: { width: 216, height: 384, exportScale: 5 },
     game: { width: 240, height: 160, exportScale: 4 }
   };
+  const worldPresets = new Map((worldCatalog.worlds || []).map(world => [world.presetId, world]));
+  for (const [preset, world] of worldPresets) PRESETS[preset] = {
+    width: world.canvasWidth || world.width * (world.backgroundScale || 1),
+    height: world.canvasHeight || world.height * (world.backgroundScale || 1), exportScale: 1
+  };
   const LAYERS = ['terrain', 'objects', 'overlay'];
   const STORAGE = 'minish-cap-studio-v1';
   const CUSTOM_STORAGE = 'minish-cap-studio-custom-pieces-v1';
-  const CANVAS_LIMITS = Object.freeze({ minNative: 16, maxNative: 2048, minScale: 1, maxScale: 8, maxExportEdge: 8192, maxExportPixels: 16777216 });
+  const CANVAS_LIMITS = Object.freeze({ minNative: 16, maxNative: 8192, maxNativePixels: 16777216, minScale: 1, maxScale: 8, maxExportEdge: 8192, maxExportPixels: 16777216 });
   const uid = () => Math.random().toString(36).slice(2, 10) + Date.now().toString(36).slice(-4);
   const copy = value => JSON.parse(JSON.stringify(value));
   const clamp = (n, lo, hi) => Math.min(hi, Math.max(lo, n));
@@ -36,9 +49,9 @@
   let project = { format: 'minish-cap-studio', version: 1, name: 'My little adventure', activeSlide: initialSlide.id, slides: [initialSlide] };
   let activeAsset = null, currentImage = null, brush = null, brushPiece = null, brushSize = 16, sheetZoom = 2;
   let customPieces = [];
-  let layer = 'objects', tool = 'paint', selectedId = null, paintScale = 1, flipX = false, flipY = false;
+  let layer = 'objects', tool = 'paint', selectedId = null, paintScale = 1, paintRotation = 0, flipX = false, flipY = false;
   let stageZoom = 2, fitMode = true, sampleMode = false, sheetDrag = null, canvasDrag = null, hover = null;
-  let renderedStageZoom = 2, zoomAnchor = null, zoomSettleTimer = null, gestureZoom = null;
+  let renderedStageZoom = 2, zoomAnchor = null, gestureZoom = null, zoomFieldDraft = false;
   let copiedObject = null, pasteCount = 0, copiedByCut = false;
   let libraryDrag = null, editorGutter = { x: 16, y: 16 };
   let undoStack = [], redoStack = [], saveTimer, toastTimer, drawScheduled = false;
@@ -200,18 +213,23 @@
     if (strict) {
       if (![width, height, exportScale].every(Number.isSafeInteger)) throw new Error('Use whole numbers for canvas width, height and export scale.');
       if (width < l.minNative || height < l.minNative || width > l.maxNative || height > l.maxNative) throw new Error('Canvas width and height must be between ' + l.minNative + ' and ' + l.maxNative + ' native pixels.');
+      if (width * height > l.maxNativePixels) throw new Error('This canvas is too large. Keep its width times height within 16,777,216 native pixels.');
       if (exportScale < l.minScale || exportScale > l.maxScale) throw new Error('Choose an export scale from 1× to 8×.');
       if (width * exportScale > l.maxExportEdge || height * exportScale > l.maxExportEdge || width * height * exportScale * exportScale > l.maxExportPixels) throw new Error('This export is too large. Lower the scale or canvas size to stay within 8192 pixels per side and 16 megapixels.');
       return { width, height, exportScale };
     }
-    const w = clamp(Math.round(num(value.width, 216)), l.minNative, l.maxNative), h = clamp(Math.round(num(value.height, 270)), l.minNative, l.maxNative);
+    let w = clamp(Math.round(num(value.width, 216)), l.minNative, l.maxNative), h = clamp(Math.round(num(value.height, 270)), l.minNative, l.maxNative);
+    if (w * h > l.maxNativePixels) {
+      const fit = Math.sqrt(l.maxNativePixels / (w * h));
+      w = Math.max(l.minNative, Math.floor(w * fit)); h = Math.max(l.minNative, Math.floor(h * fit));
+    }
     const safeScale = Math.max(1, Math.min(l.maxScale, Math.floor(l.maxExportEdge / Math.max(w, h)), Math.floor(Math.sqrt(l.maxExportPixels / (w * h)))));
     return { width: w, height: h, exportScale: clamp(Math.round(num(value.exportScale, 5)), 1, safeScale) };
   }
   function setCanvasFormat(value) {
     const format = canvasFormat(value), s = scene();
     if (s.preset === 'custom' && Object.keys(format).every(key => s[key] === format[key])) return copy(s);
-    historyBefore(); Object.assign(s, format, { preset: 'custom' }); fitMode = true;
+    historyBefore(); Object.assign(s, format, { preset: 'custom' }); gestureZoom = null; fitMode = true;
     changed('Free canvas applied. Existing pieces keep their positions.');
     return copy(s);
   }
@@ -240,7 +258,7 @@
             o.sx = clamp(Math.floor(o.sx), 0, asset.width - 1); o.sy = clamp(Math.floor(o.sy), 0, asset.height - 1);
             o.sw = clamp(Math.round(o.sw), 1, asset.width - o.sx); o.sh = clamp(Math.round(o.sh), 1, asset.height - o.sy);
           }
-          o.flipX = !!o.flipX; o.flipY = !!o.flipY;
+          o.flipX = !!o.flipX; o.flipY = !!o.flipY; o.rotation = normalizeRotation(o.rotation);
           o.keyColor = /^#[0-9a-f]{6}$/i.test(o.keyColor) ? o.keyColor : null;
           if (o.sourceId != null) o.sourceId = String(o.sourceId).slice(0, 120);
           if (o.pieceId != null) o.pieceId = String(o.pieceId).slice(0, 160);
@@ -369,11 +387,18 @@
   }
   async function placePiece(value) {
     const piece = await choosePiece(value), s = scene();
+    let center = { x: s.width / 2, y: s.height / 2 };
+    const frame = mainCanvas.getBoundingClientRect(), area = $('stageViewport').getBoundingClientRect();
+    const environment = allSheets[piece.sourceId]?.category === 'environments' || ['environment', 'region', 'tile'].includes(piece.kind);
+    if ((s.width > 1024 || s.height > 1024) && !environment && frame.width > 0 && frame.height > 0) {
+      center = { x: (area.left + $('stageViewport').clientWidth / 2 - frame.left) / stageZoom,
+        y: (area.top + $('stageViewport').clientHeight / 2 - frame.top) / stageZoom };
+    }
     historyBefore();
     const object = { id: uid(), kind: 'sprite', assetId: piece.assetId, sx: piece.sx, sy: piece.sy, sw: piece.sw, sh: piece.sh,
       sourceId: piece.sourceId, pieceId: piece.id, pieceName: piece.name,
-      x: Math.max(0, Math.floor((s.width - piece.sw * paintScale) / 2)), y: Math.max(0, Math.floor((s.height - piece.sh * paintScale) / 2)),
-      scale: paintScale, flipX, flipY, keyColor: keySetting(), layer };
+      x: Math.max(0, Math.floor(center.x - piece.sw * paintScale / 2)), y: Math.max(0, Math.floor(center.y - piece.sh * paintScale / 2)),
+      scale: paintScale, rotation: paintRotation, flipX, flipY, keyColor: keySetting(), layer };
     s.objects.push(object); selectedId = object.id; setTool('select'); changed(piece.name + ' placed. Drag it into position.');
     return copy(object);
   }
@@ -387,7 +412,7 @@
   async function placePieceAt(value, point, options = {}) {
     const piece = normalizePiece(value), target = scene(), position = piecePosition(piece, point, options);
     const pieceLayer = allSheets[piece.sourceId]?.category === 'environments' || piece.kind === 'tile' ? 'terrain' : 'objects';
-    const settings = { flipX: options.flipX ?? flipX, flipY: options.flipY ?? flipY,
+    const settings = { flipX: options.flipX ?? flipX, flipY: options.flipY ?? flipY, rotation: normalizeRotation(options.rotation ?? paintRotation),
       layer: LAYERS.includes(options.layer) ? options.layer : pieceLayer };
     await imageFor(piece.assetId);
     if (scene() !== target) throw new Error('The scene changed while the piece was opening. Drop it again.');
@@ -403,7 +428,7 @@
     const piece = normalizePiece(value);
     const pieceLayer = allSheets[piece.sourceId]?.category === 'environments' || piece.kind === 'tile' ? 'terrain' : 'objects';
     if (piece.kind === 'tile' && piece.sw === piece.sh && [8, 16, 32].includes(piece.sw) && $('snapEnabled').checked) $('snapSize').value = String(piece.sw);
-    libraryDrag = { piece, scale: paintScale, flipX, flipY, layer: pieceLayer, sceneId: scene().id, position: null };
+    libraryDrag = { piece, scale: paintScale, rotation: paintRotation, flipX, flipY, layer: pieceLayer, sceneId: scene().id, position: null };
     imageFor(piece.assetId).catch(error => toast(error.message));
     $('stageViewport').classList.add('accepting-piece'); hover = null; scheduleDraw();
     return { ...copy(piece), scale: paintScale };
@@ -424,11 +449,10 @@
     await imageFor(piece.assetId);
     if (selected() !== object) throw new Error('Selection changed. Select the piece again to change its pose.');
     const category = allSheets[piece.sourceId]?.category || '';
-    const s = object.scale || 1, centerX = object.x + object.sw * s / 2;
-    const yAnchor = object.y + object.sh * s * (category === 'objects' || category === 'environments' ? .5 : 1);
+    const position = positionForPose(object, piece, category !== 'objects' && category !== 'environments');
     historyBefore();
     Object.assign(object, { assetId: piece.assetId, sx: piece.sx, sy: piece.sy, sw: piece.sw, sh: piece.sh, sourceId: piece.sourceId, pieceId: piece.id, pieceName: piece.name,
-      x: centerX - piece.sw * s / 2, y: yAnchor - piece.sh * s * (category === 'objects' || category === 'environments' ? .5 : 1), keyColor: piece.keyColor || null });
+      ...position, keyColor: piece.keyColor || null });
     changed('Pose changed. Position, scale and layer kept.');
     emit('minish:piece-selected', piece);
     return copy(object);
@@ -493,6 +517,20 @@
       throw new Error('The browser blocked local pixel access. Open the supplied studio launcher, or serve this folder locally, then try again.');
     }
   }
+  function paddedRotationCrop(object, source) {
+    const key = ['rotation-pad', renderedAssetId(object), object.sx, object.sy, object.sw, object.sh, object.keyColor || ''].join(':');
+    if (cropCache.has(key)) return cropCache.get(key);
+    const canvas = document.createElement('canvas'); canvas.width = object.sw + 2; canvas.height = object.sh + 2;
+    const ctx = canvas.getContext('2d'); ctx.imageSmoothingEnabled = false;
+    // Transparent padding keeps the browser's transformed image edge away
+    // from actual artwork, without changing any source pixels or alpha.
+    ctx.drawImage(source.image, source.sx, source.sy, source.sw, source.sh, 1, 1, object.sw, object.sh);
+    while (cropCache.size && (cropCache.size >= 350 || cropCachePixels + canvas.width * canvas.height > 8388608)) {
+      const oldest = cropCache.keys().next().value, cached = cropCache.get(oldest); cropCachePixels -= cached.width * cached.height; cropCache.delete(oldest);
+    }
+    cropCachePixels += canvas.width * canvas.height; cropCache.set(key, canvas);
+    return canvas;
+  }
   function updateBrush() {
     previewCtx.clearRect(0, 0, 52, 52); previewCtx.imageSmoothingEnabled = false;
     if (!brush || !activeAsset || !currentImage) { $('brushLabel').textContent = 'No tile selected'; $('brushCoords').textContent = 'Click a tile, then paint on the scene.'; return; }
@@ -555,10 +593,41 @@
   function endSheetDrag() { if (sheetDrag) { sheetDrag = null; status('Brush ready. Paint this piece on the scene.'); } }
   sheetCanvas.addEventListener('pointerup', endSheetDrag); sheetCanvas.addEventListener('pointercancel', endSheetDrag);
 
-  function objectBounds(object) {
-    const s = object.scale || 1;
-    return { x: object.x, y: object.y, w: (object.kind === 'sprite' ? object.sw : object.w) * s, h: (object.kind === 'sprite' ? object.sh : object.h) * s };
+  function normalizeRotation(value) { return ((Math.round(num(value) / 45) * 45 % 360) + 360) % 360; }
+  function rotateVector(vector, degrees) {
+    const index = normalizeRotation(degrees) / 45, q = Math.SQRT1_2;
+    const cos = [1,q,0,-q,-1,-q,0,q][index], sin = [0,q,1,q,0,-q,-1,-q][index];
+    return { x: vector.x * cos - vector.y * sin, y: vector.x * sin + vector.y * cos };
   }
+  function rotatePoint(point, origin, degrees) { const vector = rotateVector({ x: point.x - origin.x, y: point.y - origin.y }, degrees); return { x: origin.x + vector.x, y: origin.y + vector.y }; }
+  function objectCenter(object) { const s = object.scale || 1; return { x: object.x + (object.kind === 'sprite' ? object.sw : object.w) * s / 2, y: object.y + (object.kind === 'sprite' ? object.sh : object.h) * s / 2 }; }
+  function spritePoint(object, point) {
+    const s = object.scale || 1, x = object.flipX ? object.sw - point.x : point.x, y = object.flipY ? object.sh - point.y : point.y;
+    return rotatePoint({ x: object.x + x * s, y: object.y + y * s }, objectCenter(object), object.rotation);
+  }
+  function spriteLocalPoint(object, point) {
+    const s = object.scale || 1, unrotated = rotatePoint(point, objectCenter(object), -normalizeRotation(object.rotation));
+    const x = (unrotated.x - object.x) / s, y = (unrotated.y - object.y) / s;
+    return { x: object.flipX ? object.sw - x : x, y: object.flipY ? object.sh - y : y };
+  }
+  function positionForPose(object, piece, feet = true) {
+    const s = object.scale || 1, center = objectCenter(object);
+    const shift = rotateVector({ x: 0, y: feet ? (object.sh - piece.sh) * s / 2 : 0 }, object.rotation);
+    return { x: center.x + shift.x - piece.sw * s / 2, y: center.y + shift.y - piece.sh * s / 2 };
+  }
+  function objectBounds(object) {
+    const s = object.scale || 1, w = (object.kind === 'sprite' ? object.sw : object.w) * s, h = (object.kind === 'sprite' ? object.sh : object.h) * s;
+    if (object.kind !== 'sprite' || !normalizeRotation(object.rotation)) return { x: object.x, y: object.y, w, h };
+    const center = objectCenter(object), horizontal = rotateVector({ x: w, y: 0 }, object.rotation), vertical = rotateVector({ x: 0, y: h }, object.rotation);
+    const bw = Math.abs(horizontal.x) + Math.abs(vertical.x), bh = Math.abs(horizontal.y) + Math.abs(vertical.y);
+    return { x: center.x - bw / 2, y: center.y - bh / 2, w: bw, h: bh };
+  }
+  function objectContains(object, point) {
+    if (object.kind !== 'sprite') { const b = objectBounds(object); return point.x >= b.x && point.x < b.x + b.w && point.y >= b.y && point.y < b.y + b.h; }
+    const local = rotatePoint(point, objectCenter(object), -normalizeRotation(object.rotation)), s = object.scale || 1;
+    return local.x >= object.x - 1e-9 && local.x < object.x + object.sw * s - 1e-9 && local.y >= object.y - 1e-9 && local.y < object.y + object.sh * s - 1e-9;
+  }
+  const spriteGeometry = Object.freeze({ normalizeRotation, rotateVector, rotatePoint, center: objectCenter, point: spritePoint, localPoint: spriteLocalPoint, bounds: objectBounds, contains: objectContains });
   function orderedObjects(slide) { return LAYERS.flatMap(name => slide.objects.filter(o => o.layer === name)); }
   function wrapText(ctx, text, width, measure = text => ctx.measureText(text).width) {
     const result = [];
@@ -583,12 +652,15 @@
   }
   function drawObject(ctx, object) {
     const s = object.scale || 1;
-    ctx.save(); ctx.translate(Math.round(object.x), Math.round(object.y)); ctx.scale(s, s);
+    const rotation = object.kind === 'sprite' ? normalizeRotation(object.rotation) : 0;
+    ctx.save(); ctx.translate(rotation ? object.x : Math.round(object.x), rotation ? object.y : Math.round(object.y)); ctx.scale(s, s);
     if (object.kind === 'sprite') {
       const source = spriteCrop(object);
       if (source) {
+        if (rotation) { ctx.translate(object.sw / 2, object.sh / 2); ctx.rotate(rotation * Math.PI / 180); ctx.translate(-object.sw / 2, -object.sh / 2); }
         ctx.translate(object.flipX ? object.sw : 0, object.flipY ? object.sh : 0); ctx.scale(object.flipX ? -1 : 1, object.flipY ? -1 : 1);
-        ctx.drawImage(source.image, source.sx, source.sy, source.sw, source.sh, 0, 0, object.sw, object.sh);
+        if (rotation % 90) { const padded = paddedRotationCrop(object, source); ctx.drawImage(padded, -1, -1); }
+        else ctx.drawImage(source.image, source.sx, source.sy, source.sw, source.sh, 0, 0, object.sw, object.sh);
       }
     } else {
       const w = object.w, h = object.h, pad = object.box === false ? 0 : gameUI.dialogue?.padding || 10;
@@ -610,7 +682,7 @@
     ctx.restore();
   }
   function drawScene(ctx, slide, options = {}) {
-    ctx.imageSmoothingEnabled = false; ctx.clearRect(0, 0, slide.width, slide.height);
+    ctx.imageSmoothingEnabled = false; if (options.clear !== false) ctx.clearRect(0, 0, slide.width, slide.height);
     if (!slide.transparent) { ctx.fillStyle = slide.color; ctx.fillRect(0, 0, slide.width, slide.height); }
     for (const object of orderedObjects(slide)) {
       try { drawObject(ctx, object); } catch (error) { if (!options.quiet) status(error.message); }
@@ -627,25 +699,44 @@
     if (drawScheduled) return; drawScheduled = true;
     requestAnimationFrame(() => { drawScheduled = false; renderStage(); renderSlides(); });
   }
+  function sceneRasterKey(slide, grid = false) {
+    const assets = [...new Set(slide.objects.filter(object => object.kind === 'sprite').map(renderedAssetId))]
+      .map(id => [id, !!imageCache.get(id)?.ready]);
+    const ui = slide.objects.some(object => object.kind === 'dialogue') ? [...uiImages].map(([name, record]) => [name, record.ready]) : [];
+    return JSON.stringify([slide, assets, ui, grid && $('sceneGrid').checked, grid && snapStep()]);
+  }
   function drawPlacement() {
-    const s = scene(), ctx = placementCtx, g = editorGutter;
+    const s = scene(), ctx = placementCtx, g = editorGutter, vp = $('stageViewport');
+    const area = vp.getBoundingClientRect(), frame = mainCanvas.getBoundingClientRect();
+    const width = Math.max(1, Math.ceil(vp.clientWidth)), height = Math.max(1, Math.ceil(vp.clientHeight));
+    if (placementCanvas.width !== width || placementCanvas.height !== height) { placementCanvas.width = width; placementCanvas.height = height; }
+    placementCanvas.style.width = width + 'px'; placementCanvas.style.height = height + 'px';
+    const padding = num(parseFloat($('canvasWrap').style.padding));
+    placementCanvas.style.left = (area.left - frame.left + padding) + 'px'; placementCanvas.style.top = (area.top - frame.top + padding) + 'px';
     ctx.imageSmoothingEnabled = false; ctx.clearRect(0, 0, placementCanvas.width, placementCanvas.height);
-    ctx.save(); ctx.translate(g.x, g.y);
+    ctx.save(); ctx.translate(frame.left - area.left, frame.top - area.top); ctx.scale(stageZoom, stageZoom);
+    ctx.beginPath(); ctx.rect(-g.x, -g.y, s.width + g.x * 2, s.height + g.y * 2); ctx.clip();
+    const visible = { x: (area.left - frame.left) / stageZoom, y: (area.top - frame.top) / stageZoom, w: width / stageZoom, h: height / stageZoom };
+    const intersectsView = bounds => bounds.x < visible.x + visible.w && bounds.y < visible.y + visible.h && bounds.x + bounds.w > visible.x && bounds.y + bounds.h > visible.y;
     // The pasteboard is editor-only. Export and carousel canvases keep the scene crop.
     ctx.save(); ctx.beginPath(); ctx.rect(-g.x, -g.y, s.width + g.x * 2, s.height + g.y * 2); ctx.rect(0, 0, s.width, s.height); ctx.clip('evenodd');
     ctx.globalAlpha = .5;
-    for (const object of orderedObjects(s)) { try { drawObject(ctx, object); } catch (_) {} }
+    for (const object of orderedObjects(s)) {
+      const bounds = objectBounds(object);
+      if ((bounds.x >= 0 && bounds.y >= 0 && bounds.x + bounds.w <= s.width && bounds.y + bounds.h <= s.height) || !intersectsView(bounds)) continue;
+      try { drawObject(ctx, object); } catch (_) {}
+    }
     ctx.restore();
     let preview = null;
     if (libraryDrag?.position) {
-      const { piece, position, scale, flipX, flipY } = libraryDrag;
-      preview = { kind: 'sprite', ...piece, ...position, scale, flipX, flipY, keyColor: piece.keyColor || null };
+      const { piece, position, scale, rotation, flipX, flipY } = libraryDrag;
+      preview = { kind: 'sprite', ...piece, ...position, scale, rotation, flipX, flipY, keyColor: piece.keyColor || null };
     } else if (hover && tool === 'paint' && brush && activeAsset && currentImage && !canvasDrag) {
       preview = { kind: 'sprite', ...brush, assetId: activeAsset.id,
         x: snapCoord(hover.x, false, hover.precise), y: snapCoord(hover.y, false, hover.precise),
-        scale: paintScale, flipX, flipY, keyColor: keySetting() };
+        scale: paintScale, rotation: paintRotation, flipX, flipY, keyColor: keySetting() };
     }
-    if (preview) { ctx.save(); ctx.globalAlpha = .65; try { drawObject(ctx, preview); } catch (_) {} ctx.restore(); }
+    if (preview && intersectsView(objectBounds(preview))) { ctx.save(); ctx.globalAlpha = .65; try { drawObject(ctx, preview); } catch (_) {} ctx.restore(); }
     const outline = preview || selected();
     if (outline) {
       const b = objectBounds(outline); ctx.lineWidth = 1 / stageZoom; ctx.strokeStyle = '#fffbd7'; ctx.strokeRect(b.x, b.y, b.w, b.h);
@@ -658,8 +749,16 @@
     $('precisionBtn').setAttribute('aria-pressed', String(precise));
   }
   function renderStage() {
+    // Keep pending view anchors until the canvas has visible layout again.
+    if (document.body.classList.contains('animation-mode')) return;
     const s = scene();
-    if (mainCanvas.width !== s.width || mainCanvas.height !== s.height) { mainCanvas.width = s.width; mainCanvas.height = s.height; }
+    if (fitMode) {
+      // A viewport-sized editing overlay must not retain scroll extents from
+      // a distant map area while the next scene's layout is being measured.
+      placementCanvas.style.left = placementCanvas.style.top = '0px';
+      placementCanvas.style.width = placementCanvas.style.height = '0px';
+    }
+    if (mainCanvas.width !== s.width || mainCanvas.height !== s.height) { mainCanvas.width = s.width; mainCanvas.height = s.height; mainCanvas._minishRasterKey = null; }
     if (fitMode) {
       const vp = $('stageViewport');
       const style = window.getComputedStyle?.(vp);
@@ -673,34 +772,41 @@
     // Manual zoom keeps a scrollable pasteboard even when the frame still fits
     // in one axis. That gives the cursor anchor room instead of clamping it to
     // the center. Fit retains small margins and a centered composition.
-    const margin = fitMode ? 24 : Math.max(32, vp.clientWidth / 2, vp.clientHeight / 2);
-    const layoutGutter = Math.min(512, Math.max(1, Math.ceil(margin / stageZoom)));
+    const margin = fitMode ? 24 : Math.max(32, vp.clientWidth, vp.clientHeight);
+    const layoutGutter = Math.max(1, Math.ceil(margin / stageZoom));
     // Use the available surrounding space without moving the frame when a
     // placed piece crosses its edge.
-    editorGutter = { x: Math.max(layoutGutter, Math.min(512, Math.floor(((vp.clientWidth - 10) / stageZoom - s.width) / 2))),
-      y: Math.max(layoutGutter, Math.min(512, Math.floor(((vp.clientHeight - 10) / stageZoom - s.height) / 2))) };
+    editorGutter = { x: Math.min(512, Math.max(layoutGutter, Math.floor(((vp.clientWidth - 10) / stageZoom - s.width) / 2))),
+      y: Math.min(512, Math.max(layoutGutter, Math.floor(((vp.clientHeight - 10) / stageZoom - s.height) / 2))) };
     const wrap = $('canvasWrap'); wrap.style.padding = layoutGutter * stageZoom + 'px';
-    const pw = s.width + editorGutter.x * 2, ph = s.height + editorGutter.y * 2;
-    if (placementCanvas.width !== pw || placementCanvas.height !== ph) { placementCanvas.width = pw; placementCanvas.height = ph; }
-    placementCanvas.style.width = pw * stageZoom + 'px'; placementCanvas.style.height = ph * stageZoom + 'px';
-    placementCanvas.style.left = (layoutGutter - editorGutter.x) * stageZoom + 'px'; placementCanvas.style.top = (layoutGutter - editorGutter.y) * stageZoom + 'px';
     // Flex centering can land on a half pixel and blur even an integer-zoom canvas.
     wrap.style.transform = 'none';
     const canvasRect = mainCanvas.getBoundingClientRect();
     const pixelOffset = { x: Math.round(canvasRect.left) - canvasRect.left, y: Math.round(canvasRect.top) - canvasRect.top };
     wrap.style.transform = 'translate(' + pixelOffset.x + 'px,' + pixelOffset.y + 'px)';
     renderedStageZoom = stageZoom;
+    if (fitMode) {
+      // New scenes and Fit must use the new canvas center, never a scroll
+      // offset or a pending pointer anchor inherited from the previous map.
+      // An ordinary Fit repaint can occur after Safari gesturestart. Preserve
+      // that gesture until its first scale change leaves Fit mode.
+      zoomAnchor = { x: s.width / 2, y: s.height / 2,
+        viewportX: num(vp.clientLeft) + vp.clientWidth / 2,
+        viewportY: num(vp.clientTop) + vp.clientHeight / 2 };
+    }
     if (zoomAnchor) {
       const anchor = zoomAnchor, updated = mainCanvas.getBoundingClientRect(); zoomAnchor = null;
-      vp.scrollLeft = num(vp.scrollLeft) + updated.left + anchor.x * stageZoom - anchor.clientX;
-      vp.scrollTop = num(vp.scrollTop) + updated.top + anchor.y * stageZoom - anchor.clientY;
+      const viewportRect = vp.getBoundingClientRect();
+      vp.scrollLeft = num(vp.scrollLeft) + updated.left + anchor.x * stageZoom - (viewportRect.left + anchor.viewportX);
+      vp.scrollTop = num(vp.scrollTop) + updated.top + anchor.y * stageZoom - (viewportRect.top + anchor.viewportY);
       const scrolled = mainCanvas.getBoundingClientRect();
       wrap.style.transform = 'translate(' + (pixelOffset.x + Math.round(scrolled.left) - scrolled.left) + 'px,' + (pixelOffset.y + Math.round(scrolled.top) - scrolled.top) + 'px)';
     }
-    mainCanvas.style.cursor = tool === 'select' ? 'default' : tool === 'erase' ? 'cell' : 'crosshair';
-    $('stageViewport').style.cursor = mainCanvas.style.cursor;
-    drawScene(mainCtx, s, { grid: true }); drawPlacement();
-    $('stageZoomLabel').textContent = Math.round(stageZoom * 100) + '%';
+    updateViewCursor();
+    const rasterKey = sceneRasterKey(s, true);
+    if (mainCanvas._minishRasterKey !== rasterKey) { drawScene(mainCtx, s, { grid: true }); mainCanvas._minishRasterKey = rasterKey; }
+    drawPlacement();
+    updateZoomField();
     $('emptyNudge').hidden = s.objects.length > 0;
   }
   function renderSlides() {
@@ -718,15 +824,19 @@
       card.classList.toggle('active', s.id === project.activeSlide); card.title = s.name; card.setAttribute('aria-label', 'Open ' + s.name); card.setAttribute('aria-current', s.id === project.activeSlide ? 'true' : 'false');
       card.querySelector('span').textContent = s.name; card.querySelector('i').textContent = String(i + 1).padStart(2, '0');
       const thumbnailScale = Math.min(1, 144 / s.width, 144 / s.height), w = Math.max(1, Math.round(s.width * thumbnailScale)), h = Math.max(1, Math.round(s.height * thumbnailScale));
-      if (c.width !== w || c.height !== h) { c.width = w; c.height = h; }
-      const ctx = c.getContext('2d'); ctx.save(); ctx.setTransform(w / s.width, 0, 0, h / s.height, 0, 0); drawScene(ctx, s, { quiet: true }); ctx.restore();
+      if (c.width !== w || c.height !== h) { c.width = w; c.height = h; c._minishRasterKey = null; }
+      const rasterKey = sceneRasterKey(s);
+      if (c._minishRasterKey !== rasterKey) {
+        const ctx = c.getContext('2d'); ctx.save(); ctx.setTransform(w / s.width, 0, 0, h / s.height, 0, 0); drawScene(ctx, s, { quiet: true }); ctx.restore(); c._minishRasterKey = rasterKey;
+      }
     });
   }
   function updateInspector() {
     const s = scene(), object = selected();
     const styleBadge = $('sceneStyleBadge'); styleBadge.hidden = !s.generated;
-    styleBadge.textContent = s.generated?.style === 'wild' ? 'Wild mashup' : 'Game-inspired';
-    styleBadge.title = s.generated?.style === 'wild' ? 'An imaginative editor scene using genuine game art.' : 'A new editor scene using reviewed placement areas.';
+    styleBadge.textContent = s.generated?.kind === 'world' ? 'Hyrule Easter eggs' : s.generated?.style === 'wild' ? 'Wild mashup' : 'Game-inspired';
+    styleBadge.title = s.generated?.kind === 'world' ? 'Explore the whole map. Every Easter egg remains editable.' : s.generated?.style === 'wild' ? 'An imaginative editor scene using genuine game art.' : 'A new editor scene using reviewed placement areas.';
+    if ($('worldDiscoveryBtn')) $('worldDiscoveryBtn').hidden = s.generated?.kind !== 'world' || !s.generated.encounters?.length;
     $('sceneHeading').textContent = s.name; $('slideName').value = s.name;
     $('aspectPreset').value = s.preset || 'portrait'; $('sceneColor').value = s.color; $('transparentScene').checked = s.transparent;
     if ($('customSizeFields')) $('customSizeFields').hidden = s.preset !== 'custom';
@@ -745,6 +855,8 @@
     $('objectScale').value = object ? (object.scale || 1) : paintScale;
     $('flipXBtn').classList.toggle('active', object ? !!object.flipX : flipX); $('flipYBtn').classList.toggle('active', object ? !!object.flipY : flipY);
     $('flipXBtn').disabled = object?.kind === 'dialogue'; $('flipYBtn').disabled = object?.kind === 'dialogue';
+    $('sceneRotationControls').hidden = object?.kind === 'dialogue';
+    $('objectRotation').value = normalizeRotation(object?.rotation ?? paintRotation);
     if (object) { $('objectX').value = Math.round(object.x); $('objectY').value = Math.round(object.y); }
     const siblings = s.objects.filter(o => o.layer === object?.layer), index = siblings.indexOf(object);
     for (const id of ['backwardBtn', 'sendBackBtn']) if ($(id)) $(id).disabled = !object || index <= 0;
@@ -770,26 +882,35 @@
   }
   function refreshAll() { $('projectName').value = project.name; updateInspector(); updateHistory(); scheduleDraw(); }
   function setTool(next, preserveSelection = false) {
-    tool = next; if (next !== 'select' && !preserveSelection) selectedId = null;
-    document.querySelectorAll('[data-tool]').forEach(b => b.classList.toggle('active', b.dataset.tool === next));
+    if (canvasDrag) endCanvasDrag();
+    tool = next; hover = null; if (next !== 'select' && next !== 'hand' && !preserveSelection) selectedId = null;
+    document.querySelectorAll('[data-tool]').forEach(b => { b.classList.toggle('active', b.dataset.tool === next); b.setAttribute('aria-pressed', String(b.dataset.tool === next)); });
+    for (const [name, id] of [['select', 'sceneMenuSelect'], ['hand', 'sceneMenuHand'], ['paint', 'sceneMenuPaint'], ['erase', 'sceneMenuErase']]) $(id)?.setAttribute('aria-pressed', String(name === next));
+    if ($('sceneToolsLabel')) { $('sceneToolsLabel').textContent = next === 'hand' ? 'Hand ▾' : 'Tools ▾'; $('sceneToolsLabel').setAttribute('data-active-tool', next); }
+    updateViewCursor();
     updateInspector(); scheduleDraw();
-    status(next === 'paint' ? 'Paint: click or drag to place the selected piece.' : next === 'select' ? 'Select: click a piece to move it. Drag large maps to frame the scene.' : 'Erase: click or drag to remove whole pieces from the active layer.');
+    status(next === 'hand' ? 'Hand: drag to move the view. Pinch or Ctrl+wheel zooms. V returns to Select.' : next === 'paint' ? 'Paint: click or drag to place the selected piece.' : next === 'select' ? 'Select: click a piece to move it. Drag large maps to frame the scene.' : 'Erase: click or drag to remove whole pieces from the active layer.');
+  }
+  function updateViewCursor() {
+    const cursor = tool === 'hand' ? canvasDrag?.hand ? 'grabbing' : 'grab' : tool === 'select' ? 'default' : tool === 'erase' ? 'cell' : 'crosshair';
+    mainCanvas.style.cursor = cursor; $('stageViewport').style.cursor = cursor;
   }
   function snapStep() { return Math.max(1, num($('snapSize').value, 16)); }
   function snapCoord(value, round = false, precise = false) { const step = !precise && $('snapEnabled').checked ? snapStep() : 1; return (round ? Math.round(value / step) : Math.floor(value / step)) * step; }
   function scenePoint(event) { const r = mainCanvas.getBoundingClientRect(); return { x: (event.clientX - r.left) / stageZoom, y: (event.clientY - r.top) / stageZoom, precise: !!event.altKey }; }
   function hitObject(point, restrictLayer = false) {
-    return orderedObjects(scene()).reverse().find(o => { const b = objectBounds(o); return (!restrictLayer || o.layer === layer) && point.x >= b.x && point.x < b.x + b.w && point.y >= b.y && point.y < b.y + b.h; });
+    return orderedObjects(scene()).reverse().find(o => (!restrictLayer || o.layer === layer) && objectContains(o, point));
   }
   function stampAt(x, y) {
     if (!brush || !activeAsset || !currentImage) return false;
     x = clamp(Math.round(x), -100000, 100000); y = clamp(Math.round(y), -100000, 100000);
-    if (x >= scene().width + editorGutter.x || y >= scene().height + editorGutter.y || x + brush.sw * paintScale <= -editorGutter.x || y + brush.sh * paintScale <= -editorGutter.y) return false;
+    const footprint = objectBounds({ kind: 'sprite', x, y, sw: brush.sw, sh: brush.sh, scale: paintScale, rotation: paintRotation });
+    if (footprint.x >= scene().width + editorGutter.x || footprint.y >= scene().height + editorGutter.y || footprint.x + footprint.w <= -editorGutter.x || footprint.y + footprint.h <= -editorGutter.y) return false;
     const positionKey = x + ':' + y;
     if (canvasDrag.visited.has(positionKey)) return false;
     canvasDrag.visited.add(positionKey);
     if (!canvasDrag.history) { historyBefore(); canvasDrag.history = true; }
-    scene().objects.push({ id: uid(), kind: 'sprite', assetId: String(activeAsset.id), ...brush, x, y, scale: paintScale, flipX, flipY, keyColor: keySetting(), layer });
+    scene().objects.push({ id: uid(), kind: 'sprite', assetId: String(activeAsset.id), ...brush, x, y, scale: paintScale, rotation: paintRotation, flipX, flipY, keyColor: keySetting(), layer });
     return true;
   }
   function eraseAt(p) {
@@ -798,7 +919,13 @@
     scene().objects = scene().objects.filter(o => o.id !== object.id); if (selectedId === object.id) selectedId = null;
   }
   function beginCanvasDrag(event) {
-    if (event.button !== 0 || event.ctrlKey || event.metaKey) return; event.preventDefault(); mainCanvas.focus({ preventScroll: true });
+    if (event.button !== 0 || event.ctrlKey || event.metaKey || !canZoomInput(event)) return; event.preventDefault(); mainCanvas.focus({ preventScroll: true });
+    if (tool === 'hand') {
+      if (fitMode) preparePanSpace();
+      hover = null; gestureZoom = null;
+      canvasDrag = { hand: true, x: event.clientX, y: event.clientY, scrollLeft: num(viewport.scrollLeft), scrollTop: num(viewport.scrollTop), history: false };
+      (event.currentTarget || mainCanvas).setPointerCapture(event.pointerId); updateViewCursor(); scheduleDraw(); return;
+    }
     const p = scenePoint(event); hover = null; (event.currentTarget || mainCanvas).setPointerCapture(event.pointerId);
     canvasDrag = { start: p, history: false, visited: new Set(), last: p };
     if (tool === 'paint') {
@@ -812,6 +939,12 @@
     changed();
   }
   function moveCanvasDrag(event) {
+    if (canvasDrag?.hand) {
+      if (!canZoomInput(event)) { endCanvasDrag(); return; }
+      viewport.scrollLeft = canvasDrag.scrollLeft - (event.clientX - canvasDrag.x);
+      viewport.scrollTop = canvasDrag.scrollTop - (event.clientY - canvasDrag.y);
+      scheduleDraw(); return;
+    }
     const p = scenePoint(event); hover = p;
     if (!canvasDrag) { scheduleDraw(); return; }
     if (tool === 'paint') {
@@ -829,50 +962,95 @@
     }
     canvasDrag.last = p; changed();
   }
-  function endCanvasDrag() { if (canvasDrag) { const edited = canvasDrag.history; canvasDrag = null; if (edited) changed('Scene updated.'); else scheduleDraw(); } }
+  function endCanvasDrag() { if (canvasDrag) { const edited = canvasDrag.history; canvasDrag = null; updateViewCursor(); if (edited) changed('Scene updated.'); else scheduleDraw(); } }
   mainCanvas.addEventListener('pointerup', endCanvasDrag); mainCanvas.addEventListener('pointercancel', endCanvasDrag);
   mainCanvas.addEventListener('pointerleave', () => { hover = null; if (!canvasDrag) scheduleDraw(); });
   mainCanvas.addEventListener('pointerdown', beginCanvasDrag); mainCanvas.addEventListener('pointermove', moveCanvasDrag);
   const viewport = $('stageViewport');
+  viewport.addEventListener('scroll', () => { if (!document.body.classList.contains('animation-mode')) scheduleDraw(); }, { passive: true });
   function zoomCenter() { const rect = viewport.getBoundingClientRect(); return { x: rect.left + viewport.clientWidth / 2, y: rect.top + viewport.clientHeight / 2 }; }
-  function zoomAt(value, center = zoomCenter()) {
-    const next = clamp(num(value, stageZoom), .05, 12), rect = mainCanvas.getBoundingClientRect();
-    if (Math.abs(next - stageZoom) < .0001) return stageZoom;
+  function captureZoomAnchor(center) {
+    const rect = mainCanvas.getBoundingClientRect(), viewportRect = viewport.getBoundingClientRect();
     const displayedZoom = rect.width > 0 && mainCanvas.width > 0 ? rect.width / mainCanvas.width : renderedStageZoom;
-    zoomAnchor = { x: (center.x - rect.left) / displayedZoom, y: (center.y - rect.top) / displayedZoom, clientX: center.x, clientY: center.y };
+    return { x: (center.x - rect.left) / displayedZoom, y: (center.y - rect.top) / displayedZoom, viewportX: center.x - viewportRect.left, viewportY: center.y - viewportRect.top };
+  }
+  function zoomAt(value, center = zoomCenter(), capturedAnchor = null) {
+    const next = clamp(num(value, stageZoom), .05, 12);
+    zoomAnchor = capturedAnchor || captureZoomAnchor(center);
     fitMode = false; stageZoom = next; hover = null; scheduleDraw(); return next;
   }
   function zoomStep(direction) {
-    clearTimeout(zoomSettleTimer); gestureZoom = null;
-    const steps = [.05, .125, .25, .5, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
-    return zoomAt(direction > 0 ? steps.find(value => value > stageZoom + .001) || 12 : steps.slice().reverse().find(value => value < stageZoom - .001) || .05);
+    gestureZoom = null;
+    return zoomAt(Number((stageZoom + Math.sign(direction) * .1).toFixed(10)));
   }
-  function fitCanvas() { clearTimeout(zoomSettleTimer); zoomAnchor = null; gestureZoom = null; fitMode = true; scheduleDraw(); }
-  function settleZoom(center) {
-    clearTimeout(zoomSettleTimer);
-    zoomSettleTimer = setTimeout(() => {
-      const value = stageZoom >= 1 ? Math.max(1, Math.round(stageZoom)) : [.05, .125, .25, .5, 1].reduce((best, candidate) => Math.abs(candidate - stageZoom) < Math.abs(best - stageZoom) ? candidate : best, 1);
-      zoomAt(value, center); zoomSettleTimer = null;
-    }, 140);
+  function fitCanvas() { zoomAnchor = null; gestureZoom = null; fitMode = true; scheduleDraw(); }
+  function preparePanSpace() {
+    // Scrollbars can reduce client dimensions when overflow first appears.
+    for (let pass = 0; pass < 2; pass++) { zoomAt(stageZoom); renderStage(); }
+  }
+  function focusArea(area) {
+    if (!area || !['x', 'y', 'w', 'h'].every(key => Number.isFinite(Number(area[key]))) || area.w <= 0 || area.h <= 0) return;
+    const value = clamp(Math.min(2, viewport.clientWidth / (Number(area.w) + 96), viewport.clientHeight / (Number(area.h) + 96)), .05, 12);
+    gestureZoom = null;
+    zoomAt(value, zoomCenter(), { x: Number(area.x) + Number(area.w) / 2, y: Number(area.y) + Number(area.h) / 2,
+      viewportX: viewport.clientWidth / 2, viewportY: viewport.clientHeight / 2 });
+  }
+  function updateZoomField(force = false) {
+    if (force || document.activeElement !== $('stageZoomLabel')) $('stageZoomLabel').value = Math.round(stageZoom * 100) + '%';
+  }
+  function applyZoomField() {
+    const field = $('stageZoomLabel'), text = field.value.trim().replace(',', '.');
+    if (zoomFieldDraft && /^(?:\d+(?:\.\d+)?|\.\d+)\s*%?$/.test(text)) {
+      const percentage = Number(text.replace(/\s*%$/, ''));
+      if (Number.isFinite(percentage)) { gestureZoom = null; zoomAt(percentage / 100); }
+    }
+    zoomFieldDraft = false; updateZoomField(true);
+  }
+  function canZoomInput(event) {
+    const target = event?.target;
+    return !document.body.classList.contains('animation-mode') && !document.querySelector('dialog[open]') && !event?.defaultPrevented &&
+      !/^(INPUT|TEXTAREA|SELECT)$/.test(target?.tagName || '') && !target?.isContentEditable &&
+      !target?.closest?.('[role="textbox"], [role="combobox"], [role="spinbutton"]');
   }
   viewport.addEventListener('wheel', event => {
-    if (!event.ctrlKey || document.body.classList.contains('animation-mode') || document.querySelector('dialog[open]')) return;
+    if (!event.ctrlKey) {
+      if (fitMode && canZoomInput(event) && !event.altKey && !event.metaKey) {
+        void event.deltaMode; // Read browser units before accessing wheel deltas.
+        if ((Number.isFinite(event.deltaX) && event.deltaX) || (Number.isFinite(event.deltaY) && event.deltaY)) {
+          // Open scroll room before the browser applies this wheel event.
+          // Staying at the same scale and center makes the first pan seamless.
+          preparePanSpace();
+        }
+      }
+      return;
+    }
+    if (!canZoomInput(event) || event.cancelable === false || event.altKey || event.metaKey) return;
+    const deltaMode = event.deltaMode;
+    // Browsers emit Ctrl+wheel for trackpad pinch. Ordinary wheel events stay
+    // native so two-finger scrolling pans in both axes.
+    if (!Number.isFinite(event.deltaY) || !event.deltaY) return;
     event.preventDefault(); if (canvasDrag || gestureZoom) return;
-    const unit = event.deltaMode === 1 ? 16 : event.deltaMode === 2 ? viewport.clientHeight : 1;
+    const unit = deltaMode === 1 ? 16 : deltaMode === 2 ? viewport.clientHeight : 1;
     const center = { x: event.clientX, y: event.clientY }, delta = clamp(num(event.deltaY) * unit, -160, 160);
-    zoomAt(stageZoom * Math.exp(-delta * .004), center); settleZoom(center);
+    zoomAt(stageZoom * Math.exp(-delta * .005), center);
   }, { passive: false });
   // Safari exposes trackpad pinch as GestureEvents rather than Ctrl+wheel.
   viewport.addEventListener('gesturestart', event => {
-    if (document.body.classList.contains('animation-mode') || document.querySelector('dialog[open]') || canvasDrag) return;
-    event.preventDefault(); clearTimeout(zoomSettleTimer); gestureZoom = { start: stageZoom, center: Number.isFinite(event.clientX) && Number.isFinite(event.clientY) ? { x: event.clientX, y: event.clientY } : zoomCenter() };
+    if (!canZoomInput(event) || canvasDrag) return;
+    event.preventDefault(); gestureZoom = { start: stageZoom, center: Number.isFinite(event.clientX) && Number.isFinite(event.clientY) ? { x: event.clientX, y: event.clientY } : zoomCenter() };
   }, { passive: false });
   viewport.addEventListener('gesturechange', event => {
-    if (!gestureZoom) return; event.preventDefault();
+    if (!gestureZoom || !canZoomInput(event)) return; event.preventDefault();
     if (Number.isFinite(event.clientX) && Number.isFinite(event.clientY)) gestureZoom.center = { x: event.clientX, y: event.clientY };
-    zoomAt(gestureZoom.start * Math.max(.01, num(event.scale, 1)), gestureZoom.center);
+    zoomAt(gestureZoom.start * Math.pow(Math.max(.01, num(event.scale, 1)), 1.25), gestureZoom.center);
   }, { passive: false });
-  viewport.addEventListener('gestureend', event => { if (!gestureZoom) return; event.preventDefault(); const center = gestureZoom.center; gestureZoom = null; settleZoom(center); }, { passive: false });
+  function finishGestureZoom(event) {
+    if (!gestureZoom) return;
+    gestureZoom = null;
+    if (canZoomInput(event)) event?.preventDefault();
+  }
+  viewport.addEventListener('gestureend', finishGestureZoom, { passive: false });
+  document.addEventListener('minish:workspace-changed', event => { if (event.detail?.mode === 'animation') { finishGestureZoom(); endCanvasDrag(); } });
   for (const [type, handler] of [['pointerdown', beginCanvasDrag], ['pointermove', moveCanvasDrag], ['pointerup', endCanvasDrag], ['pointercancel', endCanvasDrag]]) {
     viewport.addEventListener(type, event => { if (event.target !== mainCanvas) handler(event); });
   }
@@ -903,6 +1081,7 @@
       safe[key] = clamp(Math.round(Number(safe[key])), -100000, 100000);
     }
     if ('scale' in safe) safe.scale = clamp(Math.round(num(safe.scale, 1)), 1, 8);
+    if ('rotation' in safe) { if (object.kind !== 'sprite') return copy(object); safe.rotation = normalizeRotation(safe.rotation); }
     if ('layer' in safe && !LAYERS.includes(safe.layer)) throw new Error('Choose Terrain, Objects or Overlay.');
     for (const key of ['flipX', 'flipY']) if (key in safe) safe[key] = !!safe[key];
     historyBefore(); Object.assign(object, safe); if (safe.layer) layer = safe.layer; changed(message); return copy(object);
@@ -927,11 +1106,11 @@
     const object = { id: uid(), kind: 'dialogue', x: Math.min(12, Math.max(0, s.width - 20)), y: Math.max(8, s.height - 74), w: Math.max(20, s.width - 24), h: 58, text: "A little adventure,\na story of your own.", fontSize: 12, color: '#fff7d3', box: true, layer: 'overlay', scale: 1 };
     s.objects.push(object); layer = 'overlay'; selectedId = object.id; setTool('select'); changed('Dialogue added. Edit your words on the right.'); $('dialogueText').focus(); $('dialogueText').select();
   }
-  function switchSlide(id) { if (project.activeSlide === id) return; project.activeSlide = id; selectedId = null; hover = null; fitMode = true; refreshAll(); scheduleSave(); }
+  function switchSlide(id) { if (project.activeSlide === id) return; project.activeSlide = id; selectedId = null; hover = null; gestureZoom = null; fitMode = true; refreshAll(); scheduleSave(); }
   function addSlide(duplicate = false) {
     historyBefore(); const s = duplicate ? { ...copy(scene()), id: uid(), name: scene().name + ' copy' } : newSlide(project.slides.length + 1, scene().preset || 'portrait', scene());
     if (duplicate) s.objects.forEach(o => { o.id = uid(); });
-    const index = project.slides.findIndex(s => s.id === project.activeSlide); project.slides.splice(index + 1, 0, s); project.activeSlide = s.id; selectedId = null; fitMode = true;
+    const index = project.slides.findIndex(s => s.id === project.activeSlide); project.slides.splice(index + 1, 0, s); project.activeSlide = s.id; selectedId = null; gestureZoom = null; fitMode = true;
     changed(duplicate ? 'Scene duplicated.' : 'A fresh scene, ready for the next part of your story.');
   }
   function deleteSlide() {
@@ -939,14 +1118,27 @@
     historyBefore();
     if (project.slides.length > 1) { project.slides.splice(index, 1); project.activeSlide = project.slides[Math.min(index, project.slides.length - 1)].id; }
     else { const blank = newSlide(1, current.preset || 'custom', current); project.slides = [blank]; project.activeSlide = blank.id; }
-    selectedId = null; hover = null; canvasDrag = null; zoomAnchor = null; fitMode = true;
+    selectedId = null; hover = null; canvasDrag = null; zoomAnchor = null; gestureZoom = null; fitMode = true;
     changed('Scene deleted. Undo restores the complete scene.'); return true;
+  }
+  function freshSceneObjectIds(candidate) {
+    const replacements = new Map();
+    candidate.objects = (candidate.objects || []).map(object => {
+      const id = uid(); if (object.id != null && !replacements.has(String(object.id))) replacements.set(String(object.id), id);
+      return { ...object, id };
+    });
+    for (const object of candidate.objects) if (object.simpleCompanion && replacements.has(String(object.simpleCompanion.ownerId))) object.simpleCompanion.ownerId = replacements.get(String(object.simpleCompanion.ownerId));
+    const remap = (record, key) => {
+      if (Array.isArray(record?.[key])) record[key] = record[key].map(id => replacements.get(String(id)) || id);
+    };
+    remap(candidate.generated?.battle, 'combatants'); remap(candidate.generated?.battle, 'projectiles');
+    for (const record of [...(candidate.generated?.easterEggs || []), ...(candidate.generated?.encounters || [])]) remap(record, 'objectIds');
   }
   async function insertScene(value) {
     if (project.slides.length >= 100) throw new Error('This project already has 100 scenes. Save it and start another project to add more.');
     const candidate = copy(value);
     candidate.id = uid();
-    candidate.objects = (candidate.objects || []).map(object => ({ ...object, id: uid() }));
+    freshSceneObjectIds(candidate);
     const checked = validateProject({ format: 'minish-cap-studio', version: 4, name: project.name, activeSlide: candidate.id, slides: [candidate] }).slides[0];
     const required = [...new Set(checked.objects.filter(object => object.kind === 'sprite').map(object => object.assetId))];
     if (required.some(id => !assetMap.has(id))) throw new Error('A required scene asset is missing. Reopen the complete app folder and try again.');
@@ -955,7 +1147,7 @@
     historyBefore();
     const index = project.slides.findIndex(slide => slide.id === project.activeSlide);
     project.slides.splice(index + 1, 0, checked); project.activeSlide = checked.id;
-    selectedId = null; hover = null; fitMode = true; refreshAll(); scheduleSave();
+    selectedId = null; hover = null; gestureZoom = null; fitMode = true; refreshAll(); scheduleSave();
     status('A new scene is ready. Every piece is editable. Undo removes the new scene.');
     return copy(checked);
   }
@@ -964,7 +1156,7 @@
     if (!target.generated) return insertScene(value);
     const before = JSON.stringify(target), candidate = copy(value);
     candidate.id = target.id;
-    candidate.objects = (candidate.objects || []).map(object => ({ ...object, id: uid() }));
+    freshSceneObjectIds(candidate);
     const checked = validateProject({ format: 'minish-cap-studio', version: 4, name: project.name, activeSlide: candidate.id, slides: [candidate] }).slides[0];
     if (!checked.generated) throw new Error('Choose a generated adventure to use Surprise me again.');
     const required = [...new Set(checked.objects.filter(object => object.kind === 'sprite').map(object => object.assetId))];
@@ -973,7 +1165,7 @@
     if (scene() !== target || JSON.stringify(target) !== before) throw new Error('The scene changed while the adventure was opening. Click Surprise me again to retry.');
     historyBefore();
     project.slides[project.slides.indexOf(target)] = checked;
-    selectedId = null; hover = null; fitMode = true; refreshAll(); scheduleSave();
+    selectedId = null; hover = null; gestureZoom = null; fitMode = true; refreshAll(); scheduleSave();
     status('A fresh surprise is ready. Undo brings back the previous scene.');
     return copy(checked);
   }
@@ -990,10 +1182,10 @@
     if (!candidate) throw new Error('No corrected pose is available for this older boss.');
     const piece = normalizePiece(candidate); await imageFor(piece.assetId);
     if (selected() !== object) throw new Error('Select the older boss again to update it.');
-    const scale = object.scale || 1, centerX = object.x + object.sw * scale / 2, feetY = object.y + object.sh * scale;
+    const position = positionForPose(object, piece);
     historyBefore();
     Object.assign(object, { assetId: piece.assetId, sourceId: piece.sourceId, pieceId: piece.id, pieceName: piece.name,
-      sx: piece.sx, sy: piece.sy, sw: piece.sw, sh: piece.sh, x: centerX - piece.sw * scale / 2, y: feetY - piece.sh * scale, keyColor: piece.keyColor || null });
+      sx: piece.sx, sy: piece.sy, sw: piece.sw, sh: piece.sh, ...position, keyColor: piece.keyColor || null });
     changed('Older boss updated. Position and scale kept. Undo restores the previous assembly.');
     return copy(object);
   }
@@ -1007,9 +1199,10 @@
       let x = part.at.x - crop.x + padding, y = part.at.y - crop.y + padding;
       if (object.flipX) x = object.sw - x - rect.w;
       if (object.flipY) y = object.sh - y - rect.h;
+      const center = rotatePoint({ x: object.x + (x + rect.w / 2) * scale, y: object.y + (y + rect.h / 2) * scale }, objectCenter(object), object.rotation);
       return { id: uid(), kind: 'sprite', assetId: String(sourceAsset.id), sourceId: String(part.originalSourceId || part.sourceId || asset.originalSourceId),
         sx: rect.x, sy: rect.y, sw: rect.w, sh: rect.h,
-        x: object.x + x * scale, y: object.y + y * scale, scale,
+        x: center.x - rect.w * scale / 2, y: center.y - rect.h * scale / 2, scale, rotation: normalizeRotation(object.rotation),
         flipX: !!part.flipX !== !!object.flipX, flipY: !!part.flipY !== !!object.flipY,
         keyColor: null, layer: object.layer, pieceName: part.label || 'Boss part ' + (index + 1), bossGroup: group, sourceComposite: asset.id };
     });
@@ -1035,11 +1228,15 @@
     const ids = [...new Set(slide.objects.filter(o => o.assetId).map(renderedAssetId))]; await Promise.all(ids.map(imageFor));
     if (slide.objects.some(o => o.kind === 'dialogue')) await prepareGameUI();
     const canvas = document.createElement('canvas'); canvas.width = slide.width * slide.exportScale; canvas.height = slide.height * slide.exportScale;
-    const ctx = canvas.getContext('2d'); ctx.imageSmoothingEnabled = false; ctx.scale(slide.exportScale, slide.exportScale);
+    const nativeFirst = slide.exportScale > 1 && slide.objects.some(object => object.kind === 'sprite' && normalizeRotation(object.rotation));
+    const raster = nativeFirst ? document.createElement('canvas') : canvas;
+    if (nativeFirst) { raster.width = slide.width; raster.height = slide.height; }
+    const ctx = raster.getContext('2d'); ctx.imageSmoothingEnabled = false; ctx.scale(nativeFirst ? 1 : slide.exportScale, nativeFirst ? 1 : slide.exportScale);
     // Render artwork without editor grid, selection handles or cursor previews.
     ctx.clearRect(0, 0, slide.width, slide.height);
     if (!slide.transparent) { ctx.fillStyle = slide.color; ctx.fillRect(0, 0, slide.width, slide.height); }
     for (const object of orderedObjects(slide)) drawObject(ctx, object);
+    if (nativeFirst) { const output = canvas.getContext('2d'); output.imageSmoothingEnabled = false; output.drawImage(raster, 0, 0, canvas.width, canvas.height); }
     return await new Promise((resolve, reject) => {
       try { canvas.toBlob(blob => blob ? resolve(blob) : reject(new Error('Could not make the PNG.')), 'image/png'); }
       catch (_) { reject(new Error('The browser blocked local image export. Open the supplied studio launcher, then export again.')); }
@@ -1061,8 +1258,12 @@
     canvasFormat({ ...value, exportScale: scale });
     const prepared = await prepareScene(value), canvas = document.createElement('canvas');
     canvas.width = prepared.width * scale; canvas.height = prepared.height * scale;
-    const ctx = canvas.getContext('2d'); ctx.imageSmoothingEnabled = false; ctx.scale(scale, scale);
+    const nativeFirst = scale > 1 && prepared.objects.some(object => object.kind === 'sprite' && normalizeRotation(object.rotation));
+    const raster = nativeFirst ? document.createElement('canvas') : canvas;
+    if (nativeFirst) { raster.width = prepared.width; raster.height = prepared.height; }
+    const ctx = raster.getContext('2d'); ctx.imageSmoothingEnabled = false; ctx.scale(nativeFirst ? 1 : scale, nativeFirst ? 1 : scale);
     drawScene(ctx, prepared, { quiet: true });
+    if (nativeFirst) { const output = canvas.getContext('2d'); output.imageSmoothingEnabled = false; output.drawImage(raster, 0, 0, canvas.width, canvas.height); }
     return canvas;
   }
   // A small uncompressed ZIP writer keeps carousel exports offline and dependency free.
@@ -1111,6 +1312,12 @@
   $('cornerColor').addEventListener('click', () => { if (brush) samplePixel(brush.sx, brush.sy); else toast('Select a crop first.'); });
   $('backgroundBtn').addEventListener('click', useBackground);
   document.querySelectorAll('[data-tool]').forEach(b => b.addEventListener('click', () => setTool(b.dataset.tool)));
+  for (const [name, id] of [['select', 'sceneMenuSelect'], ['hand', 'sceneMenuHand'], ['paint', 'sceneMenuPaint'], ['erase', 'sceneMenuErase']]) $(id)?.addEventListener('click', () => {
+    setTool(name); $('sceneToolsMenu').open = false; $('sceneToolsLabel').focus();
+  });
+  $('sceneToolsMenu')?.addEventListener('keydown', event => {
+    if (event.key === 'Escape' && $('sceneToolsMenu').open) { event.preventDefault(); $('sceneToolsMenu').open = false; $('sceneToolsLabel').focus(); }
+  });
   document.querySelectorAll('[data-layer]').forEach(b => b.addEventListener('click', () => { layer = b.dataset.layer; const object = selected(); if (object && object.layer !== layer) updateSelected({ layer }, 'Piece moved to the ' + layer + ' layer.'); else updateInspector(); }));
   $('sceneGrid').addEventListener('change', scheduleDraw); $('snapSize').addEventListener('change', scheduleDraw);
   $('snapEnabled').addEventListener('change', scheduleDraw);
@@ -1134,6 +1341,14 @@
   $('objectScale').addEventListener('change', () => { const scale = clamp(Math.round(num($('objectScale').value, 1)), 1, 8); if (selected()) updateSelected({ scale }); else { paintScale = scale; updateInspector(); scheduleDraw(); } });
   $('flipXBtn').addEventListener('click', () => { if (selected()) updateSelected({ flipX: !selected().flipX }); else { flipX = !flipX; updateInspector(); scheduleDraw(); } });
   $('flipYBtn').addEventListener('click', () => { if (selected()) updateSelected({ flipY: !selected().flipY }); else { flipY = !flipY; updateInspector(); scheduleDraw(); } });
+  function setSpriteRotation(value) {
+    const angle = normalizeRotation(value);
+    if (selected()) updateSelected({ rotation: angle }, 'Piece rotated to ' + angle + '°.');
+    else { paintRotation = angle; updateInspector(); scheduleDraw(); status('Brush rotation: ' + angle + '°.'); }
+  }
+  $('rotateLeftBtn').addEventListener('click', () => setSpriteRotation((selected()?.rotation ?? paintRotation) - 45));
+  $('rotateRightBtn').addEventListener('click', () => setSpriteRotation((selected()?.rotation ?? paintRotation) + 45));
+  $('objectRotation').addEventListener('change', () => setSpriteRotation($('objectRotation').value));
   function bindSelectedNumber(id, patch) {
     let editingId = null;
     $(id).addEventListener('focus', () => { editingId = null; });
@@ -1191,11 +1406,21 @@
   }
   bindNameField('slideName', value => { scene().name = value; $('sceneHeading').textContent = value; }, 'Untitled scene');
   bindNameField('projectName', value => { project.name = value; }, 'My little adventure');
-  $('aspectPreset').addEventListener('change', () => {
+  $('aspectPreset').addEventListener('change', async () => {
     const preset = $('aspectPreset').value;
+    if (worldPresets.has(preset)) {
+      const control = $('aspectPreset'); control.disabled = true;
+      try {
+        if (!window.MINISH_WORLD_SCENES) throw new Error('The world canvas tools are missing. Reopen the complete app folder.');
+        await insertScene(window.MINISH_WORLD_SCENES.buildScene({ worldId: worldPresets.get(preset).id, populate: false }));
+        status('World canvas added. Your previous scene is still in the scene list.');
+      } catch (error) { toast(error.message); updateInspector(); }
+      finally { control.disabled = false; }
+      return;
+    }
     if (preset === 'custom') { if ($('customSizeFields')) $('customSizeFields').hidden = false; return; }
     if (!PRESETS[preset]) { updateInspector(); return; }
-    historyBefore(); Object.assign(scene(), PRESETS[preset], { preset }); fitMode = true; changed('Canvas format updated. Existing pieces keep their positions.');
+    historyBefore(); Object.assign(scene(), PRESETS[preset], { preset }); gestureZoom = null; fitMode = true; changed('Canvas format updated. Existing pieces keep their positions.');
   });
   if ($('applyCustomSize')) $('applyCustomSize').addEventListener('click', () => {
     try { setCanvasFormat({ width: $('customWidth').value, height: $('customHeight').value, exportScale: $('customExportScale').value }); }
@@ -1208,14 +1433,34 @@
   if ($('deleteSceneBtn')) $('deleteSceneBtn').addEventListener('click', deleteSlide);
   $('zoomIn').addEventListener('click', () => zoomStep(1));
   $('zoomOut').addEventListener('click', () => zoomStep(-1)); $('fitBtn').addEventListener('click', fitCanvas);
-  if (window.ResizeObserver) new ResizeObserver(() => { if (fitMode) scheduleDraw(); }).observe($('stageViewport'));
+  let discoveryKey = '', discoveryIndex = -1;
+  if ($('worldDiscoveryBtn')) $('worldDiscoveryBtn').addEventListener('click', () => {
+    const s = scene(), entries = s.generated?.encounters;
+    if (!entries?.length) return;
+    const key = s.id + ':' + s.generated.seed;
+    if (key !== discoveryKey) { discoveryKey = key; discoveryIndex = -1; }
+    const entry = entries[++discoveryIndex % entries.length];
+    focusArea(entry);
+    status((discoveryIndex % entries.length + 1) + ' / ' + entries.length + ' · ' + entry.name + (entry.location || entry.region ? ' · ' + (entry.location || entry.region) : '') + '. Every piece is editable.');
+  });
+  $('stageZoomLabel').addEventListener('focus', () => $('stageZoomLabel').select?.());
+  $('stageZoomLabel').addEventListener('input', () => { zoomFieldDraft = true; });
+  $('stageZoomLabel').addEventListener('change', applyZoomField);
+  $('stageZoomLabel').addEventListener('blur', applyZoomField);
+  $('stageZoomLabel').addEventListener('keydown', event => {
+    if (!['Enter', 'Escape'].includes(event.key) || event.isComposing) return;
+    event.preventDefault(); event.stopPropagation?.();
+    if (event.key === 'Enter') applyZoomField(); else { zoomFieldDraft = false; updateZoomField(true); }
+    mainCanvas.focus({ preventScroll: true });
+  });
+  if (window.ResizeObserver) new ResizeObserver(scheduleDraw).observe($('stageViewport'));
   $('exportBtn').addEventListener('click', () => doExport()); $('exportAllBtn').addEventListener('click', () => doExport(true)); $('saveBtn').addEventListener('click', saveProject);
   $('starterBtn').disabled = !window.MINISH_STARTER;
   $('starterBtn').addEventListener('click', () => {
     if (!window.MINISH_STARTER) return;
     try {
       const starter = validateProject(copy(window.MINISH_STARTER)); historyBefore(); project = starter;
-      selectedId = null; hover = null; fitMode = true; refreshAll(); scheduleSave();
+      selectedId = null; hover = null; gestureZoom = null; fitMode = true; refreshAll(); scheduleSave();
       toast('Starter scenes loaded. Every piece is editable. Undo restores your previous project.');
     } catch (error) { toast(error.message); }
   });
@@ -1224,7 +1469,7 @@
     const file = event.target.files[0]; if (!file) return;
     try {
       if (file.size > 30000000) throw new Error('This project is too large to open.');
-      const loaded = validateProject(JSON.parse(await file.text())); historyBefore(); project = loaded; selectedId = null; fitMode = true; refreshAll(); scheduleSave();
+      const loaded = validateProject(JSON.parse(await file.text())); historyBefore(); project = loaded; selectedId = null; gestureZoom = null; fitMode = true; refreshAll(); scheduleSave();
       const missing = [...new Set(project.slides.flatMap(s => s.objects.filter(o => o.assetId && !assetMap.has(String(o.assetId))).map(o => o.assetId)))];
       toast(missing.length ? 'Project opened. ' + missing.length + ' source sheets are missing from this collection.' : 'Project opened. Your little world is ready.');
     } catch (error) { toast(error.message || 'This project file could not be opened.'); }
@@ -1258,7 +1503,7 @@
     else if (action === 'bringFront') reorderSelected(1, true);
     else if (action === 'zoomIn') zoomStep(1);
     else if (action === 'zoomOut') zoomStep(-1);
-    else if (action === 'actualSize') zoomAt(1);
+    else if (action === 'actualSize') { gestureZoom = null; zoomAt(1); }
     else if (action === 'fit') fitCanvas();
     else if (action === 'deselect') {
       selectedId = null; sampleMode = false; sheetCanvas.style.cursor = 'crosshair'; $('sampleColor').textContent = 'Pick from sheet';
@@ -1270,7 +1515,7 @@
       const amount = event.shiftKey ? snapStep() : 1;
       updateSelected({ x: o.x + (action === 'nudgeLeft' ? -amount : action === 'nudgeRight' ? amount : 0), y: o.y + (action === 'nudgeUp' ? -amount : action === 'nudgeDown' ? amount : 0) });
     } else if (action === 'dialogue') addDialogue();
-    else if (['paint', 'select', 'erase'].includes(action)) setTool(action);
+    else if (['paint', 'select', 'erase', 'hand'].includes(action)) setTool(action);
   });
   window.addEventListener('beforeunload', () => { try { if (JSON.stringify(project).length < 3800000) localStorage.setItem(STORAGE, JSON.stringify(project)); } catch (_) {} });
 
@@ -1291,7 +1536,7 @@
     get project() { return copy(project); }, get assets() { return assets; }, get sourceAssets() { return sourceAssets; }, get brush() { return brush && copy(brush); },
     get selection() { return selectedId; }, get activeAsset() { return activeAsset; },
     getScene: () => copy(scene()), getAsset: id => { const asset = assetMap.get(String(id)); return asset ? { ...asset } : null; },
-    prepareScene, renderSceneToCanvas, drawSceneToContext: (ctx, slide) => drawScene(ctx, slide, { quiet: true }),
+    prepareScene, renderSceneToCanvas, drawSceneToContext: (ctx, slide, options = {}) => drawScene(ctx, slide, { quiet: true, ...options }),
     get selectedObject() { const object = selected(); return object ? copy(object) : null; },
     get customPieces() { return copy(customPieces); },
     chooseAsset: id => { const a = assetMap.get(String(id)); return a ? chooseAsset(a) : Promise.reject(new Error('Unknown sheet')); },
@@ -1300,12 +1545,12 @@
     insertScene, rerollScene, canEditBossParts, explodeSelectedBoss, hasLegacyBossSelection, upgradeSelectedBoss,
     getPiece: id => { const piece = pieceMap.get(String(id)); return piece ? copy(normalizePiece(piece)) : null; },
     setTool, addDialogue, addSlide, switchSlide, deleteSlide, undo, redo, saveProject, exportSlide, makeZip,
-    copySelected, cutSelected: () => copySelected(true), pasteSelected, zoomAt, zoomStep, fitCanvas,
+    copySelected, cutSelected: () => copySelected(true), pasteSelected, zoomAt, zoomStep, fitCanvas, focusArea,
     get view() { return { zoom: stageZoom, fit: fitMode }; },
-    updateSelected, duplicateSelected: duplicateObject, deleteSelected, reorderSelected,
+    updateSelected, duplicateSelected: duplicateObject, deleteSelected, reorderSelected, spriteGeometry,
     bringToFront: () => reorderSelected(1, true), sendToBack: () => reorderSelected(-1, true),
-    loadProject: data => { const loaded = validateProject(copy(data)); historyBefore(); project = loaded; selectedId = null; fitMode = true; refreshAll(); scheduleSave(); },
+    loadProject: data => { const loaded = validateProject(copy(data)); historyBefore(); project = loaded; selectedId = null; gestureZoom = null; fitMode = true; refreshAll(); scheduleSave(); },
     select: id => { selectedId = scene().objects.find(o => o.id === id)?.id || null; if (selected()) layer = selected().layer; setTool('select'); updateInspector(); scheduleDraw(); },
-    useBackground, render: () => { renderStage(); renderSlides(); }, version: '1.0'
+    useBackground, render: () => { renderStage(); renderSlides(); }, version: '1.1'
   };
 })();

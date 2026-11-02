@@ -167,6 +167,37 @@ window.MediaRecorder.prototype.start = function () { throw new Error('encoder fi
 await assert.rejects(api.exportVideo(clip), /encoder fixture failed.*PNG/); assert.equal(stoppedTracks, 3, 'Failed recording also releases its stream');
 delete Canvas.prototype.captureStream; Canvas.prototype.getContext = priorGetContext; delete window.MediaRecorder;
 
+// Current-view exports retain whole-world editing data while rendering only
+// the chosen integer camera region, with exact original pixel positions.
+const worldClip = { ...clip, name: 'Whole Hyrule camera fixture', width: 4992, height: 3168, duration: 2,
+  objects: [{ id: 'camera-link', kind: 'sprite', assetId: 'test-sheet', x: 110, y: 90, w: 3, h: 2 }], tracks: [] };
+const worldBeforeCamera = JSON.stringify(worldClip), camera = { x: 100, y: 80, w: 16, h: 16 }, cameraCalls = [];
+const cameraEvaluate = (value, frame) => ({ ...value, objects: value.objects.map(object => ({ ...object, x: object.x + frame })) });
+const cameraRender = async (scene, { scale }) => {
+  cameraCalls.push({ width: scene.width, height: scene.height, x: scene.objects[0].x, y: scene.objects[0].y });
+  const result = new Canvas(); result.width = scene.width * scale; result.height = scene.height * scale;
+  const pixels = result.pixels(), object = scene.objects[0];
+  for (let y = object.y * scale; y < (object.y + object.h) * scale; y++) for (let x = object.x * scale; x < (object.x + object.w) * scale; x++) {
+    if (x >= 0 && x < result.width && y >= 0 && y < result.height) pixels.set([30, 200, 10, 255], (y * result.width + x) * 4);
+  }
+  return result;
+};
+const cameraOptions = { camera, scale: 2, evaluateFrame: cameraEvaluate, renderFrame: cameraRender };
+const croppedFrames = await zipEntries(await api.exportFrames(worldClip, cameraOptions));
+const croppedManifest = JSON.parse(croppedFrames.get('animation.json'));
+assert.deepEqual(croppedManifest.camera, camera); assert.deepEqual(croppedManifest.originalClip, { width: 4992, height: 3168 });
+assert.equal(JSON.parse(croppedFrames.get('project.minish-animation.json')).clips[0].width, 4992, 'Camera exports keep the uncropped editable world project');
+for (let frame = 0; frame < 2; frame++) {
+  const image = decodePNG(croppedFrames.get('frames/frame-' + String(frame + 1).padStart(4, '0') + '.png'));
+  assert.equal(image.width, 32); assert.equal(image.height, 32);
+  assert.deepEqual([...image.rgba.slice((20 * 32 + 20 + frame * 2) * 4, (20 * 32 + 20 + frame * 2) * 4 + 4)], [30, 200, 10, 255], 'Camera cropping shifts original game pixels by exactly the integer native offset');
+  assert.equal(image.rgba[3], 0, 'Transparent camera corners retain alpha');
+}
+assert.deepEqual(cameraCalls, [{ width: 16, height: 16, x: 10, y: 10 }, { width: 16, height: 16, x: 11, y: 10 }]);
+assert.equal(JSON.stringify(worldClip), worldBeforeCamera, 'Rendering a camera never mutates its complete source animation');
+for (const invalid of [{ x: -1, y: 0, w: 16, h: 16 }, { x: 1.5, y: 0, w: 16, h: 16 }, { x: 4990, y: 0, w: 16, h: 16 }, { x: 0, y: 0, w: 0, h: 16 }]) {
+  await assert.rejects(api.exportFrames(worldClip, { ...cameraOptions, camera: invalid }), /camera region/);
+}
 // Pillow is an independent decoder when the local image environment is present.
 const python = path.join(root, '.venv/bin/python');
 if (fs.existsSync(python)) {

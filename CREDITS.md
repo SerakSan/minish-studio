@@ -6,6 +6,8 @@ Original game: **The Legend of Zelda: The Minish Cap**, Nintendo / Capcom. This 
 
 Source collection: [The Spriters Resource](https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/). All 134 source sheets are credited below using the contributor names recorded on their source pages.
 
+The complete playable Hyrule overworld atlas was mapped by **rocktyt** and shared on [VGMaps](https://www.vgmaps.com/atlas/GBA/index.htm). Its [original PNG](https://www.vgmaps.com/atlas/GBA/LegendOfZelda-MinishCap-Hyrule.png), checksum, annotation exclusions and source coordinates are recorded in [the world source manifest](assets/world/source-manifest.json). It includes cloud-area insets and is a static game-art atlas, not every interior or game state. The illustrated world map is derived from the credited Overworld Map sheet below.
+
 The MIT license applies to the original editor code. It excludes all third-party game artwork and source-derived lettering or menus. See [ASSET_RIGHTS.md](ASSET_RIGHTS.md).
 
 | Collection | Sheet | Credited contributor |
@@ -154,3 +156,7 @@ The centered game logo is taken from USA Title Screen (6558). Its source rectang
 Boss reference captures and the public reverse-engineering sources used to check anatomy and transformation facts are linked in `assets/bosses/reference-review.html`. No game engine code is included in the editor. Curated environment crops and their source coordinates are documented under `assets/curated/`.
 
 Transparent sprite cuts and full boss assemblies retain their source mappings in `assets/curated/sprite-manifest.json` and `assets/bosses/`. No artwork has been replaced with generated approximations.
+
+## Combat actions
+
+The weapon and item collection reuses the credited source sheets below. Its [combat manifest](assets/combat/manifest.json) records every crop, source contributor, checksum and component placement. Combinations of separate character and item parts are labeled editor assemblies. Source artwork and editor choreography have separate attribution.

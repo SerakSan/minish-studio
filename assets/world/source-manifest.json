@@ -1,0 +1,38 @@
+{
+  "version": 1,
+  "scope": "Additional whole-world map references, kept separately from the unchanged original 134 source downloads.",
+  "sources": [
+    {
+      "id": "vgmaps-hyrule-rocktyt",
+      "name": "Hyrule",
+      "sourceUrl": "https://www.vgmaps.com/atlas/GBA/index.htm",
+      "downloadUrl": "https://www.vgmaps.com/atlas/GBA/LegendOfZelda-MinishCap-Hyrule.png",
+      "originalFilename": "LegendOfZelda-MinishCap-Hyrule.png",
+      "originalPath": "assets/world/originals/LegendOfZelda-MinishCap-Hyrule.png",
+      "contributors": "rocktyt",
+      "publisher": "VGMaps.com",
+      "sourceDescription": "Hyrule map listed as ripped at 4992 by 3168 pixels; Maps of the Month, March 2009.",
+      "expectedWidth": 4992,
+      "expectedHeight": 3168,
+      "listedSize": "4.13 MB",
+      "rights": "Game artwork: Nintendo / Capcom. The editor's MIT license does not license the game artwork or the source map compilation.",
+      "status": "downloaded",
+      "originalBytes": 4339423,
+      "originalSha256": "e5ae0b5a55638f1a447f89780f4fa3c8dc4d1333d188e221b7b609a36109b64e",
+      "width": 4992,
+      "height": 3168,
+      "format": "PNG"
+    },
+    {
+      "id": "6492",
+      "name": "Overworld Map",
+      "sourceUrl": "https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/asset/6492/",
+      "downloadUrl": "https://www.spriters-resource.com/media/assets/6/6492.gif?updated=1755472426",
+      "originalFilename": "6492.gif",
+      "originalPath": "assets/originals/6492.gif",
+      "contributors": "Bacon",
+      "originalSha256": "5cae0c474eb886111cf15fe30e28bcdcc998a16e0dedadad75020bf1e1dbbef5",
+      "status": "already-downloaded-existing-source"
+    }
+  ]
+}

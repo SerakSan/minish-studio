@@ -1,22 +1,35 @@
 (() => {
   'use strict';
   const FORMAT = 'minish-cap-animation', STORAGE = 'minish-maker-animation-v1';
-  const LIMITS = Object.freeze({ minSize: 16, maxSize: 1024, maxClips: 30, maxObjects: 1000, maxFrames: 600, maxFps: 60, maxScale: 8, maxExportPixels: 16777216, maxExportEdge: 8192 });
+  const LIMITS = Object.freeze({ minSize: 16, maxSize: 8192, maxCanvasPixels: 16777216, maxClips: 30, maxObjects: 1000, maxFrames: 600, maxFps: 60, maxScale: 8, maxExportPixels: 16777216, maxExportEdge: 8192 });
   const LAYERS = ['terrain', 'objects', 'overlay'];
   const POSE = ['pieceId', 'assetId', 'sx', 'sy', 'sw', 'sh', 'sourceId', 'pieceName', 'keyColor'];
-  const PROPS = ['x', 'y', 'scale', 'flipX', 'flipY', 'visible', ...POSE, 'layer', 'text', 'fontSize', 'w', 'h', 'color', 'box'];
+  const PROPS = ['x', 'y', 'scale', 'rotation', 'flipX', 'flipY', 'visible', ...POSE, 'layer', 'text', 'fontSize', 'w', 'h', 'color', 'box'];
   const clone = value => JSON.parse(JSON.stringify(value));
   const uid = () => 'anim-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 9);
   const clamp = (n, lo, hi) => Math.min(hi, Math.max(lo, n));
   const finite = (value, fallback = 0) => Number.isFinite(Number(value)) ? Number(value) : fallback;
   const integer = (value, fallback = 0) => Math.round(finite(value, fallback));
+  const normalizeRotation = value => ((Math.round(finite(value) / 45) * 45) % 360 + 360) % 360;
+  function rotateVector(x, y, degrees) {
+    const index = normalizeRotation(degrees) / 45, q = Math.SQRT1_2;
+    const cos = [1, q, 0, -q, -1, -q, 0, q][index], sin = [0, q, 1, q, 0, -q, -1, -q][index];
+    return { x: x * cos - y * sin, y: x * sin + y * cos };
+  }
   const validNumber = value => value != null && String(value).trim() !== '' && Number.isFinite(Number(value));
   const color = (value, fallback = '#182a25') => /^#[\da-f]{6}$/i.test(String(value)) ? String(value) : fallback;
   let adapter = window.MINISH_STUDIO || null, frame = 0, selection = null, playing = false, request = null, playStart = null, playFrom = 0, dirty = false, revision = 0;
   let undoStack = [], redoStack = [], saveTimer = null, initialized = false, batching = 0;
   const listeners = new Set();
+  function safeExportScale(width, height, preferred = 4) {
+    if (!validNumber(width) || !validNumber(height) || Number(width) < 1 || Number(height) < 1) return 1;
+    return Math.max(1, Math.min(integer(preferred, 4), Math.floor(Math.min(LIMITS.maxExportEdge / width, LIMITS.maxExportEdge / height,
+      Math.sqrt(LIMITS.maxExportPixels / (width * height))))));
+  }
   function freshClip(patch = {}) {
-    return { id: uid(), name: 'Animation 01', width: 240, height: 160, exportScale: 4, fps: 12, duration: 48, loop: 'loop', color: '#182a25', transparent: true, objects: [], tracks: [], ...patch };
+    const clip = { id: uid(), name: 'Animation 01', width: 240, height: 160, exportScale: 4, fps: 12, duration: 48, loop: 'loop', color: '#182a25', transparent: true, objects: [], tracks: [], ...patch };
+    if (patch.exportScale == null) clip.exportScale = safeExportScale(clip.width, clip.height);
+    return clip;
   }
   let first = freshClip(), project = { format: FORMAT, version: 1, name: 'My animated adventure', activeClip: first.id, clips: [first] };
   const current = () => project.clips.find(clip => clip.id === project.activeClip) || project.clips[0];
@@ -41,6 +54,8 @@
       for (const key of ['sx', 'sy', 'sw', 'sh']) object[key] = integer(input[key], key[0] === 's' && ['sw', 'sh'].includes(key) ? 16 : 0);
       if (object.sx < 0 || object.sy < 0 || object.sw < 1 || object.sh < 1 || asset && (object.sx + object.sw > asset.width || object.sy + object.sh > asset.height)) throw new Error('A pose crop extends beyond its source image.');
       object.flipX = !!object.flipX; object.flipY = !!object.flipY;
+      if ('rotation' in input && !validNumber(input.rotation)) throw new Error('Use a number for sprite rotation.');
+      object.rotation = normalizeRotation(input.rotation);
       object.keyColor = /^#[\da-f]{6}$/i.test(String(input.keyColor)) ? input.keyColor : null;
       for (const key of ['pieceId', 'sourceId', 'pieceName']) if (input[key] != null) object[key] = String(input[key]).slice(0, key === 'pieceName' ? 160 : 120);
       // Animation projects store references, never a copied source bitmap or a local path.
@@ -58,6 +73,7 @@
       const value = input[prop];
       if (['x', 'y'].includes(prop)) { if (!validNumber(value)) throw new Error('Use a number for keyframe coordinates.'); result[prop] = clamp(integer(value), -100000, 100000); }
       else if (prop === 'scale') result[prop] = clamp(integer(value, 1), 1, 8);
+      else if (prop === 'rotation') { if (!validNumber(value)) throw new Error('Use a number for sprite rotation.'); result[prop] = normalizeRotation(value); }
       else if (['flipX', 'flipY', 'visible', 'box'].includes(prop)) result[prop] = !!value;
       else if (prop === 'layer') { if (!LAYERS.includes(value)) throw new Error('Choose Terrain, Objects or Overlay.'); result[prop] = value; }
       else if (['sx', 'sy', 'sw', 'sh', 'fontSize', 'w', 'h'].includes(prop)) { if (!validNumber(value)) throw new Error('Use valid keyframe dimensions.'); result[prop] = integer(value); }
@@ -73,7 +89,7 @@
     if (!input || typeof input !== 'object') throw new Error('Choose a valid animation clip.');
     for (const prop of ['width', 'height', 'exportScale', 'fps', 'duration']) if (prop in input && !validNumber(input[prop])) throw new Error('Use finite numbers for clip dimensions, timing, and export enlargement.');
     const width = integer(input.width, 240), height = integer(input.height, 160), exportScale = integer(input.exportScale, 4), fps = integer(input.fps, 12), duration = integer(input.duration, 48);
-    if (width < 16 || width > 1024 || height < 16 || height > 1024) throw new Error('Animation dimensions must be between 16 and 1024 native pixels.');
+    if (width < LIMITS.minSize || width > LIMITS.maxSize || height < LIMITS.minSize || height > LIMITS.maxSize || width * height > LIMITS.maxCanvasPixels) throw new Error('Animation canvases support 16–8192 native pixels per side, up to 16 million pixels in total.');
     if (fps < 1 || fps > 60 || duration < 1 || duration > 600) throw new Error('Choose 1–60 FPS and 1–600 frames.');
     if (exportScale < 1 || exportScale > 8 || width * exportScale > 8192 || height * exportScale > 8192 || width * height * exportScale ** 2 > LIMITS.maxExportPixels) throw new Error('Choose a smaller integer export enlargement.');
     if (!Array.isArray(input.objects) || input.objects.length > LIMITS.maxObjects) throw new Error('An animation supports up to 1000 pieces per clip.');
@@ -97,6 +113,13 @@
     const clip = { id: String(input.id || uid()), name: String(input.name || 'Untitled animation').slice(0, 80), width, height, exportScale, fps, duration,
       loop: ['loop', 'once', 'pingpong'].includes(input.loop) ? input.loop : 'loop', color: color(input.color || input.background?.color), transparent: input.transparent ?? input.background?.transparent ?? true,
       objects, tracks };
+    if (input.worldId != null) clip.worldId = String(input.worldId).slice(0, 120);
+    if (input.worldStyle != null) clip.worldStyle = String(input.worldStyle).slice(0, 40);
+    if (input.generated != null) {
+      const notes = JSON.stringify(input.generated);
+      if (!notes || notes.length > 100000) throw new Error('The generated animation notes are too large to save.');
+      clip.generated = JSON.parse(notes);
+    }
     for (const object of objects) {
       const track = tracks.find(track => track.objectId === object.id);
       for (const key of track?.keys || []) evaluateObject(object, track, key.frame);
@@ -145,11 +168,25 @@
     if (base.animationAnchor === 'top-left') return { x: 0, y: 0 };
     const category = window.MINISH_CURATED?.sheets?.[String(base.sourceId)]?.category || window.MINISH_BOSSES?.sheets?.[String(base.sourceId)]?.category || '';
     const scale = resolved.scale || 1, center = base.animationAnchor === 'center' || base.animationAnchor !== 'feet' && (base.layer === 'terrain' || ['objects', 'environments', 'full-bosses', 'complete-bosses'].includes(category));
-    return { x: (base.sw - resolved.sw) * scale / 2, y: (base.sh - resolved.sh) * scale * (center ? .5 : 1) };
+    const heightChange = (base.sh - resolved.sh) * scale, shift = rotateVector(0, center ? 0 : heightChange / 2, resolved.rotation);
+    return { x: (base.sw - resolved.sw) * scale / 2 + shift.x, y: heightChange / 2 + shift.y };
+  }
+  function evaluateOwnedObject(base, clip, at, cache = new Map(), visiting = new Set()) {
+    if (cache.has(base.id)) return cache.get(base.id);
+    const object = evaluateObject(base, findTrack(base.id, clip), at);
+    // Ownership affects rendered visibility only. Keep the effect's saved
+    // visibility keys intact so unmuting its actor restores the original timing.
+    if (visiting.has(base.id)) { object.visible = false; return object; }
+    visiting.add(base.id);
+    if (object.visible && object.simpleCompanion?.version === 1 && object.simpleCompanion.ownerId) {
+      const owner = findObject(object.simpleCompanion.ownerId, clip);
+      if (!owner || !evaluateOwnedObject(owner, clip, at, cache, visiting).visible) object.visible = false;
+    }
+    visiting.delete(base.id); cache.set(base.id, object); return object;
   }
   function evaluateFrame(clip = current(), at = frame, options = {}) {
-    const time = clamp(integer(at), 0, clip.duration - 1);
-    const objects = clip.objects.map(base => evaluateObject(base, findTrack(base.id, clip), time)).filter(object => options.includeHidden || object.visible !== false);
+    const time = clamp(integer(at), 0, clip.duration - 1), cache = new Map();
+    const objects = clip.objects.map(base => evaluateOwnedObject(base, clip, time, cache)).filter(object => options.includeHidden || object.visible !== false);
     return { id: clip.id, name: clip.name, width: clip.width, height: clip.height, exportScale: clip.exportScale, color: clip.color, transparent: !!clip.transparent, preset: 'custom', objects };
   }
   function state(type = 'state') {
@@ -198,6 +235,7 @@
         const piece = resolvePiece(values.pieceId); for (const prop of POSE) if (piece[prop] != null) resolved[prop] = piece[prop];
       }
       if ('scale' in values) resolved.scale = values.scale;
+      if ('rotation' in values) resolved.rotation = values.rotation;
       const offset = poseOffset(base, resolved);
       if ('x' in values) values.x = Math.round(values.x - offset.x); if ('y' in values) values.y = Math.round(values.y - offset.y);
     }
@@ -274,7 +312,13 @@
     }, 'object');
     return clone(findObject(object.id));
   }
-  function removeObject(id = selection) { return commit(() => { editable(id); current().objects = current().objects.filter(object => object.id !== id); current().tracks = current().tracks.filter(track => track.objectId !== id); if (selection === id) selection = null; }, 'object'); }
+  function removeObject(id = selection) { return commit(() => {
+    editable(id); const removed = new Set([id]);
+    for (let added = true; added;) { added = false; for (const object of current().objects) if (removed.has(object.simpleCompanion?.ownerId) && !removed.has(object.id)) { removed.add(object.id); added = true; } }
+    current().objects = current().objects.filter(object => !removed.has(object.id));
+    current().tracks = current().tracks.filter(track => !removed.has(track.objectId));
+    if (removed.has(selection)) selection = null;
+  }, 'object'); }
   function duplicateObject(id = selection) {
     let duplicated;
     commit(() => { editable(id); const base = findObject(id); if (current().objects.length >= 1000) throw new Error('This clip already has 1000 pieces.'); duplicated = { ...clone(base), id: uid(), x: base.x + 8, y: base.y + 8 }; current().objects.push(duplicated);
@@ -290,6 +334,7 @@
   function configureClip(patch = {}) {
     return commit(() => {
       const clip = current(), next = { ...clip, ...clone(patch), id: clip.id, objects: clip.objects, tracks: clip.tracks };
+      if (('width' in patch || 'height' in patch) && !('exportScale' in patch)) next.exportScale = safeExportScale(next.width, next.height, next.exportScale);
       if (integer(next.duration, 48) < clip.duration) next.tracks = clone(clip.tracks).map(track => ({ ...track, keys: track.keys.filter(key => key.frame < integer(next.duration)) }));
       project.clips[project.clips.indexOf(clip)] = normalizeClip(next);
     }, 'clip');
@@ -300,17 +345,29 @@
       project.clips.push(added); project.activeClip = added.id; selection = null; frame = 0;
     }, 'clip'); return clone(added);
   }
+  function replaceClip(patch = {}, id = current().id) {
+    let replaced;
+    commit(() => {
+      const index = project.clips.findIndex(clip => clip.id === String(id));
+      if (index < 0) throw new Error('Choose an animation clip to replace.');
+      replaced = normalizeClip({ ...project.clips[index], ...clone(patch), id: project.clips[index].id });
+      project.clips[index] = replaced;
+      if (project.activeClip === replaced.id) { frame = 0; selection = null; }
+    }, 'clip');
+    return clone(replaced);
+  }
   function importScene(scene, options = {}) {
     if (!scene || !Array.isArray(scene.objects)) throw new Error('Choose a scene to animate first.');
     const remap = new Map(scene.objects.map(object => [object.id, uid()]));
     return addClip({ name: options.name || scene.name || 'Animated scene', width: scene.width, height: scene.height, exportScale: scene.exportScale,
-      color: scene.color, transparent: scene.transparent, fps: options.fps || 12, duration: options.duration || 48, loop: options.loop || 'loop',
-      objects: scene.objects.map(object => ({ ...clone(object), id: remap.get(object.id) })), tracks: [] });
+      color: scene.color, transparent: scene.transparent, worldId: scene.worldId, worldStyle: scene.worldStyle,
+      fps: options.fps || 12, duration: options.duration || 48, loop: options.loop || 'loop',
+      objects: scene.objects.map(object => { const copy = { ...clone(object), id: remap.get(object.id) }; if (copy.simpleCompanion) copy.simpleCompanion.ownerId = remap.get(copy.simpleCompanion.ownerId) || copy.simpleCompanion.ownerId; return copy; }), tracks: [] });
   }
   function duplicateClip(id = current().id) {
     const clip = project.clips.find(clip => clip.id === id); if (!clip) throw new Error('Choose a clip first.');
     const copied = clone(clip), remap = new Map(copied.objects.map(object => [object.id, uid()]));
-    copied.id = uid(); copied.name = copied.name + ' copy'; copied.objects.forEach(object => { object.id = remap.get(object.id); });
+    copied.id = uid(); copied.name = copied.name + ' copy'; copied.objects.forEach(object => { object.id = remap.get(object.id); if (object.simpleCompanion) object.simpleCompanion.ownerId = remap.get(object.simpleCompanion.ownerId) || object.simpleCompanion.ownerId; });
     copied.tracks.forEach(track => { track.id = uid(); track.objectId = remap.get(track.objectId); }); return addClip(copied);
   }
   function deleteClip(id = current().id) {
@@ -376,10 +433,10 @@
     get project() { return clone(project); }, get currentClip() { return clone(current()); }, get activeClip() { return clone(current()); },
     get frame() { return frame; }, get currentFrame() { return frame; }, get selectedObjectId() { return selection; }, get playing() { return playing; },
     get state() { return state(); }, get canUndo() { return !!undoStack.length; }, get canRedo() { return !!redoStack.length; },
-    getObjectAt: (id = selection, at = frame) => { const base = findObject(id); return base ? evaluateObject(base, findTrack(id), clamp(integer(at), 0, current().duration - 1)) : null; },
+    getObjectAt: (id = selection, at = frame) => { const base = findObject(id); return base ? evaluateOwnedObject(base, current(), clamp(integer(at), 0, current().duration - 1)) : null; },
     getTrack: (id = selection) => { const track = findTrack(id); return track ? clone(track) : null; },
     subscribe(listener) { listeners.add(listener); listener(state('init')); return () => listeners.delete(listener); },
-    addClip, importScene, duplicateClip, deleteClip, switchClip, reorderClip, configureClip,
+    addClip, replaceClip, importScene, duplicateClip, deleteClip, switchClip, reorderClip, configureClip,
     addObject, updateObject, removeObject, duplicateObject, reorderObject, selectObject, selectTrack: selectObject, setTrack,
     setKey, setKeys, batch, removeKey, clearKeyProperties, moveKey, duplicateKey, applyPoseSequence, createPoseSequence: applyPoseSequence,
     loadProject, saveData, flushBrowserSave, undo, redo, play, pause, stop, seek, setFrame: seek, step,

@@ -96,7 +96,7 @@ engine.deleteClip(copiedClip.id); assert.equal(engine.currentClip.id, originalCl
 const beforeShrink = engine.project; engine.configureClip({ duration: 5 }); assert(engine.currentClip.tracks.every(track => track.keys.every(key => key.frame < 5)));
 engine.undo(); assert.deepEqual(engine.project, beforeShrink, 'Trimming duration can be reversed with all keys intact');
 const beforeInvalid = engine.project;
-for (const patch of [{ duration: 601 }, { duration: 0 }, { fps: 0 }, { fps: 61 }, { width: 2048 }, { width: 1024, height: 1024, exportScale: 8 }]) {
+for (const patch of [{ duration: 601 }, { duration: 0 }, { fps: 0 }, { fps: 61 }, { width: 8193 }, { width: 8192, height: 4096 }, { width: 1024, height: 1024, exportScale: 8 }]) {
   assert.throws(() => engine.configureClip(patch)); assert.deepEqual(engine.project, beforeInvalid, 'Invalid settings never mutate history or clip data');
 }
 const bad = engine.saveData(); bad.clips.find(clip => clip.id === bad.activeClip).objects[0].sw = 100000; assert.throws(() => engine.loadProject(bad), /crop/); assert.deepEqual(engine.project, beforeInvalid);
@@ -126,5 +126,89 @@ if (fs.existsSync(demoPath)) {
     for (const object of evaluated.objects) assert(Number.isInteger(object.x) && Number.isInteger(object.y), 'Demo poses and movement stay crisp');
   }
 }
+const beforeWorld = engine.project;
+const world = engine.addClip({ name: 'Animated Hyrule', width: 4992, height: 3168, exportScale: 1, duration: 96, fps: 12,
+  worldId: 'hyrule', worldStyle: 'terrain', generated: { encounters: [{ id: 'dance', bounds: { x: 400, y: 600, w: 80, h: 60 } }], requestedOptions: { density: 'balanced', seed: 'world fixture' } }, objects: [], tracks: [] });
+assert.equal(world.width * world.height, 15814656, 'The complete native Hyrule atlas is supported without reducing its pixels');
+const worldBeforeReplace = engine.project, idBeforeReplace = world.id;
+const replaced = engine.replaceClip({ name: 'Fresh world', generated: { encounters: [{ id: 'boss' }], requestedOptions: { seed: 'new world' } } });
+assert.equal(replaced.id, idBeforeReplace, 'Reroll keeps the current clip identity');
+assert.deepEqual(engine.project.clips.filter(clip => clip.id !== idBeforeReplace), beforeWorld.clips, 'Replacing a generated world preserves every other animation');
+assert.equal(engine.currentClip.generated.requestedOptions.seed, 'new world');
+engine.undo(); assert.deepEqual(engine.project, worldBeforeReplace, 'World reroll is one complete Undo');
+const worldSaved = engine.saveData(); engine.loadProject(worldSaved);
+assert.deepEqual(engine.currentClip.generated, worldBeforeReplace.clips.at(-1).generated, 'Generated story coordinates and seeds survive saving and reopening');
+assert.equal(engine.currentClip.worldId, 'hyrule'); assert.equal(engine.currentClip.worldStyle, 'terrain');
+const reopenedWorld = engine.project;
+assert.throws(() => engine.replaceClip({ width: 8192, height: 4096, exportScale: 1 })); assert.deepEqual(engine.project, reopenedWorld, 'An invalid replacement never changes a world or its history');
+const importedWorld = engine.importScene({ name: 'Plain whole-world scene', width: 4992, height: 3168, exportScale: 1,
+  worldId: 'hyrule', worldStyle: 'terrain', generated: { encounters: ['static scene, not choreography'] }, objects: [] });
+assert.equal(importedWorld.worldId, 'hyrule'); assert.equal(importedWorld.generated, undefined, 'A static import keeps its map type without claiming animated encounters');
+const resized = engine.addClip(); engine.configureClip({ width: 4992, height: 3168 });
+assert.equal(engine.currentClip.exportScale, 1, 'Resizing a normal clip to world size chooses a safe integer enlargement without shrinking its native canvas');
+assert.equal(engine.currentClip.id, resized.id);
+const ownership = harness().engine, owner = ownership.addObject({ ...base, visible: true });
+const ownedEffect = ownership.addObject({ ...base, visible: true, simpleCompanion: { version: 1, ownerId: owner.id, role: 'projectile' } });
+const nestedEffect = ownership.addObject({ ...base, visible: true, simpleCompanion: { version: 1, ownerId: ownedEffect.id, role: 'burst' } });
+const independentEffect = ownership.addObject({ ...base, visible: true });
+ownership.setKeys(owner.id, [{ frame: 5, values: { visible: false } }, { frame: 9, values: { visible: true } }]);
+ownership.setKeys(ownedEffect.id, [{ frame: 0, values: { visible: true } }, { frame: 11, values: { visible: false } }, { frame: 13, values: { visible: true } }]);
+const visibilityBeforeEvaluation = ownership.project, revisionBeforeEvaluation = ownership.state.revision;
+for (const at of [0, 5, 8, 9, 11, 13]) {
+  const ownerVisible = at < 5 || at >= 9, effectVisible = ownerVisible && (at < 11 || at >= 13);
+  assert.equal(ownership.getObjectAt(ownedEffect.id, at).visible, effectVisible, 'An owned effect inherits keyed actor visibility while retaining its own timing');
+  assert.equal(ownership.getObjectAt(nestedEffect.id, at).visible, effectVisible, 'Visibility propagates through owned effect chains');
+  assert.equal(ownership.getObjectAt(independentEffect.id, at).visible, true, 'Independent effects keep their own visibility');
+  const visibleIds = ownership.evaluateFrame(ownership.currentClip, at).objects.map(object => object.id);
+  assert.equal(visibleIds.includes(ownedEffect.id), effectVisible);
+  assert.equal(visibleIds.includes(nestedEffect.id), effectVisible);
+  const hiddenIncluded = ownership.evaluateFrame(ownership.currentClip, at, { includeHidden: true }).objects.find(object => object.id === ownedEffect.id);
+  assert.equal(hiddenIncluded.visible, effectVisible, 'Hidden-object inspection agrees with rendered ownership visibility');
+}
+assert.deepEqual(ownership.project, visibilityBeforeEvaluation, 'Evaluating ownership never rewrites saved objects or tracks');
+assert.equal(ownership.state.revision, revisionBeforeEvaluation, 'Evaluation creates no edit or Undo entry');
+ownership.setTrack(owner.id, { muted: true }); const mutedProject = ownership.project;
+assert.equal(ownership.getObjectAt(ownedEffect.id, 0).visible, false);
+assert.equal(ownership.getObjectAt(nestedEffect.id, 0).visible, false);
+assert.equal(ownership.getObjectAt(independentEffect.id, 0).visible, true);
+assert.deepEqual(ownership.project, mutedProject, 'Muting an actor suppresses effects without rewriting their saved keys');
+ownership.undo(); assert.deepEqual(ownership.project, visibilityBeforeEvaluation);
+assert.equal(ownership.getObjectAt(ownedEffect.id, 0).visible, true, 'Undoing a mute immediately restores the original effect timing');
+ownership.updateObject(owner.id, { visible: false }); assert.equal(ownership.getObjectAt(ownedEffect.id, 0).visible, false, 'Base actor visibility also hides its effects'); ownership.undo();
+const ownershipReopened = harness().engine; ownershipReopened.loadProject(ownership.saveData());
+assert.equal(ownershipReopened.getObjectAt(ownedEffect.id, 5).visible, false, 'Inherited visibility survives saving and reopening');
+const orphan = ownership.addObject({ ...base, simpleCompanion: { version: 1, ownerId: 'missing-owner', role: 'projectile' } });
+assert.equal(ownership.getObjectAt(orphan.id, 0).visible, false, 'A missing actor cannot leave an orphaned projectile visible');
+const cycleA = ownership.addObject({ ...base, visible: true }), cycleB = ownership.addObject({ ...base, visible: true, simpleCompanion: { version: 1, ownerId: cycleA.id } });
+ownership.updateObject(cycleA.id, { simpleCompanion: { version: 1, ownerId: cycleB.id } });
+assert.equal(ownership.getObjectAt(cycleA.id, 0).visible, false); assert.equal(ownership.getObjectAt(cycleB.id, 0).visible, false);
+assert(!ownership.evaluateFrame().objects.some(object => [cycleA.id, cycleB.id].includes(object.id)), 'Malformed ownership cycles are hidden without recursion errors');
+const rotations = harness().engine, rotated = rotations.addObject({ ...base, rotation: -45, animationAnchor: 'feet' });
+assert.equal(rotated.rotation, 315, 'Negative angles wrap to one of the eight 45 degree choices');
+rotations.updateObject(rotated.id, { rotation: 407 }); assert.equal(rotations.getObjectAt(rotated.id, 0).rotation, 45, 'Imported angles round to the nearest 45 degree step');
+rotations.setKeys(rotated.id, [{ frame: 0, values: { rotation: 45 }, easing: 'linear' }, { frame: 10, values: { rotation: 180 } }]);
+assert.equal(rotations.getObjectAt(rotated.id, 6).rotation, 45, 'Rotation keys hold exact 45 degree steps even on a linear position curve');
+assert.equal(rotations.getObjectAt(rotated.id, 10).rotation, 180);
+for (const value of [NaN, Infinity, '', 'turn left']) assert.throws(() => rotations.setKey(rotated.id, 1, { rotation: value }), /number for sprite rotation/);
+rotations.clearKeyProperties(rotated.id, ['rotation']);
+rotations.applyPoseSequence(rotated.id, walking, { hold: 3 });
+const rotatedFeet = object => {
+  const radians = object.rotation * Math.PI / 180, halfHeight = object.sh * object.scale / 2;
+  return { x: object.x + object.sw * object.scale / 2 - Math.sin(radians) * halfHeight,
+    y: object.y + halfHeight + Math.cos(radians) * halfHeight };
+};
+for (const angle of [0, 45, 90, 135, 180, 225, 270, 315]) {
+  rotations.updateObject(rotated.id, { rotation: angle }); const anchor = rotatedFeet(rotations.getObjectAt(rotated.id, 0));
+  for (let frame = 0; frame < 48; frame++) {
+    const point = rotatedFeet(rotations.getObjectAt(rotated.id, frame));
+    assert(Math.abs(point.x - anchor.x) <= .51 && Math.abs(point.y - anchor.y) <= .51, 'Changing crop bounds preserves the rotated actor anchor');
+  }
+}
+const rotationCopy = rotations.duplicateObject(rotated.id); assert.equal(rotationCopy.rotation, 315);
+const rotationClipCopy = rotations.duplicateClip(); assert(rotationClipCopy.objects.every(object => object.rotation === 315));
+const reopenedRotations = harness().engine; reopenedRotations.loadProject(rotations.saveData());
+assert.equal(reopenedRotations.getObjectAt(rotationClipCopy.objects[1].id, 12).rotation, 315, 'Rotation survives duplication, pose sequences and a project round trip');
+const legacyRotation = JSON.parse(JSON.stringify(staticScene)); delete legacyRotation.objects[0].rotation;
+assert.equal(reopenedRotations.importScene(legacyRotation).objects[0].rotation, 0, 'Older scene files remain upright');
 unsubscribe(); assert(snapshots.includes('sequence') && snapshots.includes('frame') && snapshots.includes('undo'));
-console.log('PASS: genuine-pose anchoring, independent motion curves, visibility, key editing, track locks, duplication, duration trimming, safe validation, playback/loop/pingpong timing, scene isolation, Undo/Redo, and animation autosave.');
+console.log('PASS: genuine-pose anchoring, independent motion curves, keyed and owned-effect visibility, mute inheritance without saved-track mutation, key editing, track locks, duplication, duration trimming, safe validation, playback/loop/pingpong timing, scene isolation, Undo/Redo, and animation autosave.');

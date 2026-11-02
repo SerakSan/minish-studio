@@ -12,7 +12,17 @@
   const yieldUI = () => new Promise(resolve => setTimeout(resolve, 0));
   function settings(clip, options, format) {
     if (!clip || !Array.isArray(clip.objects)) throw new Error('Open an animation clip before exporting.');
-    const width = integer(clip.width), height = integer(clip.height), frames = integer(clip.duration), fps = integer(options.fps, clip.fps || 12), scale = integer(options.scale, 1);
+    const clipWidth = integer(clip.width), clipHeight = integer(clip.height);
+    let camera = null;
+    if (options.camera != null) {
+      const candidate = options.camera;
+      if (!candidate || !['x', 'y', 'w', 'h'].every(key => Number.isSafeInteger(candidate[key])) ||
+          candidate.x < 0 || candidate.y < 0 || candidate.w < 1 || candidate.h < 1 ||
+          candidate.x + candidate.w > clipWidth || candidate.y + candidate.h > clipHeight) throw new Error('Choose a camera region within the animation canvas, using whole native pixels.');
+      camera = { x: candidate.x, y: candidate.y, w: candidate.w, h: candidate.h };
+    }
+    const width = camera ? camera.w : clipWidth, height = camera ? camera.h : clipHeight;
+    const frames = integer(clip.duration), fps = integer(options.fps, clip.fps || 12), scale = integer(options.scale, 1);
     if (![width, height, frames, fps, scale].every(Number.isSafeInteger) || width < 1 || height < 1 || frames < 1 || frames > LIMITS.maxFrames || fps < 1 || fps > 60 || scale < 1 || scale > 8) throw new Error('Use 1–600 frames, 1–60 fps, and an integer enlargement from 1× to 8×.');
     const w = width * scale, h = height * scale, pixels = w * h;
     if (w > LIMITS.maxEdge || h > LIMITS.maxEdge || pixels > LIMITS.maxFramePixels) throw new Error('The enlarged frame is too large. Reduce the canvas size or export enlargement.');
@@ -20,7 +30,7 @@
     if (clip.loop === 'pingpong' && frames > 2 && (format === 'gif' || format === 'video')) for (let i = frames - 2; i > 0; i--) order.push(i);
     if (pixels * order.length > LIMITS.maxRenderedPixels) throw new Error('This export contains too many pixels. Use a smaller enlargement, a shorter clip, or export it in sections.');
     if (format === 'gif' && (pixels > LIMITS.maxGIFFramePixels || pixels * order.length > LIMITS.maxGIFPixels)) throw new Error('This GIF would be too large. Reduce enlargement or clip length. PNG frames preserve the original colors for larger animations.');
-    return { width: w, height: h, nativeWidth: width, nativeHeight: height, frames, fps, scale, order, pixels, format };
+    return { width: w, height: h, nativeWidth: width, nativeHeight: height, clipWidth, clipHeight, camera, frames, fps, scale, order, pixels, format };
   }
   function renderer(options) {
     const evaluate = options.evaluateFrame || window.MINISH_ANIMATION?.evaluateFrame;
@@ -28,7 +38,9 @@
     if (typeof evaluate !== 'function' || typeof render !== 'function') throw new Error('The animation renderer is unavailable. Reopen the complete app folder.');
     return async (clip, frame, config) => {
       checkCancelled(options);
-      const scene = evaluate(clip, frame);
+      const evaluated = evaluate(clip, frame);
+      const scene = config.camera ? { ...evaluated, width: config.camera.w, height: config.camera.h,
+        objects: evaluated.objects.map(object => ({ ...object, x: object.x - config.camera.x, y: object.y - config.camera.y })) } : evaluated;
       const canvas = await render(scene, { scale: config.scale });
       if (!canvas || canvas.width !== config.width || canvas.height !== config.height || typeof canvas.getContext !== 'function') throw new Error('The frame renderer returned an unexpected canvas size.');
       return { canvas, scene };
@@ -52,6 +64,7 @@
     if (clip.loop === 'pingpong' && config.frames > 2) for (let i = config.frames - 2; i > 0; i--) order.push(i);
     return { format: 'minish-animation-' + config.format, version: 1, creator: 'SerakSan', name: clip.name || 'Minish animation',
       width: config.width, height: config.height, nativeWidth: config.nativeWidth, nativeHeight: config.nativeHeight, enlargement: config.scale,
+      originalClip: { width: config.clipWidth, height: config.clipHeight }, camera: config.camera,
       fps: config.fps, frames: config.frames, loop: clip.loop || 'loop', playbackOrder: order,
       game: 'The Legend of Zelda: The Minish Cap', artwork: 'Nintendo / Capcom. Third-party game art is separate from the editor code license.',
       sourceUrl: 'https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/', sources: sourceReferences(refs), ...extra };

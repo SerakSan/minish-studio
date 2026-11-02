@@ -8,10 +8,13 @@
   const clamp = (n, low, high) => Math.min(high, Math.max(low, n));
   const integer = (value, fallback = 0) => Number.isFinite(Number(value)) ? Math.round(Number(value)) : fallback;
   const curated = window.MINISH_CURATED || {}, bosses = window.MINISH_BOSSES || {};
+  const worlds = window.MINISH_WORLD_MAPS || {};
+  const combat = window.MINISH_COMBAT_LIBRARY || {};
   const excluded = new Set([...(curated.excludedPieceIds || []), ...(window.MINISH_SPRITES?.excludedPieceIds || [])].map(String));
   const hiddenSources = new Set((curated.hiddenSourceIds || []).map(String));
-  const sources = new Map([...(window.MINISH_ASSETS?.assets || []), ...(curated.catalog || []), ...(bosses.catalog || [])].map(source => [String(source.id), source]));
-  const sheets = { ...(curated.sheets || {}), ...(bosses.sheets || {}) };
+  const sources = new Map([...(window.MINISH_ASSETS?.assets || []), ...(curated.catalog || []), ...(worlds.catalog || []), ...(bosses.catalog || [])].map(source => [String(source.id), source]));
+  const baseSheets = { ...(curated.sheets || {}), ...(worlds.sheets || {}), ...(bosses.sheets || {}) };
+  const sheets = combat.mergeSheets?.(baseSheets) || baseSheets;
   const pieces = new Map(Object.values(sheets).flatMap(sheet => sheet.pieces || []).filter(piece => !excluded.has(String(piece.id)) && !hiddenSources.has(String(piece.sourceId))).map(piece => [String(piece.id), piece]));
   const canvas = $('animationCanvas'), context = canvas.getContext('2d'), overlay = $('animOverlayCanvas'), overlayContext = overlay.getContext('2d');
   let mode = 'scene', state = animation.state, selectedPiece = null, selectedPoses = new Set(), sourceId = '', visiblePoses = [], shown = 64;
@@ -21,7 +24,9 @@
   const isSimple = () => editorMode === 'simple';
   let zoom = 2, fit = true, drawing = false, drawToken = 0, drag = null, dragKey = null, copyKey = null, lastStructure = '', exportCancelled = false, exporting = false;
   const thumbCache = new Map();
-  let pieceClipboard = null, pasteCount = 0, zoomAnchor = null, zoomTimer = null, gestureZoom = null;
+  let staticRasterKey = null, exportCamera = null, fitCenterPending = true, lastFitLayout = '';
+  let handTool = false, handDrag = null;
+  let pieceClipboard = null, pasteCount = 0, zoomAnchor = null, gestureZoom = null, zoomFieldDraft = false;
   const fieldDrafts = new Set();
   function flushFieldDrafts() {
     const pending = [...fieldDrafts].map(field => ({ field, value: field.value, checked: field.checked }));
@@ -43,6 +48,7 @@
   function setField(id, value) { if (document.activeElement !== $(id)) $(id).value = value == null ? '' : value; }
   function setMode(next) {
     flushFieldDrafts();
+    if (mode === 'animation' && next !== 'animation') { finishGestureZoom(); finishHandPan(); }
     mode = next === 'animation' ? 'animation' : 'scene';
     if (mode === 'scene') animation.pause();
     document.body.classList.toggle('animation-mode', mode === 'animation');
@@ -55,7 +61,7 @@
     $('animationModeBtn')?.setAttribute('aria-pressed', String(mode === 'animation'));
     window.MINISH_EZLO_SWITCH?.setMode(mode, { animate: modeInitialized }); modeInitialized = true;
     try { localStorage.setItem('minish-maker-workspace', mode); } catch (_) {}
-    if (mode === 'animation') { fit = true; render(state); scheduleDraw(); }
+    if (mode === 'animation') { render(state); scheduleDraw(); }
     else { studio.render(); window.dispatchEvent(new Event('resize')); }
     document.dispatchEvent(new CustomEvent('minish:workspace-changed', { detail: { mode } }));
   }
@@ -71,11 +77,11 @@
     $('animEmptyDescription').textContent = isSimple() ? 'Choose a piece and its action, then place it on the canvas. Or bring in a scene you have made.' : 'Choose game poses and arrange their changes on the timeline. You can also import a scene.';
     $('animAddPiece').textContent = isSimple() ? 'Add to canvas' : 'Add to clip';
     if (persist) try { localStorage.setItem('minish-maker-animation-editor', editorMode); } catch (_) {}
-    recipeObjectId = null; recipeDirty = false; syncLibraryView(); renderLibrary(); render(animation.state); fit = true; scheduleDraw();
+    recipeObjectId = null; recipeDirty = false; syncLibraryView(); renderLibrary(); render(animation.state); fitCanvas();
   }
   function setFocus(focused) {
     document.body.classList.toggle('anim-preview-focus', !!focused); document.body.classList.remove('anim-library-open', 'anim-inspector-open');
-    $('animFocusBtn').textContent = focused ? 'Show panels' : 'Focus'; $('animFocusBtn').setAttribute('aria-pressed', String(!!focused)); fit = true; scheduleDraw();
+    $('animFocusBtn').textContent = focused ? 'Show panels' : 'Focus'; $('animFocusBtn').setAttribute('aria-pressed', String(!!focused)); fitCanvas();
   }
   function drawPieceThumbnail(target, piece) {
     target.dataset.piece = String(piece.id);
@@ -83,9 +89,9 @@
     thumbCache.get(piece.id).then(source => {
       if (target.dataset.piece !== String(piece.id)) return;
       const ctx = target.getContext('2d'); ctx.clearRect(0, 0, target.width, target.height); ctx.imageSmoothingEnabled = false;
-      const scale = Math.min((target.width - 4) / piece.sw, (target.height - 4) / piece.sh), factor = scale >= 1 ? Math.max(1, Math.floor(scale)) : scale;
-      const w = Math.max(1, Math.round(piece.sw * factor)), h = Math.max(1, Math.round(piece.sh * factor));
-      ctx.drawImage(source.image, source.sx, source.sy, source.sw, source.sh, Math.floor((target.width - w) / 2), Math.floor((target.height - h) / 2), w, h);
+      const box = window.MINISH_THUMBNAILS.layout(piece.sw, piece.sh, target.width, target.height, 2, piece.previewBox);
+      if (!box) return;
+      ctx.drawImage(source.image, source.sx, source.sy, source.sw, source.sh, box.x, box.y, box.width, box.height);
     }).catch(() => { target.title = 'Keep the assets folder beside the app to preview this game piece.'; });
   }
   function refreshSources() {
@@ -129,7 +135,7 @@
       button.addEventListener('click', event => { selectedPiece = piece; if (isSimple()) libraryPresetId = 'still'; else if (event.shiftKey) toggleSequence(piece); updatePoseButtons(); });
       button.addEventListener('dblclick', () => addPiece(piece));
       button.draggable = true;
-      button.addEventListener('dragstart', event => { selectedPiece = piece; if (isSimple()) libraryPresetId = 'still'; updatePoseButtons(); event.dataTransfer.effectAllowed = 'copy'; event.dataTransfer.setData('application/x-minish-animation-piece', piece.id); const rect = image.getBoundingClientRect(); event.dataTransfer.setDragImage(image, rect.width / 2, rect.height / 2); });
+      button.addEventListener('dragstart', event => { selectedPiece = piece; updatePoseButtons(); beginPieceDrag(event, piece, image); });
       const checkLabel = create('label', 'anim-seq-check'), check = create('input'); check.type = 'checkbox'; check.checked = selectedPoses.has(String(piece.id)); check.setAttribute('aria-label', 'Include ' + piece.name + ' in pose sequence');
       check.addEventListener('change', () => { check.checked ? selectedPoses.add(String(piece.id)) : selectedPoses.delete(String(piece.id)); updatePoseButtons(); });
       checkLabel.append(check, create('span', '', 'Sequence')); entry.append(button, checkLabel); fragment.append(entry);
@@ -139,7 +145,7 @@
   function syncLibraryView() {
     $('animLibrary').classList.toggle('anim-actions-view', isSimple() && libraryView === 'actions');
     $('animBrowseActions').setAttribute('aria-pressed', String(libraryView === 'actions')); $('animBrowsePoses').setAttribute('aria-pressed', String(libraryView === 'poses'));
-    $('animPoseSearch').placeholder = isSimple() && libraryView === 'actions' ? 'Find an action...' : 'Find a pose or group...';
+    $('animPoseSearch').placeholder = isSimple() && libraryView === 'actions' ? 'Search attacks, tools, walks...' : 'Find a pose or group...';
     $('animPoseSearch').setAttribute('aria-label', isSimple() && libraryView === 'actions' ? 'Find a ready action' : 'Find animation poses');
   }
   function renderActionLibrary() {
@@ -157,7 +163,7 @@
       button.title = preset.description; drawPieceThumbnail(image, piece);
       const choose = () => { libraryPresetId = preset.id; selectedPiece = piece; updatePoseButtons(); };
       button.addEventListener('click', choose); button.addEventListener('dblclick', () => { choose(); addPiece(piece); });
-      button.draggable = true; button.addEventListener('dragstart', event => { choose(); event.dataTransfer.effectAllowed = 'copy'; event.dataTransfer.setData('application/x-minish-animation-piece', piece.id); event.dataTransfer.setData('application/x-minish-animation-preset', preset.id); const rect = image.getBoundingClientRect(); event.dataTransfer.setDragImage(image, rect.width / 2, rect.height / 2); });
+      button.draggable = true; button.addEventListener('dragstart', event => { choose(); beginPieceDrag(event, piece, image); });
       $('animPoseGrid').append(button);
     }
     if (!actions.length) $('animPoseGrid').append(create('p', 'anim-library-empty', 'No matching actions. Try another search or browse still poses.'));
@@ -176,15 +182,38 @@
   }
   function pieceObject(piece, point = null) {
     const clip = currentClip(), category = sheets[String(piece.sourceId)]?.category;
+    if (!point && isLargeClip(clip) && piece.kind !== 'environment') {
+      const camera = cameraFromView(clip); point = { x: camera.x + camera.w / 2, y: camera.y + camera.h / 2 };
+    }
     return { kind: 'sprite', assetId: String(piece.assetId), sourceId: String(piece.sourceId), pieceId: String(piece.id), pieceName: piece.name,
       sx: piece.sx, sy: piece.sy, sw: piece.sw, sh: piece.sh, x: Math.round(point ? point.x - piece.sw / 2 : (clip.width - piece.sw) / 2),
       y: Math.round(point ? point.y - piece.sh / 2 : (clip.height - piece.sh) / 2), scale: 1, flipX: false, flipY: false,
       keyColor: piece.keyColor || null, layer: category === 'environments' || piece.kind === 'tile' ? 'terrain' : 'objects', visible: true };
   }
-  function addPiece(piece = selectedPiece, point = null) {
-    if (!piece) return; animation.pause(); recipeDirty = false;
-    const added = attempt(() => animation.batch(() => { const object = animation.addObject(pieceObject(piece, point), { at: isSimple() ? 0 : state.frame }); if (isSimple()) simple.apply(object.id, { presetId: libraryPresetId, speed: $('animLibrarySpeed').value, motion: $('animLibraryMotion').value, distance: 32 }); return object; }));
+  function libraryRecipe(piece) {
+    if (!isSimple() || !simple) return null;
+    const available = simple.cyclesFor(String(piece.sourceId));
+    return { presetId: available.some(preset => preset.id === libraryPresetId) ? libraryPresetId : 'still',
+      speed: $('animLibrarySpeed').value, motion: $('animLibraryMotion').value, distance: 32 };
+  }
+  function beginPieceDrag(event, piece, image) {
+    const recipe = libraryRecipe(piece);
+    event.dataTransfer.effectAllowed = 'copy';
+    event.dataTransfer.setData('application/x-minish-animation-piece', piece.id);
+    if (recipe) {
+      event.dataTransfer.setData('application/x-minish-animation-preset', recipe.presetId);
+      event.dataTransfer.setData('application/x-minish-animation-recipe', JSON.stringify({ version: 1, sourceId: String(piece.sourceId), ...recipe }));
+    }
+    const rect = image.getBoundingClientRect(); event.dataTransfer.setDragImage(image, rect.width / 2, rect.height / 2);
+  }
+  function addPiece(piece = selectedPiece, point = null, chosenRecipe = null) {
+    if (!piece) return;
+    // Capture before pausing or selecting a new object can refresh the controls.
+    const recipe = isSimple() ? chosenRecipe || libraryRecipe(piece) : null;
+    animation.pause(); recipeDirty = false;
+    const added = attempt(() => animation.batch(() => { const object = animation.addObject(pieceObject(piece, point), { at: isSimple() ? 0 : state.frame }); if (recipe) simple.apply(object.id, recipe); return object; }));
     if (!added) return;
+    window.MINISH_WORLD_ANIMATION_UI?.prepareClip?.(animation.currentClip)?.catch(error => report(error.message));
     document.body.classList.remove('anim-library-open'); $('animLibraryToggle').setAttribute('aria-expanded', 'false');
     report(isSimple() ? 'Piece added. Drag to place it, then press Play.' : piece.name + ' added. Move the playhead and edit to animate it.');
   }
@@ -194,60 +223,243 @@
     if (drag?.preview) { const object = result.objects.find(value => value.id === drag.id); if (object) Object.assign(object, drag.preview); }
     return result;
   }
+  const isLargeClip = clip => clip.width > 1024 || clip.height > 1024;
+  function cameraFromView(clip = currentClip()) {
+    const area = $('animStageViewport').getBoundingClientRect(), frame = canvas.getBoundingClientRect();
+    const width = Math.min(clip.width, 1024, Math.max(1, Math.floor($('animStageViewport').clientWidth / zoom)));
+    const height = Math.min(clip.height, 576, Math.max(1, Math.floor($('animStageViewport').clientHeight / zoom)));
+    const centerX = (area.left + $('animStageViewport').clientWidth / 2 - frame.left) / zoom;
+    const centerY = (area.top + $('animStageViewport').clientHeight / 2 - frame.top) / zoom;
+    return { x: clamp(Math.round(centerX - width / 2), 0, clip.width - width),
+      y: clamp(Math.round(centerY - height / 2), 0, clip.height - height), w: width, h: height };
+  }
+  function drawCameraGuide(ctx, clip) {
+    const opened = $('animExportDialog').open;
+    if (!opened || $('animExportArea').value !== 'view') return;
+    const camera = opened && exportCamera ? exportCamera : cameraFromView(clip);
+    ctx.save(); ctx.lineWidth = 1 / zoom; ctx.strokeStyle = '#ffef91'; ctx.setLineDash([6 / zoom, 4 / zoom]);
+    ctx.strokeRect(camera.x, camera.y, camera.w, camera.h);
+    ctx.setLineDash([]); ctx.font = (11 / zoom) + 'px monospace'; ctx.fillStyle = '#ffef91';
+    ctx.fillText('Export view', camera.x + 4 / zoom, camera.y + 14 / zoom); ctx.restore();
+  }
+  function drawLargeClip(clip, scene, previous, vp, layoutGutter) {
+    // Keep one native static backdrop. Only visible changing pieces are drawn
+    // each frame, on an overlay bounded by the viewport rather than the world.
+    const changing = new Set(clip.tracks.filter(track => !track.muted && track.keys.length).map(track => track.objectId));
+    if (drag?.preview) changing.add(drag.id);
+    const ordered = scene.objects.slice().sort((a, b) => (LAYERS[a.layer] || 0) - (LAYERS[b.layer] || 0));
+    let end = ordered.findIndex(object => changing.has(object.id)); if (end < 0) end = ordered.length;
+    const prefix = ordered.slice(0, end), rest = ordered.slice(end);
+    const key = JSON.stringify([clip.id, clip.width, clip.height, scene.color, scene.transparent, prefix]);
+    if (staticRasterKey !== key) {
+      context.imageSmoothingEnabled = false; studio.drawSceneToContext(context, { ...scene, objects: prefix });
+      staticRasterKey = key;
+    }
+    const area = vp.getBoundingClientRect(), frame = canvas.getBoundingClientRect();
+    const width = Math.max(1, Math.ceil(vp.clientWidth)), height = Math.max(1, Math.ceil(vp.clientHeight));
+    if (overlay.width !== width || overlay.height !== height) { overlay.width = width; overlay.height = height; }
+    overlay.style.width = width + 'px'; overlay.style.height = height + 'px';
+    overlay.style.left = (area.left - frame.left + layoutGutter * zoom) + 'px';
+    overlay.style.top = (area.top - frame.top + layoutGutter * zoom) + 'px';
+    const ctx = overlayContext, gutter = Math.min(512, layoutGutter);
+    const view = { x: (area.left - frame.left) / zoom, y: (area.top - frame.top) / zoom, w: width / zoom, h: height / zoom };
+    const visible = object => { const b = bounds(object); return b.x < view.x + view.w && b.y < view.y + view.h && b.x + b.w > view.x && b.y + b.h > view.y; };
+    const paint = (objects, opacity = 1) => {
+      if (!objects.length) return; ctx.save(); ctx.globalAlpha = opacity;
+      studio.drawSceneToContext(ctx, { ...scene, transparent: true, objects }, { clear: false }); ctx.restore();
+    };
+    ctx.imageSmoothingEnabled = false; ctx.clearRect(0, 0, width, height);
+    ctx.save(); ctx.translate(frame.left - area.left, frame.top - area.top); ctx.scale(zoom, zoom);
+    ctx.beginPath(); ctx.rect(-gutter, -gutter, clip.width + gutter * 2, clip.height + gutter * 2); ctx.clip();
+    ctx.save(); ctx.beginPath(); ctx.rect(0, 0, clip.width, clip.height); ctx.clip();
+    if (previous) paint(previous.objects.filter(object => changing.has(object.id) && visible(object)), .18);
+    paint(rest.filter(visible)); ctx.restore();
+    ctx.save(); ctx.beginPath(); ctx.rect(-gutter, -gutter, clip.width + gutter * 2, clip.height + gutter * 2); ctx.rect(0, 0, clip.width, clip.height); ctx.clip('evenodd');
+    paint(ordered.filter(object => { const b = bounds(object); return visible(object) && (b.x < 0 || b.y < 0 || b.x + b.w > clip.width || b.y + b.h > clip.height); }), .45);
+    ctx.restore();
+    if ($('animGrid').checked) {
+      ctx.save(); ctx.lineWidth = 1 / zoom; ctx.strokeStyle = '#d8e8bc35'; ctx.beginPath();
+      for (let x = Math.max(8, Math.ceil(view.x / 8) * 8); x < Math.min(clip.width, view.x + view.w); x += 8) { ctx.moveTo(x, Math.max(0, view.y)); ctx.lineTo(x, Math.min(clip.height, view.y + view.h)); }
+      for (let y = Math.max(8, Math.ceil(view.y / 8) * 8); y < Math.min(clip.height, view.y + view.h); y += 8) { ctx.moveTo(Math.max(0, view.x), y); ctx.lineTo(Math.min(clip.width, view.x + view.w), y); }
+      ctx.stroke(); ctx.restore();
+    }
+    drawCameraGuide(ctx, clip);
+    const selected = scene.objects.find(object => object.id === selectedId());
+    if (selected) { const b = bounds(selected); ctx.lineWidth = 1 / zoom; ctx.strokeStyle = '#fff2b6'; ctx.strokeRect(b.x, b.y, b.w, b.h); ctx.setLineDash([3 / zoom, 3 / zoom]); ctx.strokeStyle = '#184e48'; ctx.strokeRect(b.x, b.y, b.w, b.h); }
+    ctx.restore();
+  }
   async function draw() {
     if (mode !== 'animation') return;
     const token = ++drawToken, clip = currentClip(), scene = evaluatedScene(), previous = !isSimple() && $('animOnion').checked && state.frame > 0 ? animation.evaluateFrame(clip, state.frame - 1) : null;
     if (previous) previous.transparent = true;
     try { await Promise.all([studio.prepareScene(scene), previous ? studio.prepareScene(previous) : Promise.resolve()]); } catch (error) { report(error.message); return; }
     if (token !== drawToken || mode !== 'animation') return;
-    if (canvas.width !== clip.width || canvas.height !== clip.height) { canvas.width = clip.width; canvas.height = clip.height; }
+    if (canvas.width !== clip.width || canvas.height !== clip.height) { canvas.width = clip.width; canvas.height = clip.height; staticRasterKey = null; }
     const vp = $('animStageViewport');
-    if (fit) { const available = Math.min((vp.clientWidth - 32) / clip.width, (vp.clientHeight - 32) / clip.height); zoom = available >= 1 ? clamp(Math.floor(available), 1, 8) : clamp(available, .05, 1); }
+    const fitLayout = [clip.id, clip.width, clip.height, vp.clientWidth, vp.clientHeight].join(':');
+    const centerFit = fit && (fitCenterPending || lastFitLayout !== fitLayout);
+    if (centerFit) {
+      zoomAnchor = null;
+      // A panned world's viewport-sized overlay can sit thousands of pixels
+      // away. Clear that old overflow before measuring the new fitted canvas.
+      overlay.style.left = overlay.style.top = '0px';
+      overlay.style.width = overlay.style.height = '1px';
+      $('animCanvasWrap').style.transform = 'none';
+    }
+    if (fit) { const available = Math.min((vp.clientWidth - 32) / clip.width, (vp.clientHeight - 32) / clip.height); zoom = available >= 1 ? clamp(Math.floor(available), 1, 12) : clamp(available, .05, 1); }
     canvas.style.width = clip.width * zoom + 'px'; canvas.style.height = clip.height * zoom + 'px';
-    const gutter = fit ? Math.min(512, Math.ceil(16 / zoom)) : Math.min(512, Math.ceil(Math.max(32, vp.clientWidth / 2, vp.clientHeight / 2) / zoom));
-    $('animCanvasWrap').style.padding = gutter * zoom + 'px';
-    if (overlay.width !== clip.width + gutter * 2 || overlay.height !== clip.height + gutter * 2) { overlay.width = clip.width + gutter * 2; overlay.height = clip.height + gutter * 2; }
-    overlay.style.width = overlay.width * zoom + 'px'; overlay.style.height = overlay.height * zoom + 'px';
+    const layoutGutter = Math.ceil((fit ? 16 : Math.max(32, vp.clientWidth, vp.clientHeight)) / zoom), gutter = Math.min(512, layoutGutter);
+    $('animCanvasWrap').style.padding = layoutGutter * zoom + 'px';
+    if (!isLargeClip(clip)) {
+      if (overlay.width !== clip.width + gutter * 2 || overlay.height !== clip.height + gutter * 2) { overlay.width = clip.width + gutter * 2; overlay.height = clip.height + gutter * 2; }
+      overlay.style.width = overlay.width * zoom + 'px'; overlay.style.height = overlay.height * zoom + 'px';
+      overlay.style.left = (layoutGutter - gutter) * zoom + 'px'; overlay.style.top = (layoutGutter - gutter) * zoom + 'px';
+    }
     const wrap = $('animCanvasWrap'); wrap.style.transform = 'none'; const rect = canvas.getBoundingClientRect(), alignX = Math.round(rect.left) - rect.left, alignY = Math.round(rect.top) - rect.top; wrap.style.transform = 'translate(' + alignX + 'px,' + alignY + 'px)';
-    if (zoomAnchor) { const positioned = canvas.getBoundingClientRect(); vp.scrollLeft += positioned.left + zoomAnchor.x * zoom - zoomAnchor.clientX; vp.scrollTop += positioned.top + zoomAnchor.y * zoom - zoomAnchor.clientY; zoomAnchor = null; const final = canvas.getBoundingClientRect(); wrap.style.transform = 'translate(' + (alignX + Math.round(final.left) - final.left) + 'px,' + (alignY + Math.round(final.top) - final.top) + 'px)'; }
+    if (centerFit) {
+      // Use the actual laid-out canvas. A second pass allows native scrollbar
+      // clamping and removal to settle before the visible-area overlay returns.
+      for (let pass = 0; pass < 2; pass++) {
+        const frame = canvas.getBoundingClientRect(), area = vp.getBoundingClientRect();
+        vp.scrollLeft += frame.left + frame.width / 2 - area.left - vp.clientWidth / 2;
+        vp.scrollTop += frame.top + frame.height / 2 - area.top - vp.clientHeight / 2;
+      }
+      fitCenterPending = false;
+      lastFitLayout = [clip.id, clip.width, clip.height, vp.clientWidth, vp.clientHeight].join(':');
+    }
+    if (zoomAnchor) { const positioned = canvas.getBoundingClientRect(), viewportRect = vp.getBoundingClientRect(); vp.scrollLeft += positioned.left + zoomAnchor.x * zoom - (viewportRect.left + zoomAnchor.viewportX); vp.scrollTop += positioned.top + zoomAnchor.y * zoom - (viewportRect.top + zoomAnchor.viewportY); zoomAnchor = null; const final = canvas.getBoundingClientRect(); wrap.style.transform = 'translate(' + (alignX + Math.round(final.left) - final.left) + 'px,' + (alignY + Math.round(final.top) - final.top) + 'px)'; }
+    if (isLargeClip(clip)) {
+      drawLargeClip(clip, scene, previous, vp, layoutGutter);
+      updateZoomField(); $('animSizeLabel').textContent = clip.width + ' × ' + clip.height + ' px · ' + clip.fps + ' fps';
+      $('animEmpty').hidden = clip.objects.length > 0; return;
+    }
+    staticRasterKey = null;
     context.imageSmoothingEnabled = false; context.clearRect(0, 0, clip.width, clip.height); studio.drawSceneToContext(context, scene);
     overlayContext.imageSmoothingEnabled = false; overlayContext.clearRect(0, 0, overlay.width, overlay.height); overlayContext.save(); overlayContext.translate(gutter, gutter);
     if (previous) { overlayContext.save(); overlayContext.globalAlpha = .18; studio.drawSceneToContext(overlayContext, previous); overlayContext.restore(); }
     overlayContext.save(); overlayContext.beginPath(); overlayContext.rect(-gutter, -gutter, overlay.width, overlay.height); overlayContext.rect(0, 0, clip.width, clip.height); overlayContext.clip('evenodd'); overlayContext.globalAlpha = .45; studio.drawSceneToContext(overlayContext, scene); overlayContext.restore();
     if ($('animGrid').checked) { overlayContext.save(); overlayContext.lineWidth = 1 / zoom; overlayContext.strokeStyle = '#d8e8bc35'; overlayContext.beginPath(); for (let x = 8; x < clip.width; x += 8) { overlayContext.moveTo(x, 0); overlayContext.lineTo(x, clip.height); } for (let y = 8; y < clip.height; y += 8) { overlayContext.moveTo(0, y); overlayContext.lineTo(clip.width, y); } overlayContext.stroke(); overlayContext.restore(); }
+    drawCameraGuide(overlayContext, clip);
     const object = scene.objects.find(value => value.id === selectedId());
     if (object) { const box = bounds(object); overlayContext.lineWidth = 1 / zoom; overlayContext.strokeStyle = '#fff2b6'; overlayContext.strokeRect(box.x, box.y, box.w, box.h); overlayContext.setLineDash([3 / zoom, 3 / zoom]); overlayContext.strokeStyle = '#184e48'; overlayContext.strokeRect(box.x, box.y, box.w, box.h); }
     overlayContext.restore();
-    $('animZoomLabel').textContent = Math.round(zoom * 100) + '%'; $('animSizeLabel').textContent = clip.width + ' × ' + clip.height + ' px · ' + clip.fps + ' fps';
+    updateZoomField(); $('animSizeLabel').textContent = clip.width + ' × ' + clip.height + ' px · ' + clip.fps + ' fps';
     $('animEmpty').hidden = clip.objects.length > 0;
   }
-  function zoomAt(value, clientX, clientY, settle = false) {
+  function captureZoomAnchor(clientX, clientY) {
     const vp = $('animStageViewport'), area = vp.getBoundingClientRect(), rect = canvas.getBoundingClientRect();
     const px = Number.isFinite(clientX) ? clientX : area.left + vp.clientWidth / 2, py = Number.isFinite(clientY) ? clientY : area.top + vp.clientHeight / 2;
-    let next = clamp(Number(value) || zoom, .1, 8); if (settle) next = next >= 1 ? Math.max(1, Math.round(next)) : Math.round(next * 100) / 100;
     const displayedZoom = rect.width > 0 && canvas.width > 0 ? rect.width / canvas.width : zoom;
-    zoomAnchor = { x: (px - rect.left) / displayedZoom, y: (py - rect.top) / displayedZoom, clientX: px, clientY: py };
+    return { x: (px - rect.left) / displayedZoom, y: (py - rect.top) / displayedZoom, viewportX: px - area.left, viewportY: py - area.top };
+  }
+  function zoomAt(value, clientX, clientY, capturedAnchor = null) {
+    const next = clamp(Number.isFinite(Number(value)) ? Number(value) : zoom, .05, 12);
+    zoomAnchor = capturedAnchor || captureZoomAnchor(clientX, clientY);
     fit = false; zoom = next; scheduleDraw(); return zoom;
   }
-  function zoomStep(direction) { return zoomAt(direction > 0 ? Math.min(8, zoom < 1 ? 1 : Math.floor(zoom) + 1) : zoom > 1 ? Math.max(1, Math.ceil(zoom) - 1) : Math.max(.1, zoom / 2)); }
-  function fitCanvas() { clearTimeout(zoomTimer); zoomAnchor = null; fit = true; scheduleDraw(); }
+  function resetZoomInput() { gestureZoom = null; }
+  function zoomStep(direction) { resetZoomInput(); return zoomAt(Number((zoom + Math.sign(direction) * .1).toFixed(10))); }
+  function fitCanvas() { resetZoomInput(); zoomAnchor = null; fit = true; fitCenterPending = true; scheduleDraw(); }
+  function focusArea(area) {
+    if (!area || !['x', 'y', 'w', 'h'].every(key => Number.isFinite(Number(area[key]))) || Number(area.w) <= 0 || Number(area.h) <= 0) return;
+    const vp = $('animStageViewport'), value = clamp(Math.min(2, vp.clientWidth / (Number(area.w) + 96), vp.clientHeight / (Number(area.h) + 96)), .05, 12);
+    resetZoomInput();
+    zoomAt(value, undefined, undefined, { x: Number(area.x) + Number(area.w) / 2, y: Number(area.y) + Number(area.h) / 2, viewportX: vp.clientWidth / 2, viewportY: vp.clientHeight / 2 });
+  }
+  function updateZoomField(force = false) {
+    if (force || document.activeElement !== $('animZoomLabel')) $('animZoomLabel').value = Math.round(zoom * 100) + '%';
+  }
+  function applyZoomField() {
+    const field = $('animZoomLabel'), text = field.value.trim().replace(',', '.');
+    if (zoomFieldDraft && /^(?:\d+(?:\.\d+)?|\.\d+)\s*%?$/.test(text)) {
+      const percentage = Number(text.replace(/\s*%$/, ''));
+      if (Number.isFinite(percentage)) { resetZoomInput(); zoomAt(percentage / 100); }
+    }
+    zoomFieldDraft = false; updateZoomField(true);
+  }
+  function canZoomInput(event) {
+    const target = event?.target;
+    return mode === 'animation' && !document.querySelector('dialog[open]') && !event?.defaultPrevented &&
+      !/^(INPUT|TEXTAREA|SELECT)$/.test(target?.tagName || '') && !target?.isContentEditable &&
+      !target?.closest?.('[role="textbox"], [role="combobox"], [role="spinbutton"]');
+  }
   const zoomViewport = $('animStageViewport');
+  function preparePanSpace() {
+    const frame = canvas.getBoundingClientRect(), wrap = $('animCanvasWrap');
+    zoomAt(zoom);
+    // Open overflow before the browser performs native wheel scrolling. This
+    // changes layout only, so asynchronous artwork preparation cannot lose it.
+    // A second pass accounts for browsers whose scrollbars use layout space.
+    for (let pass = 0; pass < 2; pass++) {
+      wrap.style.padding = Math.ceil(Math.max(32, zoomViewport.clientWidth, zoomViewport.clientHeight) / zoom) * zoom + 'px';
+      const positioned = canvas.getBoundingClientRect();
+      zoomViewport.scrollLeft += positioned.left - frame.left; zoomViewport.scrollTop += positioned.top - frame.top;
+    }
+    zoomAnchor = null;
+  }
+  function updateHandCursor() {
+    const cursor = handTool ? handDrag ? 'grabbing' : 'grab' : 'default';
+    canvas.style.cursor = cursor; zoomViewport.style.cursor = cursor;
+  }
+  function finishHandPan() { handDrag = null; updateHandCursor(); }
+  function setHandTool(enabled) {
+    finishHandPan(); drag = null; handTool = !!enabled; updateHandCursor();
+    $('animHandTool')?.setAttribute('aria-pressed', String(handTool));
+    $('animSelectTool')?.setAttribute('aria-pressed', String(!handTool));
+    if ($('animToolsLabel')) { $('animToolsLabel').textContent = handTool ? 'Hand ▾' : 'Tools ▾'; $('animToolsLabel').setAttribute('data-active-tool', handTool ? 'hand' : 'select'); }
+    report(handTool ? 'Hand: drag to move the view. Pinch or Ctrl+wheel zooms. Tools > Select pieces returns to editing.' : 'Select and drag a piece to move it. Choose Tools > Hand to pan the view.');
+    scheduleDraw();
+  }
   zoomViewport.addEventListener('wheel', event => {
-    if (!event.ctrlKey || mode !== 'animation' || document.querySelector('dialog[open]')) return;
-    event.preventDefault(); if (gestureZoom) return;
-    const delta = event.deltaY * (event.deltaMode === 1 ? 16 : event.deltaMode === 2 ? zoomViewport.clientHeight : 1);
-    zoomAt(zoom * Math.exp(-clamp(delta, -160, 160) * .004), event.clientX, event.clientY);
-    clearTimeout(zoomTimer); zoomTimer = setTimeout(() => zoomAt(zoom, event.clientX, event.clientY, true), 180);
+    if (!event.ctrlKey) {
+      if (fit && canZoomInput(event) && !event.altKey && !event.metaKey) {
+        void event.deltaMode;
+        if ((Number.isFinite(event.deltaX) && event.deltaX) || (Number.isFinite(event.deltaY) && event.deltaY)) preparePanSpace();
+      }
+      return;
+    }
+    if (!canZoomInput(event) || event.cancelable === false || event.altKey || event.metaKey) return;
+    const deltaMode = event.deltaMode;
+    if (!Number.isFinite(event.deltaY) || !event.deltaY) return;
+    event.preventDefault(); if (gestureZoom || drag || handDrag) return;
+    const delta = clamp(event.deltaY * (deltaMode === 1 ? 16 : deltaMode === 2 ? zoomViewport.clientHeight : 1), -160, 160);
+    zoomAt(zoom * Math.exp(-delta * .005), event.clientX, event.clientY);
   }, { passive: false });
-  zoomViewport.addEventListener('gesturestart', event => { if (mode !== 'animation' || document.querySelector('dialog[open]')) return; event.preventDefault(); clearTimeout(zoomTimer); gestureZoom = { zoom }; });
-  zoomViewport.addEventListener('gesturechange', event => { if (!gestureZoom) return; event.preventDefault(); zoomAt(gestureZoom.zoom * (event.scale || 1), event.clientX, event.clientY); });
-  zoomViewport.addEventListener('gestureend', event => { if (!gestureZoom) return; event.preventDefault(); gestureZoom = null; zoomAt(zoom, event.clientX, event.clientY, true); });
-  function bounds(object) { const scale = object.scale || 1; return { x: object.x, y: object.y, w: (object.kind === 'sprite' ? object.sw : object.w) * scale, h: (object.kind === 'sprite' ? object.sh : object.h) * scale }; }
+  zoomViewport.addEventListener('gesturestart', event => { if (!canZoomInput(event) || drag || handDrag) return; event.preventDefault(); resetZoomInput(); gestureZoom = { zoom }; }, { passive: false });
+  zoomViewport.addEventListener('gesturechange', event => { if (!gestureZoom || !canZoomInput(event)) return; event.preventDefault(); const scale = Number(event.scale); zoomAt(gestureZoom.zoom * Math.pow(Number.isFinite(scale) ? Math.max(.01, scale) : 1, 1.25), event.clientX, event.clientY); }, { passive: false });
+  function finishGestureZoom(event) {
+    if (!gestureZoom) return;
+    gestureZoom = null;
+    if (canZoomInput(event)) event?.preventDefault();
+  }
+  zoomViewport.addEventListener('gestureend', finishGestureZoom, { passive: false });
+  function normalizeRotation(value) { return studio.spriteGeometry?.normalizeRotation(value) ?? ((Math.round((Number(value) || 0) / 45) * 45 % 360) + 360) % 360; }
+  function bounds(object) {
+    if (studio.spriteGeometry) return studio.spriteGeometry.bounds(object);
+    const scale = object.scale || 1, w = (object.kind === 'sprite' ? object.sw : object.w) * scale, h = (object.kind === 'sprite' ? object.sh : object.h) * scale;
+    const angle = (object.kind === 'sprite' ? normalizeRotation(object.rotation) : 0) * Math.PI / 180, c = Math.abs(Math.cos(angle)), s = Math.abs(Math.sin(angle));
+    const width = c * w + s * h, height = s * w + c * h;
+    return { x: object.x + (w - width) / 2, y: object.y + (h - height) / 2, w: width, h: height };
+  }
+  function contains(object, position) {
+    if (studio.spriteGeometry) return studio.spriteGeometry.contains(object, position);
+    const scale = object.scale || 1, w = (object.kind === 'sprite' ? object.sw : object.w) * scale, h = (object.kind === 'sprite' ? object.sh : object.h) * scale;
+    const angle = (object.kind === 'sprite' ? normalizeRotation(object.rotation) : 0) * Math.PI / 180, c = Math.cos(angle), s = Math.sin(angle), dx = position.x - object.x - w / 2, dy = position.y - object.y - h / 2;
+    const x = dx * c + dy * s + w / 2, y = -dx * s + dy * c + h / 2;
+    return x >= 0 && x < w && y >= 0 && y < h;
+  }
   function point(event) { const rect = canvas.getBoundingClientRect(); return { x: (event.clientX - rect.left) / zoom, y: (event.clientY - rect.top) / zoom }; }
   function pointerDown(event) {
-    if (event.button !== 0 || event.ctrlKey || event.metaKey) return; event.preventDefault(); animation.pause(); canvas.focus({ preventScroll: true });
+    if (event.button !== 0 || event.ctrlKey || event.metaKey || !canZoomInput(event)) return; event.preventDefault(); canvas.focus({ preventScroll: true });
+    if (handTool) {
+      if (fit) preparePanSpace();
+      const pendingLayout = !!zoomAnchor;
+      handDrag = { x: event.clientX, y: event.clientY, scrollLeft: zoomViewport.scrollLeft, scrollTop: zoomViewport.scrollTop, pendingLayout };
+      (event.currentTarget || zoomViewport).setPointerCapture(event.pointerId); updateHandCursor(); return;
+    }
+    animation.pause();
     const p = point(event), list = evaluatedScene().objects.slice().sort((a, b) => (LAYERS[a.layer] || 0) - (LAYERS[b.layer] || 0));
-    const object = list.reverse().find(value => { const box = bounds(value); return p.x >= box.x && p.x < box.x + box.w && p.y >= box.y && p.y < box.y + box.h; });
+    const object = list.reverse().find(value => contains(value, p));
     animation.selectObject(object?.id || null);
     if (!object) return;
     if (animation.getTrack(object.id)?.locked) { report('This track is locked. Unlock it in Settings to move it.'); return; }
@@ -255,23 +467,53 @@
     event.currentTarget.setPointerCapture(event.pointerId);
   }
   function pointerMove(event) {
+    if (handDrag) {
+      if (!canZoomInput(event)) { finishHandPan(); return; }
+      if (handDrag.pendingLayout) {
+        if (zoomAnchor) return;
+        handDrag.scrollLeft = zoomViewport.scrollLeft; handDrag.scrollTop = zoomViewport.scrollTop; handDrag.pendingLayout = false;
+      }
+      zoomViewport.scrollLeft = handDrag.scrollLeft - (event.clientX - handDrag.x);
+      zoomViewport.scrollTop = handDrag.scrollTop - (event.clientY - handDrag.y);
+      scheduleDraw(); return;
+    }
     const p = point(event); $('animCoordinates').textContent = 'X ' + Math.round(p.x) + ' · Y ' + Math.round(p.y);
     if (!drag) return;
     drag.preview = { x: Math.round(drag.origin.x + p.x - drag.start.x), y: Math.round(drag.origin.y + p.y - drag.start.y) };
     $('animCoordinates').textContent = 'X ' + drag.preview.x + ' · Y ' + drag.preview.y; scheduleDraw();
   }
   function pointerUp() {
+    if (handDrag) { finishHandPan(); scheduleDraw(); return; }
     const ending = drag; drag = null;
     if (ending?.preview && (ending.preview.x !== ending.origin.x || ending.preview.y !== ending.origin.y)) attempt(() => isSimple() ? simple.moveBase(ending.id, { dx: ending.preview.x - ending.origin.x, dy: ending.preview.y - ending.origin.y }) : animation.updateObject(ending.id, ending.preview, { keyframe: $('animAutoKey').checked, frame: state.frame }));
     scheduleDraw();
   }
-  canvas.addEventListener('pointerdown', pointerDown); canvas.addEventListener('pointermove', pointerMove); canvas.addEventListener('pointerup', pointerUp); canvas.addEventListener('pointercancel', () => { drag = null; scheduleDraw(); });
+  canvas.addEventListener('pointerdown', pointerDown); canvas.addEventListener('pointermove', pointerMove); canvas.addEventListener('pointerup', pointerUp); canvas.addEventListener('pointercancel', () => { drag = null; finishHandPan(); scheduleDraw(); });
   $('animStageViewport').addEventListener('pointerdown', event => { if (event.target !== canvas && !$('animEmpty').contains(event.target)) pointerDown(event); });
   $('animStageViewport').addEventListener('pointermove', event => { if (event.target !== canvas) pointerMove(event); });
   $('animStageViewport').addEventListener('pointerup', event => { if (event.target !== canvas) pointerUp(event); });
-  $('animStageViewport').addEventListener('pointercancel', () => { drag = null; scheduleDraw(); });
+  $('animStageViewport').addEventListener('pointercancel', () => { drag = null; finishHandPan(); scheduleDraw(); });
   $('animStageViewport').addEventListener('dragover', event => { if (event.dataTransfer.types.includes('application/x-minish-animation-piece')) { event.preventDefault(); event.dataTransfer.dropEffect = 'copy'; } });
-  $('animStageViewport').addEventListener('drop', event => { const id = event.dataTransfer.getData('application/x-minish-animation-piece'); if (pieces.has(id)) { event.preventDefault(); if (isSimple()) libraryPresetId = event.dataTransfer.getData('application/x-minish-animation-preset') || 'still'; addPiece(pieces.get(id), point(event)); } });
+  $('animStageViewport').addEventListener('drop', event => {
+    const id = event.dataTransfer.getData('application/x-minish-animation-piece'); if (!pieces.has(id)) return;
+    event.preventDefault(); const piece = pieces.get(id); let recipe = null;
+    if (isSimple()) {
+      const payload = event.dataTransfer.getData('application/x-minish-animation-recipe');
+      if (payload) {
+        try {
+          if (payload.length > 1024) throw new Error();
+          const input = JSON.parse(payload);
+          if (input.version !== 1 || String(input.sourceId) !== String(piece.sourceId)) throw new Error();
+          recipe = { presetId: input.presetId, speed: input.speed, motion: input.motion, distance: input.distance };
+        } catch (_) { report('Could not read this dragged animation. Choose the action and drag it again.'); return; }
+      } else {
+        recipe = libraryRecipe(piece);
+        const presetId = event.dataTransfer.getData('application/x-minish-animation-preset');
+        if (presetId) recipe.presetId = presetId;
+      }
+    }
+    addPiece(piece, point(event), recipe);
+  });
   function structureSignature(clip) { return JSON.stringify([clip.id, clip.duration, trackPage, clip.objects.map(object => [object.id, object.pieceName, object.kind]), clip.tracks.map(track => [track.objectId, track.name, track.muted, track.locked, track.keys.map(key => key.frame)])]); }
   function renderTimeline(force = false) {
     const clip = currentClip(), signature = structureSignature(clip);
@@ -321,7 +563,7 @@
     $('animSimpleTime').textContent = seconds.toFixed(1) + ' / ' + (clip.duration / clip.fps).toFixed(1) + ' s';
   }
   function keyPatch(object) {
-    const keys = object.kind === 'dialogue' ? ['x', 'y', 'scale', 'visible', 'text', 'w', 'h', 'fontSize', 'color', 'box'] : ['x', 'y', 'scale', 'flipX', 'flipY', 'visible', 'assetId', 'sourceId', 'pieceId', 'pieceName', 'sx', 'sy', 'sw', 'sh', 'keyColor'];
+    const keys = object.kind === 'dialogue' ? ['x', 'y', 'scale', 'visible', 'text', 'w', 'h', 'fontSize', 'color', 'box'] : ['x', 'y', 'scale', 'flipX', 'flipY', 'rotation', 'visible', 'assetId', 'sourceId', 'pieceId', 'pieceName', 'sx', 'sy', 'sw', 'sh', 'keyColor'];
     return Object.fromEntries(keys.filter(key => object[key] !== undefined).map(key => [key, object[key]]));
   }
   function addKey() { const object = currentObject(); if (!object) { report('Select a piece or track before adding a key.'); return; } const added = attempt(() => animation.setKey(object.id, state.frame, keyPatch(object), { easing: $('animEasing').value })); if (added !== null) report('Key added at frame ' + (state.frame + 1) + '.'); }
@@ -350,8 +592,8 @@
   }
   function updateTimelineStyles(object) {
     const keys = object ? animation.getTrack(object.id)?.keys || [] : [], animated = new Set(keys.flatMap(key => Object.keys(key.values)));
-    const controls = [['animObjectScale', 'scale'], ['animFlipX', 'flipX'], ['animFlipY', 'flipY'], ['animVisible', 'visible'], ['animObjectLayer', 'layer'], ['animDialogueWidth', 'w'], ['animDialogueHeight', 'h'], ['animDialogueFontSize', 'fontSize'], ['animDialogueColor', 'color'], ['animDialogueBox', 'box']];
-    for (const [id, property] of controls) { const governed = isSimple() && animated.has(property); $(id).disabled = governed; if (governed) $(id).setAttribute('aria-describedby', 'animSimpleStyleNotice'); else $(id).removeAttribute('aria-describedby'); }
+    const controls = [['animObjectScale', 'scale'], ['animFlipX', 'flipX'], ['animFlipY', 'flipY'], ['animObjectRotation', 'rotation'], ['animRotateLeft', 'rotation'], ['animRotateRight', 'rotation'], ['animVisible', 'visible'], ['animObjectLayer', 'layer'], ['animDialogueWidth', 'w'], ['animDialogueHeight', 'h'], ['animDialogueFontSize', 'fontSize'], ['animDialogueColor', 'color'], ['animDialogueBox', 'box']];
+    for (const [id, property] of controls) { const governed = isSimple() && animated.has(property); $(id).disabled = governed || (property === 'rotation' && object?.kind !== 'sprite'); if (governed) $(id).setAttribute('aria-describedby', 'animSimpleStyleNotice'); else $(id).removeAttribute('aria-describedby'); }
     $('animSimpleStyleNotice').hidden = !isSimple() || !controls.some(([, property]) => animated.has(property));
   }
   function updateRecipeDescription() {
@@ -394,7 +636,7 @@
     const seconds = state.frame / clip.fps; $('animTimecode').textContent = String(Math.floor(seconds / 60)).padStart(2, '0') + ':' + (seconds % 60).toFixed(3).padStart(6, '0');
     const clipList = $('animClipTabs');
     if (clipList.children.length !== state.project.clips.length || [...clipList.children].some((node, i) => node.dataset.clip !== state.project.clips[i].id || node.textContent !== state.project.clips[i].name)) {
-      clipList.replaceChildren(); for (const item of state.project.clips) { const button = create('button', '', item.name); button.dataset.clip = item.id; button.addEventListener('click', () => { drag = null; animation.switchClip(item.id); fit = true; }); clipList.append(button); }
+      clipList.replaceChildren(); for (const item of state.project.clips) { const button = create('button', '', item.name); button.dataset.clip = item.id; button.addEventListener('click', () => { drag = null; animation.switchClip(item.id); fitCanvas(); }); clipList.append(button); }
     }
     [...clipList.children].forEach(node => node.setAttribute('aria-current', String(node.dataset.clip === clip.id))); $('animDeleteClip').disabled = false; $('animDeleteClip').title = 'Delete this entire animation clip. Undo restores it.';
     $('animSelectionTools').hidden = !object && !pieceClipboard; $('animSelectionName').textContent = object ? (track?.name || object.pieceName || 'Dialogue') : 'Clipboard ready';
@@ -408,7 +650,7 @@
     $('animPasteKey').disabled = !object || !copyKey;
     if (object) {
       const placement = isSimple() ? clip.objects.find(item => item.id === object.id) : object;
-      setField('animObjectName', track?.name || object.pieceName || 'Dialogue'); setField('animObjectX', placement.x); setField('animObjectY', placement.y); setField('animObjectScale', object.scale || 1); setField('animObjectLayer', object.layer);
+      setField('animObjectName', track?.name || object.pieceName || 'Dialogue'); setField('animObjectX', placement.x); setField('animObjectY', placement.y); setField('animObjectScale', object.scale || 1); setField('animObjectRotation', normalizeRotation(object.rotation)); setField('animObjectLayer', object.layer);
       $('animVisible').checked = object.visible !== false; $('animTrackLocked').checked = !!track?.locked; $('animTrackMuted').checked = !!track?.muted;
       $('animFlipX').classList.toggle('active', !!object.flipX); $('animFlipY').classList.toggle('active', !!object.flipY);
       if (object.kind === 'dialogue') { setField('animDialogueText', isSimple() ? simple.getRecipe(object)?.fullText ?? object.text : object.text); setField('animDialogueWidth', object.w); setField('animDialogueHeight', object.h); setField('animDialogueFontSize', object.fontSize || 12); setField('animDialogueColor', object.color || '#fff7d3'); $('animDialogueBox').checked = object.box !== false; }
@@ -428,7 +670,7 @@
       else animation.setKey(object.id, end, { x: x + (preset === 'left' ? -distance : preset === 'right' ? distance : 0), y: y + (preset === 'up' ? -distance : preset === 'down' ? distance : 0) }, { easing: 'linear' });
     })); if (changed !== null) report('Motion keys added. Choose real game poses to animate the action itself.');
   }
-  function importCurrentScene() { animation.pause(); const scene = studio.getScene ? studio.getScene() : studio.project.slides.find(value => value.id === studio.project.activeSlide); const imported = attempt(() => animation.importScene(scene, { name: scene.name })); if (!imported) return; fit = true; report('Scene imported as a new clip. Your scene-maker project is unchanged.'); }
+  function importCurrentScene() { animation.pause(); const scene = studio.getScene ? studio.getScene() : studio.project.slides.find(value => value.id === studio.project.activeSlide); const imported = attempt(() => animation.importScene(scene, { name: scene.name })); if (!imported) return; fitCanvas(); report('Scene imported as a new clip. Your scene-maker project is unchanged.'); }
   function demo() {
     if (!window.MINISH_ANIMATION_DEMO) { report('The walking demo is not included in this copy. Import a scene or choose game poses instead.'); return; }
     flushFieldDrafts(); animation.pause(); recipeObjectId = null; recipeDirty = false;
@@ -445,7 +687,7 @@
       }
       return animation.project;
     }));
-    if (!loaded) return; fit = true;
+    if (!loaded) return; fitCanvas();
     report(isSimple() ? 'Simple walking demo loaded. Choose a piece to change its action or movement. Undo restores your previous project.' : 'Walking demo loaded. Play it, move keys, or choose your own poses. Undo restores your previous animation.');
   }
   function save() { flushFieldDrafts(); const name = $('animProjectName').value.trim() || 'My animated adventure'; if (name !== state.project.name && attempt(() => animation.renameProject(name)) === null) return; const data = animation.saveData(); download(new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' }), filename(data.name) + '.minish-animation.json'); report('Editable animation project downloaded.'); }
@@ -453,13 +695,29 @@
   function download(blob, name) { const url = URL.createObjectURL(blob), link = create('a'); link.href = url; link.download = name; document.body.append(link); link.click(); link.remove(); setTimeout(() => URL.revokeObjectURL(url), 60000); }
   function exportSummary() {
     const clip = currentClip(), scale = integer($('animExportScale').value, 4), support = window.MINISH_ANIMATION_EXPORT?.supportsVideo?.();
+    const camera = $('animExportArea').value === 'view' ? exportCamera || cameraFromView(clip) : null;
+    const width = (camera ? camera.w : clip.width) * scale, height = (camera ? camera.h : clip.height) * scale;
     const playbackFrames = clip.loop === 'pingpong' && clip.duration > 2 ? clip.duration * 2 - 2 : clip.duration;
     const sequence = ['frames', 'sheet'].includes($('animExportFormat').value);
-    $('animExportSummary').textContent = (sequence ? clip.duration + ' unique frames' : playbackFrames + ' output frames') + ' · ' + (playbackFrames / clip.fps).toFixed(2) + ' seconds playback · ' + clip.width * scale + ' × ' + clip.height * scale + ' px';
+    $('animExportSummary').textContent = (sequence ? clip.duration + ' unique frames' : playbackFrames + ' output frames') + ' · ' + (playbackFrames / clip.fps).toFixed(2) + ' seconds playback · ' + width + ' × ' + height + ' px';
+    const limits = window.MINISH_ANIMATION_EXPORT?.limits || {}, pixels = width * height, frames = sequence ? clip.duration : playbackFrames;
+    const gif = $('animExportFormat').value === 'gif';
+    const tooLarge = width > (limits.maxEdge || 8192) || height > (limits.maxEdge || 8192) || pixels > (limits.maxFramePixels || 16777216) ||
+      pixels * frames > (limits.maxRenderedPixels || 400000000) || gif && (pixels > (limits.maxGIFFramePixels || 4194304) || pixels * frames > (limits.maxGIFPixels || 80000000));
+    $('animExportCameraHint').textContent = tooLarge ? 'This export is too large. Choose Current view, a smaller enlargement, or a shorter clip.' :
+      camera ? 'Camera: X ' + camera.x + ', Y ' + camera.y + ' · ' + camera.w + ' × ' + camera.h + ' native pixels. Center the part you want before opening Export. Large views are framed to at most 1024 × 576 pixels.' : 'Exports the entire clip. Your editable project always keeps the complete world.';
+    if (!exporting) $('animStartExport').disabled = tooLarge;
     const option = $('animExportFormat').querySelector('option[value="webm"]'); if (option) option.disabled = !support?.supported;
     $('animVideoSupport').textContent = support?.supported ? (support?.container === 'mp4' ? 'MP4' : 'WebM') + ' recording is available in this browser. PNG exports preserve source colors and transparency.' : 'Video recording is unavailable here. GIF, PNG frames, and sprite sheets remain available.';
+    scheduleDraw();
   }
-  function openExport() { flushFieldDrafts(); animation.pause(); exportSummary(); $('animExportStatus').textContent = ''; $('animExportProgress').hidden = true; $('animExportDialog').showModal(); }
+  function openExport() {
+    flushFieldDrafts(); animation.pause(); exportCamera = cameraFromView();
+    $('animExportArea').value = isLargeClip(currentClip()) ? 'view' : 'whole';
+    $('animExportScale').value = String(isLargeClip(currentClip()) ? 1 : currentClip().exportScale || 4);
+    exportSummary(); $('animExportStatus').textContent = ''; $('animExportProgress').hidden = true;
+    $('animExportDialog').showModal(); scheduleDraw();
+  }
   async function startExport() {
     if (exporting) return;
     const exporter = window.MINISH_ANIMATION_EXPORT; if (!exporter) { $('animExportStatus').textContent = 'Keep animation-export.js with the app folder to export animations.'; return; }
@@ -467,13 +725,15 @@
     exporting = true; exportCancelled = false; $('animStartExport').disabled = true; $('animCloseExport').disabled = true; $('animExportProgress').hidden = false; $('animExportProgress').value = 0;
     $('animExportStatus').textContent = 'Preparing genuine game frames…';
     try {
-      const blob = await exporter[methods[format]](clip, { scale: integer($('animExportScale').value, 4), evaluateFrame: animation.evaluateFrame, renderFrame: (scene, options) => studio.renderSceneToCanvas(scene, options), project: animation.saveData(), cancelled: () => exportCancelled,
+      const blob = await exporter[methods[format]](clip, { scale: integer($('animExportScale').value, 4),
+        camera: $('animExportArea').value === 'view' ? exportCamera || cameraFromView(clip) : null,
+        evaluateFrame: animation.evaluateFrame, renderFrame: (scene, options) => studio.renderSceneToCanvas(scene, options), project: animation.saveData(), cancelled: () => exportCancelled,
         onProgress: progress => { $('animExportProgress').value = progress.progress || (progress.frame || 0) / Math.max(1, progress.total || 1); $('animExportStatus').textContent = (progress.phase || 'Rendering') + ' · ' + (progress.frame || 0) + ' / ' + (progress.total || clip.duration) + ' frames'; } });
       if (exportCancelled) throw new Error('Export cancelled.');
       const support = exporter.supportsVideo?.(), extension = format === 'gif' ? '.gif' : format === 'webm' ? '.' + (support?.extension || 'webm') : '.zip'; download(blob, blob.exportInfo?.filename || filename(clip.name) + extension);
       $('animExportProgress').value = 1; $('animExportStatus').textContent = 'Download ready. ' + (blob.exportInfo?.note || (blob.exportInfo?.palette === 'quantized' ? 'This GIF uses a reduced color palette. PNG exports keep every source color.' : 'Your editable animation project is kept separately.'));
     } catch (error) { $('animExportStatus').textContent = error.message || 'The animation could not be exported. Try fewer frames or a smaller scale.'; }
-    finally { exporting = false; $('animStartExport').disabled = false; $('animCloseExport').disabled = false; }
+    finally { exporting = false; $('animCloseExport').disabled = false; exportSummary(); }
   }
   $('animCategory').addEventListener('change', refreshSources); $('animSource').addEventListener('change', refreshGroups); $('animPoseSearch').addEventListener('input', () => renderLibrary(true)); $('animPoseGroup').addEventListener('change', () => renderLibrary(true));
   $('animSimpleMode').addEventListener('click', () => setEditorMode('simple')); $('animTimelineMode').addEventListener('click', () => setEditorMode('timeline'));
@@ -509,13 +769,22 @@
   for (const [id, key] of [['animObjectX', 'x'], ['animObjectY', 'y'], ['animObjectScale', 'scale']]) $(id).addEventListener('change', () => { if ($(id).value.trim() !== '' && Number.isFinite(Number($(id).value))) updateObject({ [key]: integer($(id).value) }, isSimple()); else render(state); });
   $('animObjectLayer').addEventListener('change', () => updateObject({ layer: $('animObjectLayer').value })); $('animObjectName').addEventListener('change', () => { if (selectedId()) attempt(() => animation.setTrack(selectedId(), { name: $('animObjectName').value })); });
   $('animFlipX').addEventListener('click', () => { const object = currentObject(); if (object) updateObject({ flipX: !object.flipX }); }); $('animFlipY').addEventListener('click', () => { const object = currentObject(); if (object) updateObject({ flipY: !object.flipY }); }); $('animVisible').addEventListener('change', () => updateObject({ visible: $('animVisible').checked }));
+  function rotateSelected(direction) {
+    const object = currentObject(); if (object?.kind !== 'sprite') return;
+    updateObject({ rotation: normalizeRotation((object.rotation || 0) + direction * 45) });
+  }
+  $('animRotateLeft').addEventListener('click', () => rotateSelected(-1)); $('animRotateRight').addEventListener('click', () => rotateSelected(1));
+  $('animObjectRotation').addEventListener('change', () => { if (currentObject()?.kind === 'sprite') updateObject({ rotation: normalizeRotation($('animObjectRotation').value) }); });
   $('animTrackLocked').addEventListener('change', () => { if (selectedId()) attempt(() => animation.setTrack(selectedId(), { locked: $('animTrackLocked').checked })); }); $('animTrackMuted').addEventListener('change', () => { if (selectedId()) attempt(() => animation.setTrack(selectedId(), { muted: $('animTrackMuted').checked })); });
   for (const [id, dx, dy] of [['animNudgeLeft', -1, 0], ['animNudgeRight', 1, 0], ['animNudgeUp', 0, -1], ['animNudgeDown', 0, 1]]) $(id).addEventListener('click', event => { const object = currentObject(); if (object) updateObject({ x: object.x + dx * (event.shiftKey ? 8 : 1), y: object.y + dy * (event.shiftKey ? 8 : 1) }); });
   $('animMoveBack').addEventListener('click', () => { if (selectedId()) attempt(() => animation.reorderObject(selectedId(), -1)); }); $('animMoveFront').addEventListener('click', () => { if (selectedId()) attempt(() => animation.reorderObject(selectedId(), 1)); });
-  const duplicateSelected = () => { if (selectedId()) attempt(() => isSimple() ? simple.duplicate(selectedId()) : animation.duplicateObject(selectedId())); };
+  const duplicateSelected = () => { if (selectedId()) attempt(() => isSimple() || currentObject()?.simpleCompanion || currentClip().objects.some(object => object.simpleCompanion?.ownerId === selectedId()) ? simple.duplicate(selectedId()) : animation.duplicateObject(selectedId())); };
   function copySelected(cut = false) {
     flushFieldDrafts(); const base = currentClip().objects.find(object => object.id === selectedId()); if (!base) return false;
-    const track = animation.getTrack(base.id), payload = { object: clone(base), track: track ? clone(track) : null, cut: !!cut, ready: !!base.simpleAnimation && !simple?.inspect(base.id).needsReplacement };
+    const track = animation.getTrack(base.id), payload = { object: clone(base), track: track ? clone(track) : null, cut: !!cut, ready: !!base.simpleAnimation && !simple?.inspect(base.id).needsReplacement,
+      companions: currentClip().objects.filter(object => object.simpleCompanion?.ownerId === base.id).map(object => ({ object: clone(object), track: clone(animation.getTrack(object.id)) })) };
+    // Copying an effect by itself makes an independent editable effect.
+    delete payload.object.simpleCompanion;
     if (cut && attempt(() => animation.removeObject(base.id)) === null) return false;
     pieceClipboard = payload; pasteCount = 0; report(cut ? 'Piece cut. Paste it into this clip or another clip.' : 'Piece and its animation copied.'); render(animation.state); return true;
   }
@@ -525,12 +794,25 @@
     payload.object.x += delta; payload.object.y += delta;
     for (const key of payload.object.simpleAnimation?.generated || []) { if ('x' in key.values) key.values.x += delta; if ('y' in key.values) key.values.y += delta; }
     const result = attempt(() => animation.batch(() => {
-      const last = Math.max(0, ...(payload.track?.keys || []).map(key => key.frame));
-      if (last >= animation.currentClip.duration) animation.configureClip({ duration: last + 1 });
+      const last = Math.max(0, ...(payload.track?.keys || []).map(key => key.frame), ...(payload.companions || []).flatMap(child => (child.track?.keys || []).map(key => key.frame)));
+      if (last >= animation.currentClip.duration) {
+        const readyLoops = animation.currentClip.objects.filter(base => base.simpleAnimation?.version === 1 && !simple.inspect(base.id).needsReplacement);
+        animation.configureClip({ duration: last + 1 });
+        for (const base of readyLoops) simple.apply(base.id, simple.getRecipe(base));
+      }
       const added = animation.addObject(payload.object);
       if (payload.track?.keys.length) animation.setKeys(added.id, payload.track.keys.map(key => ({ ...key, raw: true, values: { ...key.values, ...('x' in key.values ? { x: key.values.x + delta } : {}), ...('y' in key.values ? { y: key.values.y + delta } : {}) } })));
       if (payload.track) animation.setTrack(added.id, { name: payload.track.name, muted: payload.track.muted, locked: false });
-      if (payload.ready && simple) simple.apply(added.id, payload.object.simpleAnimation.recipe);
+      if (payload.ready && simple) simple.apply(added.id, payload.object.simpleAnimation.recipe, { replaceCustom: true });
+      else for (const companion of payload.companions || []) {
+        const object = clone(companion.object); object.x += delta; object.y += delta;
+        object.simpleCompanion.ownerId = added.id;
+        for (const key of object.simpleCompanion.generated || []) { if ('x' in key.values) key.values.x += delta; if ('y' in key.values) key.values.y += delta; }
+        const copied = animation.addObject(object);
+        if (companion.track?.keys?.length) animation.setKeys(copied.id, companion.track.keys.map(key => ({ ...key, raw: true, values: { ...key.values, ...('x' in key.values ? { x: key.values.x + delta } : {}), ...('y' in key.values ? { y: key.values.y + delta } : {}) } })));
+        if (companion.track) animation.setTrack(copied.id, { name: companion.track.name, muted: companion.track.muted, locked: false });
+      }
+      animation.selectObject(added.id);
       return added;
     }));
     if (result) { pasteCount++; report('Piece and animation pasted. Drag to place it.'); } return result;
@@ -544,13 +826,13 @@
   $('animQuickCopy').addEventListener('click', () => copySelected()); $('animQuickPaste').addEventListener('click', pasteSelected); $('animQuickDuplicate').addEventListener('click', duplicateSelected); $('animQuickDelete').addEventListener('click', deleteSelectedPiece);
   $('animDuplicateObject').addEventListener('click', duplicateSelected); $('animDeleteObject').addEventListener('click', deleteSelectedPiece); $('animApplyMotion').addEventListener('click', applyMotion);
   for (const [id, key] of [['animClipName', 'name'], ['animDuration', 'duration'], ['animFps', 'fps'], ['animLoop', 'loop']]) $(id).addEventListener('change', () => configureClip({ [key]: ['duration', 'fps'].includes(key) ? integer($(id).value) : $(id).value }));
-  $('animApplySize').addEventListener('click', () => { attempt(() => animation.configureClip({ width: integer($('animWidth').value), height: integer($('animHeight').value) })); fit = true; scheduleDraw(); }); $('animTransparent').addEventListener('change', () => attempt(() => animation.configureClip({ transparent: $('animTransparent').checked }))); $('animColor').addEventListener('change', () => attempt(() => animation.configureClip({ color: $('animColor').value })));
+  $('animApplySize').addEventListener('click', () => { attempt(() => animation.configureClip({ width: integer($('animWidth').value), height: integer($('animHeight').value) })); fitCanvas(); }); $('animTransparent').addEventListener('change', () => attempt(() => animation.configureClip({ transparent: $('animTransparent').checked }))); $('animColor').addEventListener('change', () => attempt(() => animation.configureClip({ color: $('animColor').value })));
   function deleteCurrentClip() {
     flushFieldDrafts(); animation.pause(); const name = currentClip().name;
     const removed = attempt(() => {
       if (animation.project.clips.length > 1) return animation.deleteClip();
       const data = clone(animation.project), clip = data.clips[0];
-      clip.objects = []; clip.tracks = []; clip.name = 'New animation';
+      clip.objects = []; clip.tracks = []; clip.name = 'New animation'; delete clip.generated;
       return animation.loadProject(data);
     });
     if (removed !== null) { recipeObjectId = null; recipeDirty = false; fitCanvas(); report('Deleted ' + name + '. Undo restores the entire clip.'); }
@@ -573,16 +855,35 @@
     })); if (result !== null) report('Text reveal added. Play from frame ' + (start + 1) + ' to watch it unfold.');
   });
   $('animImportScene').addEventListener('click', importCurrentScene); $('animImportEmpty').addEventListener('click', importCurrentScene); $('animationDemoBtn').addEventListener('click', demo);
-  $('animSaveBtn').addEventListener('click', save); $('animProjectName').addEventListener('change', () => attempt(() => animation.renameProject($('animProjectName').value))); $('animOpenBtn').addEventListener('click', () => $('animOpenFile').click()); $('animOpenFile').addEventListener('change', async () => { const file = $('animOpenFile').files[0]; if (!file) return; try { const data = JSON.parse(await file.text()); animation.loadProject(data); fit = true; report('Editable animation opened.'); } catch (error) { report(error.message || 'Choose a Minish Studio animation project JSON file.'); } finally { $('animOpenFile').value = ''; } });
-  $('animExportBtn').addEventListener('click', openExport); $('animExportFormat').addEventListener('change', exportSummary); $('animExportScale').addEventListener('change', exportSummary); $('animStartExport').addEventListener('click', startExport); $('animCancelExport').addEventListener('click', () => { if (exporting) { exportCancelled = true; $('animExportStatus').textContent = 'Cancelling…'; } else $('animExportDialog').close(); }); $('animCloseExport').addEventListener('click', () => { if (!exporting) $('animExportDialog').close(); }); $('animExportDialog').addEventListener('cancel', event => { if (exporting) { event.preventDefault(); exportCancelled = true; } });
+  $('animSaveBtn').addEventListener('click', save); $('animProjectName').addEventListener('change', () => attempt(() => animation.renameProject($('animProjectName').value))); $('animOpenBtn').addEventListener('click', () => $('animOpenFile').click()); $('animOpenFile').addEventListener('change', async () => { const file = $('animOpenFile').files[0]; if (!file) return; try { const data = JSON.parse(await file.text()); animation.loadProject(data); fitCanvas(); report('Editable animation opened.'); } catch (error) { report(error.message || 'Choose a Minish Studio animation project JSON file.'); } finally { $('animOpenFile').value = ''; } });
+  $('animExportBtn').addEventListener('click', openExport); $('animExportFormat').addEventListener('change', exportSummary); $('animExportScale').addEventListener('change', exportSummary);
+  $('animExportArea').addEventListener('change', exportSummary);
+  $('animExportDialog').addEventListener('close', () => { exportCamera = null; scheduleDraw(); });
+  $('animStartExport').addEventListener('click', startExport); $('animCancelExport').addEventListener('click', () => { if (exporting) { exportCancelled = true; $('animExportStatus').textContent = 'Cancelling…'; } else $('animExportDialog').close(); }); $('animCloseExport').addEventListener('click', () => { if (!exporting) $('animExportDialog').close(); }); $('animExportDialog').addEventListener('cancel', event => { if (exporting) { event.preventDefault(); exportCancelled = true; } });
   $('animationControlsBtn').addEventListener('click', () => { animation.pause(); window.MINISH_CONTROLS?.open(); });
   $('animZoomOut').addEventListener('click', () => zoomStep(-1)); $('animZoomIn').addEventListener('click', () => zoomStep(1)); $('animFit').addEventListener('click', fitCanvas); $('animFocusBtn').addEventListener('click', () => setFocus(!document.body.classList.contains('anim-preview-focus')));
+  for (const [id, enabled] of [['animHandTool', true], ['animSelectTool', false]]) $(id)?.addEventListener('click', () => {
+    setHandTool(enabled); $('animToolsMenu').open = false; $('animToolsLabel').focus();
+  });
+  $('animToolsMenu')?.addEventListener('keydown', event => {
+    if (event.key === 'Escape' && $('animToolsMenu').open) { event.preventDefault(); $('animToolsMenu').open = false; $('animToolsLabel').focus(); }
+  });
+  $('animZoomLabel').addEventListener('focus', () => $('animZoomLabel').select?.());
+  $('animZoomLabel').addEventListener('input', () => { zoomFieldDraft = true; });
+  $('animZoomLabel').addEventListener('change', applyZoomField);
+  $('animZoomLabel').addEventListener('blur', applyZoomField);
+  $('animZoomLabel').addEventListener('keydown', event => {
+    if (!['Enter', 'Escape'].includes(event.key) || event.isComposing) return;
+    event.preventDefault(); event.stopPropagation?.();
+    if (event.key === 'Enter') applyZoomField(); else { zoomFieldDraft = false; updateZoomField(true); }
+    canvas.focus({ preventScroll: true });
+  });
   for (const [buttonId, className, other] of [['animLibraryToggle', 'anim-library-open', 'anim-inspector-open'], ['animInspectorToggle', 'anim-inspector-open', 'anim-library-open']]) $(buttonId).addEventListener('click', () => { if (document.body.classList.contains('anim-preview-focus')) setFocus(false); const open = document.body.classList.toggle(className); document.body.classList.remove(other); $(buttonId).setAttribute('aria-expanded', String(open)); });
   $('animCloseLibrary').addEventListener('click', () => { document.body.classList.remove('anim-library-open'); $('animLibraryToggle').setAttribute('aria-expanded', 'false'); }); $('animCloseInspector').addEventListener('click', () => { document.body.classList.remove('anim-inspector-open'); $('animInspectorToggle').setAttribute('aria-expanded', 'false'); });
   document.addEventListener('keydown', event => {
     if (mode !== 'animation' || event.defaultPrevented || document.querySelector('dialog[open]') || event.isComposing || event.keyCode === 229 || event.altKey || event.getModifierState?.('AltGraph')) return;
     const key = event.key, lower = key.toLowerCase(), mod = event.ctrlKey || event.metaKey, pieceList = event.target?.id === 'animObjects';
-    const editing = (!pieceList && /INPUT|TEXTAREA|SELECT/.test(event.target?.tagName || '')) || event.target?.isContentEditable;
+    const editing = (!pieceList && /INPUT|TEXTAREA|SELECT/.test(event.target?.tagName || '')) || event.target?.isContentEditable || event.target?.closest?.('[role="textbox"], [role="combobox"], [role="spinbutton"]');
     if (mod && !event.shiftKey && ['s', 'o'].includes(lower)) { event.preventDefault(); if (!event.repeat) lower === 's' ? save() : $('animOpenBtn').click(); return; }
     if (editing) return;
     if (mod && event.shiftKey && ['Delete', 'Backspace'].includes(key)) { event.preventDefault(); if (!event.repeat) deleteCurrentClip(); return; }
@@ -596,8 +897,10 @@
     if (!event.shiftKey && (key === 'Delete' || key === 'Backspace')) { event.preventDefault(); deleteSelectedPiece(); return; }
     if (pieceList) return;
     const nativeButton = /BUTTON|SUMMARY|A/.test(event.target?.tagName || '');
-    if ((key === ' ' || key === 'Spacebar') && !nativeButton) { event.preventDefault(); if (!event.repeat) state.playing ? animation.pause() : animation.play(); }
-    else if (['+', '=', '-', '_', '0'].includes(key)) { event.preventDefault(); key === '0' ? zoomAt(1) : zoomStep(key === '+' || key === '=' ? 1 : -1); }
+    if (lower === 'h') { event.preventDefault(); setHandTool(true); }
+    else if (lower === 'v') { event.preventDefault(); setHandTool(false); }
+    else if ((key === ' ' || key === 'Spacebar') && !nativeButton) { event.preventDefault(); if (!event.repeat) state.playing ? animation.pause() : animation.play(); }
+    else if (['+', '=', '-', '_', '0'].includes(key)) { event.preventDefault(); if (key === '0') { resetZoomInput(); zoomAt(1); } else zoomStep(key === '+' || key === '=' ? 1 : -1); }
     else if (lower === 'f') { event.preventDefault(); fitCanvas(); }
     else if (['[', ']', '{', '}'].includes(key) && selectedId()) { event.preventDefault(); attempt(() => animation.reorderObject(selectedId(), key === '[' || key === '{' ? -1 : 1, event.shiftKey)); }
     else if (!isSimple() && (key === ',' || key === '.')) { event.preventDefault(); animation.pause(); animation.step(key === ',' ? -1 : 1); }
@@ -613,9 +916,12 @@
   }
   animation.subscribe(render); refreshSources(); setEditorMode(editorMode, false);
   window.addEventListener('resize', scheduleDraw);
+  $('animStageViewport').addEventListener('scroll', scheduleDraw, { passive: true });
   const keepLatestEdits = () => { flushFieldDrafts(); animation.flushBrowserSave(); };
   window.addEventListener('pagehide', keepLatestEdits);
   window.addEventListener('beforeunload', keepLatestEdits);
-  window.MINISH_ANIMATION_UI = { setMode, setEditorMode, importCurrentScene, openExport, demo, get mode() { return mode; }, get editorMode() { return editorMode; }, setFocus, zoomAt, fitCanvas, zoomStep, copySelected, pasteSelected, deleteSelectedPiece, deleteCurrentClip, get view() { return { zoom, fit }; }, render: () => { render(animation.state); scheduleDraw(); } };
+  window.MINISH_ANIMATION_UI = { setMode, setEditorMode, importCurrentScene, openExport, demo, get mode() { return mode; }, get editorMode() { return editorMode; }, setFocus, zoomAt, fitCanvas, focusArea, zoomStep, setHandTool, copySelected, pasteSelected, deleteSelectedPiece, deleteCurrentClip,
+    get exportCamera() { return clone(exportCamera || cameraFromView()); },
+    get view() { return { zoom, fit, hand: handTool }; }, render: () => { render(animation.state); scheduleDraw(); } };
   let preferred = 'scene'; try { preferred = localStorage.getItem('minish-maker-workspace') || 'scene'; } catch (_) {} setMode(preferred);
 })();

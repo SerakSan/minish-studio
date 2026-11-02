@@ -20,9 +20,10 @@ Build your own Zelda scenes with genuine game sprites and environment tiles. Arr
 | Simple animation | Choose an action, place each piece, set its speed and movement, then press Play. No frame-by-frame editing is required. |
 | Timeline animation | Direct custom pose sequences, movement, visibility, dialogue, and timing with editable keys. |
 | Multipart bosses | Place a complete boss editor assembly or separate it into editable components. Choose from 206 assemblies and 176 parts across nine boss families. |
-| Precise placement | Use native-pixel X/Y coordinates, snapping, one-pixel nudges, integer scaling, flips, layers, and off-frame placement. Pan and pinch to zoom into the canvas. |
+| Precise placement | Use native-pixel X/Y coordinates, snapping, one-pixel nudges, integer scaling, flips, layers, and off-frame placement. Pinch or Ctrl+wheel to zoom, or type an exact percentage. Two-finger scrolling and the mouse wheel pan. Tools > Hand (H) lets you drag the view without moving artwork. |
 | Social formats | Create square posts, portrait images, stories, game-screen compositions, and multi-scene carousels. Free format accepts custom dimensions. |
-| Random scenes | Start from 1,388 named setting and story combinations, from game-inspired encounters to wild mashups. Reroll in one click, then edit every placed piece. |
+| Whole Hyrule | Use the complete 4,992 × 3,168 terrain atlas or the illustrated game map as a canvas. Fill it with editable Easter egg encounters or animated boss face-offs, creature dances and character stories, then zoom in to explore. |
+| Random scenes | Start from 4,462 named setting and story combinations, with familiar characters, boss rivalries, rescues and battles. Reroll in one click, then edit every placed piece. |
 
 The interface uses game-derived lettering, menu frames, and an Ezlo workspace switch. The **SerakSan** creator credit stays in the software and is excluded from exported scenes and animations.
 
@@ -32,11 +33,11 @@ The interface uses game-derived lettering, menu frames, and an Ezlo workspace sw
 
 1. Download [**Minish-Studio-Offline.zip**](https://github.com/SerakSan/minish-studio/releases/latest/download/Minish-Studio-Offline.zip).
 2. Extract the entire ZIP. On Windows, use **Extract All** before opening the app.
-3. Open **index.html** in a current desktop browser. Keep the app files and `assets` folder together.
+3. Double-click **Open Minish Studio.html** to launch the app in your browser. Keep the app files and `assets` folder together.
 4. Choose **Scene** to compose an image, or **Animate** to create an animation.
 5. Choose **Save project** to download an editable backup, and use Export when you want a finished image or animation.
 
-No command line, build step, or local server is required to use the editor. Windows and macOS controls are shown in the app's **Controls** guide. Desktop mouse and trackpad use provide the most editing space.
+No command line, build step, or local server is required to use the editor. Windows, macOS, and Linux controls are shown in the app's **Controls** guide. Desktop mouse and trackpad use provide the most editing space.
 
 ### Launch in your browser
 
@@ -52,20 +53,26 @@ Supported browsers can install the hosted app in its own window. Load it once on
 4. Add dialogue, adjust the layers, and choose a canvas format. Duplicate the scene to make the next carousel slide.
 5. Choose **Export PNG** for one image or **Export all PNGs** for the carousel.
 
+For a whole-world composition, choose **Whole Hyrule** under Settings → Canvas format. Both the terrain atlas and illustrated map are also in Environments. In **Random scene**, use the Canvas choice to fill either world with Easter eggs. **Explore Easter eggs** jumps to the next little encounter, and **Surprise me again** creates a fresh world in one click. The terrain atlas includes separate cloud-area insets; it is a static overworld map, rather than every interior or game state.
+
 For a starting idea, choose **Random scene**, then **Surprise me again** to try another composition. Undo restores the previous version. [Placement, layers, and scene controls](GUIDE.md#make-a-scene) are covered in the user guide.
 
-## Animate your scene
+Sprites can turn in **45° steps** in Scene and Animate. Use the left/right rotation buttons or pick an exact angle in Settings.
+
+## Animate your scene (experimental)
 
 Use the **Scene / Animate** switch at the top of the editor. The animation workspace has its own projects, clips, Undo, and autosave. **Import current scene** copies your composition into an animation.
 
 - **Simple** is the quickest way to begin. Choose a ready action for a piece, place it, and set its speed, movement, and distance. Text reveal animates dialogue without manually adding keys.
 - **Timeline** gives you control over individual changes. Build pose sequences, key positions and visibility, adjust the timing, and preview the previous frame while editing.
 
-There are **66 ready actions across 21 artwork sources**, including **38 boss assembly actions** across all nine boss families. Simple and Timeline edit the same clip, so you can start with a ready action and refine it later.
+There are **108 ready actions across 28 artwork sources**, including **38 boss assembly actions** across all nine boss families. Simple and Timeline edit the same clip, so you can start with a ready action and refine it later. Combat adds 42 weapon and item actions. Link can use his sword, shield, bombs, boomerang, Gust Jar, Cane of Pacci and Mole Mitts, alongside armed enemies. Readied bow poses are included too.
 
 ![Animated Link walking through a Minish Cap town scene made in Minish Studio](examples/exports/Walking-Adventure.gif)
 
 Open the editable [Walking Adventure animation](examples/Walking%20Adventure.minish-animation.json) with **Open** in Animate. You can also try the [Boss Showcase scene](examples/Boss%20Showcase.minish.json) or [My Hyrule Story carousel](examples/My%20Hyrule%20Story.minish.json) in Scene.
+
+**Random Hyrule animation** adds an animated world as a new clip, with weapon changes, throws, impacts and reactions. Explore the discoveries while they play, pan with **Tools > Hand**, and reroll the generated world in one click. Export **Current view** to capture an encounter; the editable project keeps the full map.
 
 Ready actions use genuine supplied poses with timing authored for the editor. Multipart boss poses and loops are **editor assemblies**. They are not advertised as extracted game-engine animation frames. See the [animation guide](GUIDE.md#animation-workspace) and [boss coverage records](assets/bosses/animation-coverage.json) for details.
 
@@ -87,6 +94,8 @@ PNG exports preserve crisp pixels at integer enlargement. GIF may reduce colors 
 
 Minish Studio has no editor account, analytics, or project upload service. Scenes, animations, and exports are processed in your browser. A hosted copy still makes ordinary requests to its hosting provider to download the application.
 
+Your scenes and animations belong to the browser profile you are using. Reopening the same app in that profile restores its local autosave. People opening the GitHub app on another computer or profile get their own workspace, not yours. The bundled demo scenes are shared examples.
+
 Browser autosave belongs to the current browser and app location. **Use Save project for a portable backup**, especially before moving the app folder, changing browsers, or clearing browser data. A PNG or video is a finished export; keep the editable project file if you want to change the composition later.
 
 Read [PRIVACY.md](PRIVACY.md) for storage and hosting details.
@@ -94,6 +103,8 @@ Read [PRIVACY.md](PRIVACY.md) for storage and hosting details.
 ## Artwork, credits, and license
 
 Created and maintained by **SerakSan**. Minish Studio is an independent, unofficial fan project and is not affiliated with or endorsed by Nintendo, Capcom, or The Spriters Resource.
+
+Some of the code was written with AI assistance, especially debugging and bug fixes. The game artwork comes from the credited source sheets and was not generated by AI.
 
 The artwork collection comes from [The Spriters Resource's Minish Cap sheets](https://www.spriters-resource.com/game_boy_advance/thelegendofzeldatheminishcap/). It preserves 134 original source downloads with contributor credits, source URLs, and checksums. [CREDITS.md](CREDITS.md) lists the source contributors; the app also has searchable credits.
 
@@ -104,7 +115,7 @@ The curated galleries exclude reviewed sheet labels and community presentation m
 
 ## Help and contributions
 
-Start with the in-app **Guide** and **Windows & Mac controls**, or read the [full user guide](GUIDE.md). For a bug or feature request, open an issue in this repository. Include your browser, operating system, steps to reproduce the problem, and what you expected to happen. Only attach project files or screenshots you are comfortable making public.
+Start with the in-app **Guide** and **Windows, Mac & Linux controls**, or read the [full user guide](GUIDE.md). For a bug or feature request, open an issue in this repository. Include your browser, operating system, steps to reproduce the problem, and what you expected to happen. Only attach project files or screenshots you are comfortable making public.
 
 Code, usability improvements, documentation, and source-mapping corrections are welcome through pull requests. Keep the editor usable by opening `index.html` directly, preserve existing project compatibility, and use genuine artwork. Keep `assets/originals/` unchanged and retain contributor credits, source mappings, and checksums. Run the checks relevant to your changes. Asset-processing changes also require `tools/verify_assets.py` and inspection of its report.
 
@@ -118,13 +129,23 @@ node tests/controls.mjs
 node tests/random-scenes-variation.mjs
 node tests/animation-engine.mjs
 node tests/animation-ui-controls.mjs
+node tests/thumbnail-scales.mjs
+node tests/world-scenes.mjs
+node tests/world-animation.mjs
+node tests/world-animation-ui.mjs
 node tests/animation-export.mjs
 node tests/simple-animation.mjs
+node tests/combat-library.mjs
+node tests/combat-ready-actions.mjs
 node tests/ezlo-switch.mjs
+node tests/project-privacy.mjs
+python3 tests/public-release-privacy.py
 python3 tools/build_public_release.py --output release/minish-studio-github --archive release/Minish-Studio-GitHub.zip
 ```
 
 For optional local preview, run `python3 tools/preview.py` and open `http://127.0.0.1:8765`. Stop the preview when finished.
+
+After installing the image-processing packages from `requirements.txt`, run `python3 tests/transparency-backgrounds.py` to check the reviewed background masks and preserved sprite colors.
 
 The GitHub source edition includes a GitHub Pages workflow and a release builder. Native Windows EXE and macOS DMG installers are not included in this release.
 

@@ -1,4 +1,4 @@
-// Windows and Mac control regressions. Run: node tests/controls.mjs
+// Windows, Mac, and Linux control regressions. Run: node tests/controls.mjs
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
@@ -66,9 +66,17 @@ assert.equal(controls.detectPlatform({ platform: 'Win32' }), 'windows');
 assert.equal(controls.detectPlatform({ platform: 'MacIntel' }), 'mac');
 assert.equal(controls.detectPlatform({ userAgentData: { platform: 'Windows' } }), 'windows');
 assert.equal(controls.detectPlatform({ userAgentData: { platform: 'macOS' } }), 'mac');
+assert.equal(controls.detectPlatform({ platform: 'Linux x86_64' }), 'linux');
+assert.equal(controls.detectPlatform({ userAgentData: { platform: 'Linux' } }), 'linux');
+assert.equal(controls.detectPlatform({ userAgent: 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64)' }), 'linux');
 assert.equal(controls.resolvePlatform('auto', { platform: 'MacIntel' }), 'mac');
 assert.equal(controls.resolvePlatform('auto', { platform: 'Win32' }), 'windows');
-for (const preference of ['windows', 'mac', 'both']) assert.equal(controls.resolvePlatform(preference, { platform: 'MacIntel' }), preference, 'A manual keyboard hint choice overrides detection');
+for (const preference of ['windows', 'mac', 'linux', 'both']) assert.equal(controls.resolvePlatform(preference, { platform: 'MacIntel' }), preference, 'A manual keyboard hint choice overrides detection');
+const linux = harness({ platform: 'Linux x86_64' });
+assert.equal(linux.controls.platform, 'linux');
+assert.equal(linux.controls.precisionLabel, 'Alt');
+assert.equal(linux.controls.modifierLabel, 'Ctrl');
+assert.match(linux.elements.get('detectedControlPlatform').textContent, /Shortcut hints: Linux \(automatic\)/);
 
 const event = (key, extra = {}) => ({ key, code: '', ctrlKey: false, metaKey: false, altKey: false, shiftKey: false,
   isComposing: false, defaultPrevented: false, target: new Element('canvas'), getModifierState: () => false, ...extra });
@@ -80,7 +88,7 @@ for (const modifier of ['ctrlKey', 'metaKey']) {
   assert.equal(controls.actionFor(event('z', { [modifier]: true, shiftKey: true })), 'redo', 'Shift+primary+Z supports Mac and Windows redo');
   for (const key of ['Delete', 'Backspace']) assert.equal(controls.actionFor(event(key, { [modifier]: true, shiftKey: true })), 'deleteCanvas');
 }
-for (const [key, action] of [['b', 'paint'], ['v', 'select'], ['e', 'erase'], ['t', 'dialogue'], ['Delete', 'delete'], ['Backspace', 'delete'], ['Escape', 'deselect'], ['?', 'help'], ['ArrowLeft', 'nudgeLeft'], ['ArrowRight', 'nudgeRight'], ['ArrowUp', 'nudgeUp'], ['ArrowDown', 'nudgeDown']]) {
+for (const [key, action] of [['b', 'paint'], ['v', 'select'], ['e', 'erase'], ['h', 'hand'], ['t', 'dialogue'], ['Delete', 'delete'], ['Backspace', 'delete'], ['Escape', 'deselect'], ['?', 'help'], ['ArrowLeft', 'nudgeLeft'], ['ArrowRight', 'nudgeRight'], ['ArrowUp', 'nudgeUp'], ['ArrowDown', 'nudgeDown']]) {
   assert.equal(controls.actionFor(event(key)), action);
 }
 assert.equal(controls.actionFor(event('ArrowDown', { shiftKey: true })), 'nudgeDown', 'Shift+arrows retain the nudge action for the engine grid step');
@@ -97,13 +105,13 @@ for (const id of ['sceneObjects', 'animObjects']) {
 // mutate a selected scene piece or trigger a browser download.
 for (const tag of ['input', 'textarea', 'select']) {
   const target = new Element(tag);
-  for (const key of ['b', 't', 'Delete', 'Backspace', 'ArrowRight']) assert.equal(controls.actionFor(event(key, { target })), null, tag + ' keeps native keyboard behavior');
+  for (const key of ['b', 'h', 't', 'Delete', 'Backspace', 'ArrowRight']) assert.equal(controls.actionFor(event(key, { target })), null, tag + ' keeps native keyboard behavior');
   for (const modifier of ['ctrlKey', 'metaKey']) for (const key of ['z', 'y', 'd', 'c', 'x', 'v']) assert.equal(controls.actionFor(event(key, { target, [modifier]: true })), null, 'Text controls retain native editing shortcuts');
   assert.equal(controls.actionFor(event('Backspace', { target, ctrlKey: true, shiftKey: true })), null, 'Whole-scene deletion never overrides field editing');
 }
 const editable = new Element('div'); editable.isContentEditable = true;
 assert.equal(controls.actionFor(event('Delete', { target: editable })), null);
-for (const key of ['s', 'o', 'z', 't', 'Delete', 'ArrowRight']) {
+for (const key of ['s', 'o', 'z', 'h', 't', 'Delete', 'ArrowRight']) {
   const command = ['s', 'o', 'z'].includes(key) ? { ctrlKey: true } : {};
   assert.equal(controls.actionFor(event(key, { ...command, defaultPrevented: true })), null, 'Handled widget events stay handled');
   assert.equal(controls.actionFor(event(key, { ...command, isComposing: true })), null, 'IME composition is protected');
@@ -128,10 +136,10 @@ for (const key of ['Dead', 'Process', 'Unidentified', '']) assert.equal(controls
 // The preference affects labels, never the accepted modifier family.
 const chooser = win.elements.get('controlPlatform');
 assert(chooser, 'Users can change the keyboard hint platform');
-for (const preference of ['windows', 'mac', 'both']) {
+for (const preference of ['windows', 'mac', 'linux', 'both']) {
   chooser.value = preference; chooser.fire('change'); controls.renderLabels();
-  const expectedModifier = preference === 'windows' ? /Ctrl/ : preference === 'mac' ? /Command|⌘/ : /Ctrl/;
-  const expectedPrecision = preference === 'windows' ? /Alt/ : preference === 'mac' ? /Option|⌥/ : /Alt/;
+  const expectedModifier = preference === 'mac' ? /Command|⌘/ : /Ctrl/;
+  const expectedPrecision = preference === 'mac' ? /Option|⌥/ : /Alt/;
   assert.match(controls.modifierLabel, expectedModifier);
   assert.match(controls.precisionLabel, expectedPrecision);
   assert.match(win.elements.get('undoBtn').title, expectedModifier, 'Undo tooltip follows the selected platform');
@@ -148,6 +156,12 @@ assert(table?.children.length >= 16, 'The guide explains keyboard controls for b
 assert(table.children.every(row => row.children.length === 3 && row.children[0].getAttribute('scope') === 'row'), 'Each control has a labeled Windows and Mac comparison row');
 const tableText = table.children.map(row => row.children.map(cell => cell.textContent).join(' ')).join('\n');
 assert.match(tableText, /Ctrl\+S/); assert.match(tableText, /Command\+S/); assert.match(tableText, /Option/); assert.match(tableText, /Alt/);
+assert.match(tableText, /Mouse wheel, two-finger scroll, or scrollbars/); assert.match(tableText, /Pinch or Ctrl\+wheel/); assert.match(tableText, /Hand: drag the view/);
+assert.match(tableText, /5% to 1200%/); assert.match(tableText, /Type a percentage; Enter or leave to apply; Esc to cancel/);
+assert.match(tableText, /10 points/, 'The control guide explains the smaller plus/minus zoom increments');
+const restoredLinux = harness({ platform: 'MacIntel' }, [['minish-maker-control-platform', 'linux']]);
+assert.equal(restoredLinux.controls.platform, 'linux', 'Linux label override survives a reload');
+assert.equal(restoredLinux.controls.shortcut('save'), 'Ctrl+S');
 chooser.value = 'mac'; chooser.fire('change');
 assert.match(win.elements.get('precisionKeyLabel').textContent, /Option/);
 assert.match(win.elements.get('precisionGuideKey').textContent, /Option/);
@@ -157,4 +171,4 @@ assert.match(win.elements.get('undoBtn').getAttribute('aria-keyshortcuts'), /Met
 win.elements.get('controlsBtn').fire('click'); assert.equal(win.elements.get('controlsDialog').open, true);
 win.elements.get('closeControlsBtn').fire('click'); assert.equal(win.elements.get('controlsDialog').open, false);
 
-console.log('PASS: Windows and Mac shortcuts, keyboard hint overrides, redo conventions, native editing, widget events, IME/AltGr protection, and modifier-safe navigation/deletion.');
+console.log('PASS: Windows, Mac, and Linux shortcuts, keyboard hint overrides, wheel/pan guidance, native editing, widget events, IME/AltGr protection, and modifier-safe navigation/deletion.');

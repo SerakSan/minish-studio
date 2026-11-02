@@ -2,12 +2,15 @@
   'use strict';
   const $ = id => document.getElementById(id);
   const STORAGE = 'minish-maker-control-platform';
-  const detectPlatform = (info = window.navigator || {}) => /mac|iphone|ipad|ipod/i.test(String(info.userAgentData?.platform || info.platform || info.userAgent || '')) ? 'mac' : 'windows';
-  const resolvePlatform = (preference = 'auto', info = window.navigator || {}) => ['mac', 'windows', 'both'].includes(preference) ? preference : detectPlatform(info);
+  const detectPlatform = (info = window.navigator || {}) => {
+    const name = String(info.userAgentData?.platform || info.platform || info.userAgent || '');
+    return /mac|iphone|ipad|ipod/i.test(name) ? 'mac' : /linux|x11|cros/i.test(name) ? 'linux' : 'windows';
+  };
+  const resolvePlatform = (preference = 'auto', info = window.navigator || {}) => ['mac', 'windows', 'linux', 'both'].includes(preference) ? preference : detectPlatform(info);
   let preference = 'auto';
-  try { const saved = localStorage.getItem(STORAGE); if (['auto', 'windows', 'mac', 'both'].includes(saved)) preference = saved; } catch (_) {}
+  try { const saved = localStorage.getItem(STORAGE); if (['auto', 'windows', 'mac', 'linux', 'both'].includes(saved)) preference = saved; } catch (_) {}
   const platform = () => resolvePlatform(preference);
-  const precisionLabel = () => platform() === 'mac' ? 'Option' : platform() === 'windows' ? 'Alt' : 'Alt / Option';
+  const precisionLabel = () => platform() === 'mac' ? 'Option' : platform() === 'both' ? 'Alt / Option' : 'Alt';
   function actionFor(event, allowRepeat = false) {
     if (!event || event.defaultPrevented || event.isComposing || event.keyCode === 229 || event.getModifierState?.('AltGraph')) return null;
     const key = String(event.key || ''), lower = key.toLowerCase();
@@ -35,7 +38,7 @@
     if (!event.shiftKey && lower === 'f') return 'fit';
     if (key === '[' || key === '{') return event.shiftKey || key === '{' ? 'sendBack' : 'backward';
     if (key === ']' || key === '}') return event.shiftKey || key === '}' ? 'bringFront' : 'forward';
-    const action = { b: 'paint', v: 'select', e: 'erase', t: 'dialogue' }[lower] || null;
+    const action = { b: 'paint', v: 'select', e: 'erase', h: 'hand', t: 'dialogue' }[lower] || null;
     return event.repeat && !allowRepeat && action === 'dialogue' ? null : action;
   }
   const shortcuts = {
@@ -47,7 +50,7 @@
   };
   function shortcut(action) {
     const pair = shortcuts[action];
-    return pair ? platform() === 'both' ? pair[0] + ' on Windows; ' + pair[1] + ' on Mac' : pair[platform() === 'mac' ? 1 : 0] : '';
+    return pair ? platform() === 'both' ? pair[0] + ' on Windows / Linux; ' + pair[1] + ' on Mac' : pair[platform() === 'mac' ? 1 : 0] : '';
   }
   const rows = [
     ['Open project', 'Ctrl+O', 'Command+O'], ['Save project', 'Ctrl+S', 'Command+S'],
@@ -56,7 +59,9 @@
     ['Copy / cut / paste a piece', 'Ctrl+C / Ctrl+X / Ctrl+V', 'Command+C / Command+X / Command+V'],
     ['Delete the current scene', 'Ctrl+Shift+Delete or Backspace', 'Command+Shift+Delete (⌫)'],
     ['Move backward / forward in its layer', '[ / ]', '[ / ]'], ['Send to back / bring to front', 'Shift+[ / Shift+]', 'Shift+[ / Shift+]'],
-    ['Zoom canvas in / out', '+ / −; pinch on the canvas', '+ / −; pinch on the canvas'], ['Canvas at 100% / fit', '0 / F', '0 / F'],
+    ['Zoom canvas in / out', 'Pinch or Ctrl+wheel; + / − (10 points)', 'Pinch or Ctrl+wheel; + / − (10 points)'],
+    ['Set an exact zoom (5% to 1200%)', 'Type a percentage; Enter or leave to apply; Esc to cancel', 'Type a percentage; Enter or leave to apply; Esc to cancel'],
+    ['Pan the canvas', 'Mouse wheel, two-finger scroll, or scrollbars', 'Mouse wheel, two-finger scroll, or scrollbars'], ['Hand: drag the view', 'Tools > Hand, or H; V returns to Select', 'Tools > Hand, or H; V returns to Select'], ['Canvas at 100% / fit', '0 / F', '0 / F'],
     ['Paint / Select / Erase', 'B / V / E', 'B / V / E'], ['Add dialogue', 'T', 'T'],
     ['Move selected piece by 1 px', 'Arrow keys', 'Arrow keys'], ['Move by one grid step', 'Shift+Arrow keys', 'Shift+Arrow keys'],
     ['Precise placement while dragging', 'Hold Alt', 'Hold Option (⌥)'], ['Deselect / dismiss panels', 'Esc', 'Esc'],
@@ -65,7 +70,10 @@
   ];
   function renderLabels() {
     const select = $('controlPlatform'); if (select) select.value = preference;
-    if ($('detectedControlPlatform')) $('detectedControlPlatform').textContent = 'Automatic labels: ' + (detectPlatform() === 'mac' ? 'Mac' : 'Windows') + '. Both sets of shortcuts are listed below.';
+    if ($('detectedControlPlatform')) {
+      const names = { mac: 'Mac', windows: 'Windows', linux: 'Linux', both: 'Windows, Mac and Linux' };
+      $('detectedControlPlatform').textContent = 'Shortcut hints: ' + names[platform()] + (preference === 'auto' ? ' (automatic).' : '. Detected device: ' + names[detectPlatform()] + '.');
+    }
     for (const [id, action, label] of [['openBtn', 'open', 'Open project'], ['saveBtn', 'save', 'Save project'], ['undoBtn', 'undo', 'Undo'], ['redoBtn', 'redo', 'Redo'], ['duplicateObjectBtn', 'duplicate', 'Duplicate selected piece'], ['deleteObjectBtn', 'delete', 'Delete selected piece'], ['sceneCopyBtn', 'copy', 'Copy selected piece'], ['scenePasteBtn', 'paste', 'Paste copied piece'], ['sceneDuplicateBtn', 'duplicate', 'Duplicate selected piece'], ['sceneDeleteBtn', 'delete', 'Delete selected piece'], ['deleteSlide', 'deleteCanvas', 'Delete this scene'], ['deleteSceneBtn', 'deleteCanvas', 'Delete this scene'], ['animOpenBtn', 'open', 'Open animation project'], ['animSaveBtn', 'save', 'Save animation project'], ['animUndo', 'undo', 'Undo animation change'], ['animRedo', 'redo', 'Redo animation change'], ['animDuplicateObject', 'duplicate', 'Duplicate animated piece'], ['animDeleteObject', 'delete', 'Delete animated piece'], ['animDeleteClip', 'deleteCanvas', 'Delete this clip']]) {
       if (!$(id)) continue;
       $(id).title = label + ' (' + shortcut(action) + ')';
@@ -92,7 +100,9 @@
       ['Copy / cut / paste piece and animation', 'Ctrl+C / Ctrl+X / Ctrl+V', 'Command+C / Command+X / Command+V'],
       ['Delete the current animation clip', 'Ctrl+Shift+Delete or Backspace', 'Command+Shift+Delete (⌫)'],
       ['Send backward / forward', '[ / ]', '[ / ]'],
-      ['Zoom canvas in / out', '+ / −; pinch on the canvas', '+ / −; pinch on the canvas'], ['Canvas at 100% / fit', '0 / F', '0 / F'],
+      ['Zoom canvas in / out', 'Pinch or Ctrl+wheel; + / − (10 points)', 'Pinch or Ctrl+wheel; + / − (10 points)'],
+      ['Set an exact zoom (5% to 1200%)', 'Type a percentage; Enter or leave to apply; Esc to cancel', 'Type a percentage; Enter or leave to apply; Esc to cancel'],
+      ['Pan the canvas', 'Mouse wheel, two-finger scroll, or scrollbars', 'Mouse wheel, two-finger scroll, or scrollbars'], ['Hand: drag the view', 'Tools > Hand, or H; V returns to moving pieces', 'Tools > Hand, or H; V returns to moving pieces'], ['Canvas at 100% / fit', '0 / F', '0 / F'],
       ['Deselect', 'Esc', 'Esc']
     ]) {
       const tr = document.createElement('tr');
@@ -107,11 +117,11 @@
   }
   window.MINISH_CONTROLS = { detectPlatform, resolvePlatform, actionFor, renderLabels, open, shortcut,
     get platform() { return platform(); }, get precisionLabel() { return precisionLabel(); },
-    get modifierLabel() { return platform() === 'mac' ? 'Command' : platform() === 'windows' ? 'Ctrl' : 'Ctrl / Command'; } };
+    get modifierLabel() { return platform() === 'mac' ? 'Command' : platform() === 'both' ? 'Ctrl / Command' : 'Ctrl'; } };
   for (const id of ['controlsBtn', 'menuControlsBtn', 'helpControlsBtn']) $(id)?.addEventListener('click', open);
   $('closeControlsBtn')?.addEventListener('click', () => $('controlsDialog').close());
   $('controlPlatform')?.addEventListener('change', () => {
-    preference = ['auto', 'windows', 'mac', 'both'].includes($('controlPlatform').value) ? $('controlPlatform').value : 'auto';
+    preference = ['auto', 'windows', 'mac', 'linux', 'both'].includes($('controlPlatform').value) ? $('controlPlatform').value : 'auto';
     try { localStorage.setItem(STORAGE, preference); } catch (_) {}
     renderLabels();
   });

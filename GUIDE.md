@@ -1,12 +1,12 @@
 # Minish Studio user guide
 
-[Project overview and quick start](README.md) · [Publishing instructions](PUBLISHING.md) · [Artwork credits](CREDITS.md)
+[Project overview and quick start](README.md) · [Artwork credits](CREDITS.md)
 
 An unofficial scene and animation editor for **The Legend of Zelda: The Minish Cap**. Build scenes with original game artwork, change character poses, arrange individual boss parts, create a carousel, or animate your composition. It works offline and can be hosted on GitHub Pages.
 
 The original game logo sits at the top center. Game-derived lettering, stone frames, menu artwork, and dialogue borders give the tool its Minish Cap appearance. **SerakSan** is the creator credit. That software watermark is not burned into exported scenes.
 
-For the downloaded app, extract the entire offline ZIP and open `index.html`. No account or server is needed. [START-HERE.txt](START-HERE.txt) has the short installation and local-save instructions. [PUBLISHING.md](PUBLISHING.md) explains GitHub Pages, private commit identity, downloadable releases, and the separate work needed for EXE/DMG installers.
+For the downloaded app, extract the entire offline ZIP and open `index.html`. No account or server is needed. [START-HERE.txt](START-HERE.txt) has the short installation and local-save instructions.
 
 ## Animation workspace
 
@@ -170,7 +170,7 @@ Minish Studio is an independent fan project. Its original editor code is MIT-lic
 
 There are no editor accounts, analytics, advertisements, or upload server. Projects and crop bookmarks stay in the browser until you download them. The public publishing kit excludes private backups, development environments, local paths, browser data, and personal scene exports. Hosting providers still process ordinary website requests. See [PRIVACY.md](PRIVACY.md).
 
-[PUBLISHING.md](PUBLISHING.md) explains the supplied GitHub Pages kit and workflow. No repository is created or published by opening this folder. Supported browsers can install the hosted HTTPS app for offline editing; the downloaded folder also works directly.
+No repository is created or published by opening this folder. Supported browsers can install the hosted HTTPS app for offline editing; the downloaded folder also works directly.
 
 ## Files and verification
 

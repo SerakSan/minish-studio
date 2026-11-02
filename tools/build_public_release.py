@@ -14,13 +14,13 @@ ROOT = Path(__file__).resolve().parents[1]
 CORE = [
     'index.html', 'studio.css', 'maker.css', 'studio.js', 'library.js', 'controls.js', 'animation-engine.js', 'simple-animation.js', 'animation-export.js', 'ezlo-switch.js', 'ezlo-switch.css', 'animation-ui.js', 'animation.css', 'animation-shell.html', 'animation-mode-switch.html', 'random-scenes.js', 'pwa.js',
     'service-worker.js', 'manifest.webmanifest', '.nojekyll', 'LICENSE',
-    'README.md', 'GUIDE.md', 'START-HERE.txt', 'CREDITS.md', 'ASSET_RIGHTS.md', 'PRIVACY.md', 'PUBLISHING.md',
+    'README.md', 'GUIDE.md', 'START-HERE.txt', 'CREDITS.md', 'ASSET_RIGHTS.md', 'PRIVACY.md',
     'CHANGELOG.md', 'UX-NOTES.md', 'assets/catalog.js', 'assets/catalog.json',
     'assets/pieces.js', 'assets/pieces.json', 'assets/game-ui.js',
     'assets/full-bosses.js', 'assets/full-bosses.json', 'assets/legacy-bosses.js', 'assets/sprites.js', 'assets/sprites.json',
     'assets/curated.js', 'assets/curated.json', 'assets/logo.js', 'assets/logo.json',
     'assets/source-manifest.json', 'assets/source-credits.tsv', 'assets/verification-report.json',
-    'examples/starter.js', 'examples/animation-demo.js', 'examples/minish-studio-name-preview.png', 'examples/Walking Adventure.minish-animation.json', 'examples/exports/Walking-Adventure.gif', 'examples/exports/Walking-Adventure.mp4', 'examples/exports/Walking-Adventure-frames.zip', 'examples/My Hyrule Story.minish.json', 'examples/Boss Showcase.minish.json',
+    'examples/starter.js', 'examples/animation-demo.js', 'examples/minish-studio-preview.png', 'examples/minish-studio-name-preview.png', 'examples/Walking Adventure.minish-animation.json', 'examples/exports/Walking-Adventure.gif', 'examples/exports/Walking-Adventure.mp4', 'examples/exports/Walking-Adventure-frames.zip', 'examples/My Hyrule Story.minish.json', 'examples/Boss Showcase.minish.json',
 ]
 ART_DIRS = ['assets/sheets', 'assets/thumbnails', 'assets/pieces', 'assets/ui',
             'assets/bosses', 'assets/sprites', 'assets/curated', 'icons']

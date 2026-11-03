@@ -22,6 +22,8 @@ Build your own Zelda scenes with genuine game sprites and environment tiles. Arr
 | Multipart bosses | Place a complete boss editor assembly or separate it into editable components. Choose from 206 assemblies and 176 parts across nine boss families. |
 | Precise placement | Use native-pixel X/Y coordinates, snapping, one-pixel nudges, integer scaling, flips, layers, and off-frame placement. Pinch or Ctrl+wheel to zoom, or type an exact percentage. Two-finger scrolling and the mouse wheel pan. Tools > Hand (H) lets you drag the view without moving artwork. |
 | Social formats | Create square posts, portrait images, stories, game-screen compositions, and multi-scene carousels. Free format accepts custom dimensions. |
+| Your pictures | Import local pictures into a scene or make one carousel slide per picture. Resize, rotate, flip, layer, and combine them with game art. |
+| Pixel frames | Frame the canvas or an individual picture with 17 adjustable pixel-art borders inspired by Zelda, including the Triforce, fairies, Lost Woods, the Great Sea, Twilight, masks, hearts and rupees. |
 | Whole Hyrule | Use the complete 4,992 × 3,168 terrain atlas or the illustrated game map as a canvas. Fill it with editable Easter egg encounters or animated boss face-offs, creature dances and character stories, then zoom in to explore. |
 | Random scenes | Start from 4,462 named setting and story combinations, with familiar characters, boss rivalries, rescues and battles. Reroll in one click, then edit every placed piece. |
 
@@ -58,6 +60,14 @@ For a whole-world composition, choose **Whole Hyrule** under Settings → Canvas
 For a starting idea, choose **Random scene**, then **Surprise me again** to try another composition. Undo restores the previous version. [Placement, layers, and scene controls](GUIDE.md#make-a-scene) are covered in the user guide.
 
 Sprites can turn in **45° steps** in Scene and Animate. Use the left/right rotation buttons or pick an exact angle in Settings.
+
+Dialogue boxes have eight resize handles, with text that wraps as you drag. **Fit text to box** adapts larger lettering to the available space, and **Fit box to text** makes room for all your words at the chosen size. Exact width and height controls remain available.
+
+With **Select**, double-click a selected text box to edit directly on the canvas. Enter adds a new line. Choose **Done**, press **Ctrl+Enter** on Windows or Linux or **Command+Enter** on Mac, or click outside to apply your changes. **Esc** cancels the edit.
+
+In Scene, choose **Add pictures** to bring in your own images. Add several to the current scene or create a carousel with one picture per slide. Drag a selected picture's corners to resize it, or enter its size and any rotation angle in Settings. **Frames** adds a border around the whole canvas or just the selected picture, including custom canvas formats. These decorative frames are designed for the editor; they are not extracted game artwork.
+
+Pictures stay on your device. Save project includes the pictures needed to reopen your composition. Pictures and decorative frames are currently Scene features, so a scene containing them cannot be imported into Animate.
 
 ## Animate your scene (experimental)
 

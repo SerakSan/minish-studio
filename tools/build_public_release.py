@@ -16,6 +16,7 @@ CORE = [
     'world-scenes.js', 'assets/world-maps.js', 'assets/world-maps.json',
     'world-animation.js', 'world-animation-ui.js',
     'combat-library.js',
+    'scene-media.js', 'scene-frames.js', 'scene-composer-ui.js', 'scene-composer.css',
     'index.html', 'studio.css', 'maker.css', 'studio.js', 'library.js', 'controls.js', 'animation-engine.js', 'simple-animation.js', 'animation-export.js', 'ezlo-switch.js', 'ezlo-switch.css', 'animation-ui.js', 'animation.css', 'animation-shell.html', 'animation-mode-switch.html', 'random-scenes.js', 'pwa.js',
     'service-worker.js', 'manifest.webmanifest', '.nojekyll', 'LICENSE',
     'README.md', 'GUIDE.md', 'START-HERE.txt', 'CREDITS.md', 'ASSET_RIGHTS.md', 'PRIVACY.md',
@@ -127,7 +128,7 @@ def main():
             target.chmod(0o644)
             records.append({'path': relative.as_posix(), 'bytes': target.stat().st_size,
                             'sha256': hashlib.sha256(target.read_bytes()).hexdigest()})
-        report = {'version': '1.1', 'author': 'SerakSan', 'edition': 'site' if args.site_only else 'github',
+        report = {'version': '1.2', 'author': 'SerakSan', 'edition': 'site' if args.site_only else 'github',
                   'fileCount': len(records), 'bytes': sum(r['bytes'] for r in records),
                   'localPathsAndCredentialsCheck': 'passed', 'files': records}
         (temporary / 'release-manifest.json').write_text(json.dumps(report, indent=2) + '\n')

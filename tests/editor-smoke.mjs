@@ -22,6 +22,19 @@ for (const asset of [...catalog.assets, ...pieces.assets]) {
   dimensions.set(asset.path, [asset.width, asset.height]); delete asset.dataUrl;
 }
 const drawCalls = [], rotationCalls = [], clearCalls = [], strokeCalls = [], imageRequests = [], fillCalls = [], textCalls = [], pixelWrites = [], blobCanvases = [], downloads = [], elements = new Map(), blobUrls = new Map();
+function composedSourceCalls(canvas, since = 0) {
+  const calls = drawCalls.slice(since), canvases = new Set([canvas]);
+  // Follow only canvases actually composited into this output. Sprites can
+  // render through a native layer while photos retain their output detail.
+  let discovered = true;
+  while (discovered) {
+    discovered = false;
+    for (const call of calls) if (canvases.has(call.canvas) && call.args[0]?.tagName === 'CANVAS' && !canvases.has(call.args[0])) {
+      canvases.add(call.args[0]); discovered = true;
+    }
+  }
+  return calls.filter(call => canvases.has(call.canvas) && typeof call.args[0]?.src === 'string');
+}
 const eventHandlers = new Map(), storage = new Map(), timers = new Map();
 let timerId = 0, document;
 class ClassList {
@@ -132,7 +145,7 @@ const studio = sandbox.MINISH_STUDIO;
 const flush = () => new Promise(resolve => setImmediate(resolve));
 await flush();
 const base = studio.project;
-assert.equal(studio.version, '1.1');
+assert.equal(studio.version, '1.2');
 assert.equal(studio.sourceAssets.length, 134);
 assert.equal(studio.assets.length, 134 + pieces.assets.length + (sandbox.MINISH_SPRITES?.assets?.length || 0) + (sandbox.MINISH_LEGACY_BOSSES?.assets?.length || 0) + (sandbox.MINISH_CURATED?.assets?.length || 0) + (sandbox.MINISH_WORLD_MAPS?.assets?.length || 0) + (sandbox.MINISH_BOSSES?.assets?.length || 0) + (sandbox.MINISH_COMBAT_LIBRARY?.assets?.length || 0));
 assert.equal(elements.get('assetList').children.length, 134, 'Cleaned sheets must not double source browser entries');
@@ -615,9 +628,10 @@ if (sandbox.MINISH_SPRITES) {
   const selectedPiece = studio.getBrushPiece(); assert.equal(selectedPiece.sx, overriddenPiece.sx); assert.equal(selectedPiece.sy, overriddenPiece.sy);
   const previouslyPlaced = structuredClone(base), oldIndexedObject = { ...overriddenPiece, id: 'old-indexed-object', pieceId: overriddenPiece.id, kind: 'sprite', x: 0, y: 0, scale: 1, layer: 'objects' };
   previouslyPlaced.slides[0].objects.push(oldIndexedObject); studio.loadProject(previouslyPlaced);
+  const exportDrawStart = drawCalls.length;
   await studio.exportSlide(studio.project.slides[0]);
   const exportCanvas = blobCanvases.at(-1), overrideAsset = assetIndex.get(String(overrides[overriddenPiece.assetId]));
-  assert(drawCalls.some(c => c.canvas === exportCanvas && c.args[0]?.src === overrideAsset.path), 'Existing indexed sprites await and render their transparent replacements during PNG export');
+  assert(composedSourceCalls(exportCanvas, exportDrawStart).some(call => call.args[0].src === overrideAsset.path), 'Existing indexed sprites await and render their exact transparent replacements into the exported PNG');
   await studio.chooseAsset(catalog.assets.find(a => String(a.id) === String(overriddenPiece.sourceId)).id);
   assert.equal(String(studio.activeAsset.id), String(overriddenPiece.sourceId), 'Full source and manual crops keep their original sheets');
 }
@@ -739,10 +753,11 @@ const animator = sandbox.MINISH_ANIMATION;
 animator.init(studio); animator.loadProject(sandbox.MINISH_ANIMATION_DEMO);
 const animatedScene = animator.evaluateFrame(animator.currentClip, 10);
 const preparedFrame = await studio.prepareScene(animatedScene);
+const animationRenderStart = drawCalls.length;
 const renderedFrame = await studio.renderSceneToCanvas(animatedScene, { scale: 3 });
 assert.equal(renderedFrame.width, 720); assert.equal(renderedFrame.height, 480);
 assert.equal(preparedFrame.objects.length, 2); assert(preparedFrame.objects.some(object => object.sourceId === '6369'));
-assert(drawCalls.some(call => call.canvas === renderedFrame && call.args[0]?.src?.includes('6369')), 'Animator renders the genuine Link source through the shared renderer');
+assert(composedSourceCalls(renderedFrame, animationRenderStart).some(call => call.args[0].src.includes('6369')), 'Animator renders the genuine Link source through the shared renderer');
 assert.deepEqual(studio.project, sceneBeforeAnimation, 'Frame rendering and animation edits leave scene projects untouched');
 await assert.rejects(studio.renderSceneToCanvas(animatedScene, { scale: 1.5 }), /whole numbers/);
 await assert.rejects(studio.prepareScene({ ...animatedScene, objects: [{ ...animatedScene.objects[0], assetId: 'missing-animation-image' }] }), /missing/);
@@ -766,11 +781,12 @@ for (const frame of [0, 1]) {
   assert.equal(restoredFrame.objects[0].assetId, 'clean-24932', 'Saved pose references keep their original asset IDs');
   assert.equal(restoredFrame.objects[0].pieceId, farorePoses[frame].id, 'Saved pose keys restore each genuine source crop');
   await studio.prepareScene(restoredFrame);
+  const restoredRenderStart = drawCalls.length;
   const playbackCanvas = new Element('canvas');
   studio.drawSceneToContext(playbackCanvas.getContext('2d'), restoredFrame);
   const exportCanvas = await studio.renderSceneToCanvas(restoredFrame, { scale: 2 });
   for (const canvas of [playbackCanvas, exportCanvas]) {
-    const spriteCalls = drawCalls.filter(call => call.canvas === canvas);
+    const spriteCalls = composedSourceCalls(canvas, restoredRenderStart);
     assert.equal(spriteCalls.length, 1, 'A restored animation frame draws one source sprite');
     assert.equal(spriteCalls[0].args[0]?.src, transparentOracleAsset.path, 'Restored animation playback and exports draw the clean transparent sheet');
     assert.deepEqual(spriteCalls[0].args.slice(1, 5), [farorePoses[frame].sx, farorePoses[frame].sy, farorePoses[frame].sw, farorePoses[frame].sh], 'Transparency keeps the original crop coordinates');

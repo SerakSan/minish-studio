@@ -63,6 +63,26 @@ The editable [Walking Adventure example](examples/Walking%20Adventure.minish-ani
 
 ## Make a scene
 
+### Resize dialogue and text
+
+Choose **Select** and double-click a selected text box to edit its words directly on the canvas. Enter adds a new line. Choose **Done**, press **Ctrl+Enter** on Windows or Linux or **Command+Enter** on Mac, or click outside to apply your changes. **Esc** cancels the edit. The dialogue field in Settings remains available too.
+
+Select a dialogue box and drag any of its eight handles. Side handles change the width or height independently; corner handles change both. Text rewraps while you drag, including long words and your own paragraph breaks. Exact Box width and Box height controls remain available in Settings, and one Undo restores the whole resize.
+
+**Fit text to box** adjusts larger text to a smaller crisp game-font size when needed. Enlarging the box restores your chosen text size when there is room. **Fit box to text** resizes the box to show all your words at the chosen size. A message appears when the box needs more space. Text boxes support up to 8,192 native pixels per side and can extend outside the canvas.
+
+### Add your own pictures
+
+Choose **Add pictures** in Scene and select pictures from your device. Add them to the current canvas, or create one slide per picture for a carousel. You can place game sprites, objects, and dialogue over the pictures.
+
+Use Select to move a picture. Drag its corner handles to resize it, or use the picture controls in Settings for exact width, height, and rotation. Keep the aspect ratio locked to preserve the picture's proportions. Flips, duplication, layer order, deletion, and Undo work as they do for other scene pieces.
+
+Open **Frames** to decorate the whole canvas or the selected picture. Choose a pixel-art style and leave the border size on Auto, or choose a size yourself. Borders fit inside the selected area and repeat their pixel patterns at any canvas size. A picture's border moves and rotates with it. These are editor-designed decorations inspired by classic Zelda pixel art, separate from the credited game artwork.
+
+There are 17 styles, including fairy wings, Triforce corners, forest vines, ocean waves, Twilight runes, Majora-inspired masks, Sheikah eyes, dungeon keys, heart containers, rupees, seasonal flowers and Spirit Tracks. Search by style or Zelda theme to find one. Your selected style stays chosen while you search, and Apply and Cancel remain below the scrolling gallery.
+
+Imports are processed locally. Save project embeds the pictures used by the composition so reopening the file restores them. Keep a saved project backup before clearing browser data. PNG and carousel exports include your pictures and frames. Pictures and decorative frames are currently Scene features; remove them from a duplicate scene if you want to import that copy into Animate.
+
 Double-click **Open Minish Studio.html** or visit your hosted copy. Keep the folder together for offline use. Opening `index.html` directly also works. A saved browser project takes priority when reopening.
 
 1. **Choose a place.** Open Environments and choose a clean game region or recovered house tile. Place a region as your background, or use the tile views to build your own layout.

@@ -1,0 +1,88 @@
+/* Scene picture controls follow the studio's existing pixel windows. */
+#sceneWorkspace .stage-toolbar{flex-wrap:wrap;flex-shrink:0}
+.scene-composer-actions{gap:3px}
+.scene-composer-actions .tool{white-space:nowrap}
+.scene-composer-actions .tool span{font-size:17px;line-height:1}
+.composer-dialog{width:min(570px,calc(100vw - 32px));max-width:570px;max-height:calc(100dvh - 32px);padding:0;background:#17384c;color:#fff6cf;overflow:auto}
+.composer-dialog>.window-bar{position:sticky;top:0;z-index:2;min-height:43px}
+.composer-dialog .window-bar h2{font-size:21px}
+.composer-dialog-body{padding:18px}
+.composer-intro{font-size:14px;line-height:1.5;color:#e1e9d4;margin:0 0 17px}
+.picture-destination{display:grid;grid-template-columns:1fr 1fr;gap:8px;border:0;padding:0;margin:0 0 15px;min-width:0}
+.picture-destination legend{font-size:13px;color:#fff0ba;padding:0;margin-bottom:8px}
+.composer-choice{display:flex;align-items:flex-start;gap:9px;border:2px solid #092135;box-shadow:inset 0 0 0 1px #557c8c;padding:12px 10px;background:#193d50;cursor:pointer}
+.composer-choice:has(input:checked){background:#244e58;box-shadow:inset 0 0 0 1px #e8d18a;border-color:#071d2b}
+.composer-choice:focus-within{outline:2px solid #fff3a4;outline-offset:2px}
+.composer-choice input{margin:3px 0 0;accent-color:#e9d58e;width:15px;height:15px;flex:none;box-shadow:none}
+.composer-choice strong{display:block;font-size:14px;font-weight:400;color:#fff1b8}
+.composer-choice small{display:block;font-size:12px;line-height:1.5;color:#c4d7d7;margin-top:5px}
+.picture-file-area{padding:17px 12px;display:flex;align-items:center;flex-direction:column;gap:9px;background:#102e42;border:2px dashed #638a98;transition:background .12s}
+.picture-file-area.is-drop-target{background:#335c5e;border-color:#fff1ad}
+.picture-file-area>span{font-size:11px;color:#c0d4d4;text-align:center;line-height:1.5}
+.picture-file-area>button{min-width:185px;min-height:38px}
+.picture-file-summary{margin:14px 0 0;padding:10px 12px;border-left:3px solid #e6d08b;background:#102f40;font-size:12px}
+.picture-file-summary strong{color:#ffecae;font-size:13px;font-weight:400}
+.picture-file-summary ul{margin:7px 0 0;padding:0;list-style:none;max-height:120px;overflow:auto}
+.picture-file-summary li{margin:3px 0;color:#bfd3d4;overflow-wrap:anywhere;font-size:12px}
+.composer-privacy{font-size:11px;line-height:1.6;color:#bacfd0;margin:14px 0 0}
+.composer-status{font-size:12px;line-height:1.5;color:#ffe9a8;margin:10px 0 0}
+.composer-status:empty{display:none}
+.composer-errors{font-size:13px;line-height:1.5;background:#4a2c37;border:1px solid #b7817a;padding:10px;margin:12px 0 0;color:#ffe0cb}
+.composer-dialog-footer{display:flex;justify-content:flex-end;gap:8px;padding-top:16px;margin-top:15px;border-top:1px solid #4c7080}
+.composer-dialog-footer>button{min-height:36px;padding:6px 13px}
+.picture-inspector{padding:9px 0 12px}
+.picture-dimensions{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.picture-dimensions label{display:block;color:#c7d8d5;font-size:12px}
+.picture-dimensions label>span,.picture-rotation label>span{font-size:10px;color:#9ebdc3;float:right;padding-top:2px}
+.picture-dimensions input{display:block;width:100%;margin-top:5px;font-size:13px;padding:6px 7px;height:34px}
+.picture-lock{display:flex;margin:9px 0 13px;color:#cbded5;font-size:11px}
+.picture-rotation{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px;align-items:center}
+.picture-rotation>label{grid-column:1/-1;font-size:12px;color:#c7d8d5}
+.picture-rotation input{width:100%;height:34px;font-size:13px;padding:6px 7px}
+.picture-rotation>button{font-size:11px;min-height:34px;padding:5px 9px}
+.picture-fit{display:flex;gap:6px;margin:13px 0 8px}
+.picture-fit>button{flex:1;font-size:11px;min-height:32px;padding:5px 3px;white-space:nowrap}
+.picture-inspector>.wide-button{font-size:12px;min-height:33px;width:100%}
+.picture-note{font-size:10px;line-height:1.6;color:#acc8ce;margin:10px 0 0}
+#pictureEditStatus{color:#ffe1ab;font-size:11px}
+#sceneInspector.has-picture-selection .object-section>.transform-row>.field-label,#sceneInspector.has-picture-selection #sceneRotationControls{display:none}
+#sceneInspector.has-picture-selection .object-section>.transform-row{justify-content:flex-start;margin-top:0}
+#sceneInspector.has-picture-selection .object-section>.transform-row>button{flex:1}
+.frame-dialog{width:min(620px,calc(100vw - 32px));max-width:620px}
+.frame-dialog[open]{display:flex;flex-direction:column;overflow:hidden}
+.frame-dialog>.window-bar{flex:none}
+.frame-dialog .composer-dialog-body{min-height:0;display:flex;flex-direction:column;overflow:auto;overscroll-behavior:contain}
+.frame-dialog .composer-dialog-body>*{flex-shrink:0}
+.frame-gallery-filter{display:flex;flex-wrap:wrap;gap:7px;align-items:center;margin:0 0 11px}
+.frame-gallery-filter>input{width:100%;height:36px;font-size:13px;padding:7px 9px}
+#frameResultCount{font-size:11px;color:#bed2cf;line-height:1.5;min-height:17px}
+.frame-target-row,.frame-size-row{display:flex;gap:12px;justify-content:space-between;align-items:center}
+.frame-target-row{margin-bottom:14px}
+.frame-target-row>label,.frame-size-row>label{font-size:13px;color:#e2e7d2;flex:none}
+.frame-target-row>select,.frame-size-row>select{font-size:13px;min-width:0;width:230px;max-width:65%;height:36px}
+.frame-style-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;grid-auto-rows:max-content;align-content:start;max-height:min(34dvh,310px);min-height:90px;overflow:auto;overscroll-behavior:contain;scrollbar-gutter:stable;padding:2px 4px 2px 2px;flex-shrink:1!important}
+.frame-style-choice{position:relative;display:flex;flex-direction:column;gap:7px;min-width:0;padding:5px 5px 8px;background:#102e42;border:2px solid #071e30;box-shadow:inset 0 0 0 1px #50788a;font-size:12px;text-align:left;line-height:1.3}
+.frame-style-choice[hidden]{display:none}
+.frame-style-choice canvas{display:block;width:100%;height:auto;image-rendering:pixelated;image-rendering:crisp-edges;aspect-ratio:5/3}
+.frame-style-choice>span{padding:0 2px;min-height:16px}
+.frame-style-choice[aria-pressed=true]{border-color:#ffefa7;background:#365a58;box-shadow:inset 0 0 0 1px #839a79}
+.frame-style-choice>i{display:none;position:absolute;right:8px;top:8px;font-style:normal;background:#f0dfa1;color:#153143;padding:1px 3px;font-size:13px;box-shadow:0 0 0 2px #092232}
+.frame-style-choice[aria-pressed=true]>i{display:block}
+.frame-size-row{margin-top:15px}
+.frame-description{font-size:12px;line-height:1.5;color:#d1dfd7;margin:12px 0 0;min-height:36px}
+.frame-dialog .composer-dialog-footer{position:sticky;bottom:-18px;z-index:3;background:#17384c;box-shadow:0 -5px 0 #17384c;margin-left:-18px;margin-right:-18px;margin-bottom:-18px;padding:12px 18px 18px}
+.composer-visually-hidden{position:absolute!important;width:1px!important;height:1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;clip-path:inset(50%)!important;white-space:nowrap!important;margin:-1px!important;padding:0!important;border:0!important}
+@media(max-width:650px){.composer-dialog-body{padding:14px}.picture-destination{grid-template-columns:1fr}.composer-choice{padding:10px}.frame-style-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.composer-dialog{max-height:calc(100dvh - 20px);width:calc(100vw - 20px)}.scene-composer-actions .tool{font-size:12px;padding:5px 7px}.frame-dialog .composer-dialog-footer{bottom:-14px;margin-left:-14px;margin-right:-14px;margin-bottom:-14px;padding:12px 14px 14px}}
+@media(prefers-reduced-motion:reduce){.picture-file-area{transition:none}}
+.dialogue-fit-controls{display:flex;flex-wrap:wrap;align-items:center;gap:9px;margin-top:12px}
+.dialogue-fit-controls .check-label{font-size:12px;flex:1;white-space:nowrap}
+.dialogue-fit-controls>button{font-size:12px;min-height:32px;padding:6px 9px}
+.dialogue-layout-status{font-size:11px;line-height:1.6;color:#bfd4d4;margin:10px 0 0}
+.dialogue-layout-status[data-overflow=true]{color:#ffe2ad;border-left:3px solid #d2a764;padding-left:8px}
+.inline-dialogue-editor{position:absolute;z-index:5;pointer-events:none;overflow:visible}
+.inline-dialogue-editor .inline-dialogue-text{position:absolute;display:block;min-height:0;min-width:0;max-height:none;max-width:none;margin:0;padding:0;border:0;box-shadow:none;border-radius:0;outline:2px solid #ffe8a3;outline-offset:2px;background:#101e32f2;resize:none;overflow:auto;white-space:pre-wrap;overflow-wrap:break-word;word-break:normal;font-family:var(--game-font),monospace;font-weight:400;letter-spacing:0;caret-color:#fff5ce;pointer-events:auto;touch-action:auto}
+#inlineDialogueText{font-family:var(--game-font),monospace;font-variant-ligatures:none}
+.inline-dialogue-toolbar{position:absolute;display:flex;align-items:center;gap:5px;min-height:29px;width:max-content;max-width:calc(100vw - 24px);padding:2px 4px;background:#17384c;border:1px solid #e6cf86;box-shadow:2px 2px #071c2a;pointer-events:auto;color:#fff0bd;white-space:nowrap}
+.inline-dialogue-toolbar>span{font-size:11px;padding:0 3px}
+.inline-dialogue-toolbar>button{font-size:12px;line-height:1.2;min-height:24px;padding:3px 7px}
+#editDialogueOnCanvasBtn{font-size:12px;min-height:32px;margin:0 0 12px;width:100%}

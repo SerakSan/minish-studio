@@ -24,6 +24,11 @@ jobs:
       - name: Check editor behavior
         run: |
           node tests/editor-smoke.mjs
+          node tests/scene-images.mjs
+          node tests/scene-frames.mjs
+          node tests/scene-composer-ui.mjs
+          node tests/dialogue-resize.mjs
+          node tests/inline-dialogue.mjs
           node tests/controls.mjs
           node tests/random-scenes-variation.mjs
           node tests/animation-engine.mjs

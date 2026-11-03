@@ -35,6 +35,16 @@ const staticScene = { id: 'scene-1', name: 'Walk through Hyrule', width: 240, he
 const staticBefore = JSON.stringify(staticScene), clip = engine.importScene(staticScene);
 assert.equal(JSON.stringify(staticScene), staticBefore, 'Import never mutates the scene editor data');
 assert.notEqual(clip.objects[0].id, base.id, 'Imported object IDs are independent from scene objects');
+const beforePhotoImport = JSON.stringify(engine.project);
+for (const scene of [
+  { ...staticScene, objects: [...staticScene.objects, { id: 'private-photo', kind: 'image', imageId: 'local-photo' }] },
+  { ...staticScene, frame: { style: 'minish-woodland', size: 0 } },
+]) {
+  const before = JSON.stringify(scene);
+  assert.throws(() => engine.importScene(scene), /available in Scene mode/);
+  assert.equal(JSON.stringify(scene), before, 'Unsupported Scene features are preserved in the original scene');
+  assert.equal(JSON.stringify(engine.project), beforePhotoImport, 'Rejected imports do not add a partial animation clip');
+}
 const object = clip.objects[0], id = object.id;
 engine.selectObject(id); engine.configureClip({ duration: 36, fps: 12 });
 const beforeSequence = engine.project;

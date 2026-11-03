@@ -1,15 +1,15 @@
 {
-  "version": "1.1",
+  "version": "1.2",
   "author": "SerakSan",
   "edition": "github",
-  "fileCount": 8393,
-  "bytes": 152915223,
+  "fileCount": 8402,
+  "bytes": 153080816,
   "localPathsAndCredentialsCheck": "passed",
   "files": [
     {
       "path": ".github/workflows/pages.yml",
-      "bytes": 1852,
-      "sha256": "8ee94c6aa8885531a7b2a17cd8790c6bc116ba1b0d9114bfbf8becc9e586aefa"
+      "bytes": 2053,
+      "sha256": "4accb99c09d407125373b7af5c86b1cb62af638827f37bbf66142944c9653bdd"
     },
     {
       "path": ".gitignore",
@@ -28,8 +28,8 @@
     },
     {
       "path": "CHANGELOG.md",
-      "bytes": 6550,
-      "sha256": "f189bc1c72a530f4bbb047d1199c0280d4a0704b854d62c93ff8c86c7d637ff7"
+      "bytes": 7524,
+      "sha256": "00e10faa95586c36fdfcc65136b12b109bf31ef56cdb183ec5b3922bc91bc85b"
     },
     {
       "path": "CREDITS.md",
@@ -38,8 +38,8 @@
     },
     {
       "path": "GUIDE.md",
-      "bytes": 28951,
-      "sha256": "8b3c8c364a4611c9bab478bec451b8f857b13be0b5964efb1b92a4f5d4db502d"
+      "bytes": 31736,
+      "sha256": "ed8fe8d7160aeb0c436112eca75645b9fd5ef01c7f6301084a5ba0d1733aa3e8"
     },
     {
       "path": "LICENSE",
@@ -53,13 +53,13 @@
     },
     {
       "path": "PRIVACY.md",
-      "bytes": 3965,
-      "sha256": "7d0edda090a662e6cf2754156eb982bdde54d3000b9140c4ef1bec954418dd6a"
+      "bytes": 4415,
+      "sha256": "67662e0ca58456d4ad5aeab28f66e4a974a7542e08f75d351971534b412b89fa"
     },
     {
       "path": "README.md",
-      "bytes": 13213,
-      "sha256": "2b47f2bd7e86182686618e98040a5c3e1c040dbbf482a7eda3ede5ca66265f5d"
+      "bytes": 14782,
+      "sha256": "74e61f07ae62244215ae9065895ca5f0b6003f9aaa447ec1a8766a81f7217899"
     },
     {
       "path": "START-HERE.txt",
@@ -73,8 +73,8 @@
     },
     {
       "path": "animation-engine.js",
-      "bytes": 36464,
-      "sha256": "b62477d1d225a25384de7b8ea06036546bbe7ceb4a7938cde7f722ab4be2cbf5"
+      "bytes": 36789,
+      "sha256": "204a9191e35fb3957ed32ce3f7306e51c2d1f7b7985e91f07b31d37e0b28ab14"
     },
     {
       "path": "animation-export.js",
@@ -41713,8 +41713,8 @@
     },
     {
       "path": "index.html",
-      "bytes": 65454,
-      "sha256": "6cfd3cda911330d6f2e01ccb36cccdfe4196245dcb53a8634ce60361d425fa48"
+      "bytes": 73729,
+      "sha256": "6351aed85230c8074dd164af4b0a5e5c8b0a80f0872ec1c37ce32e6c79be64e7"
     },
     {
       "path": "library.js",
@@ -41747,9 +41747,29 @@
       "sha256": "6ae427bf76b3d6552a62ab55f48cb58c9c3efdd57a836b470c593d76a3aee398"
     },
     {
+      "path": "scene-composer-ui.js",
+      "bytes": 15219,
+      "sha256": "68bd8af5ebdde729fc8bcc0213232ec3db4c7a35421824ce290443a62f83ed37"
+    },
+    {
+      "path": "scene-composer.css",
+      "bytes": 9207,
+      "sha256": "03a9fe82119e8f10bf30d4f3ed0f9125eea49dc0ff06f6dfd2266fafc2604c06"
+    },
+    {
+      "path": "scene-frames.js",
+      "bytes": 16893,
+      "sha256": "3e06b5db19ca14de85eee95d4bf1bacee40dafe1c7140cea25e87a12360f0a91"
+    },
+    {
+      "path": "scene-media.js",
+      "bytes": 12149,
+      "sha256": "9b2a4d4ddaabe2723ddb1e165ceca63812f9bd57f9d3e6dd73ca8ca0d78bdedb"
+    },
+    {
       "path": "service-worker.js",
-      "bytes": 2550,
-      "sha256": "2b4a99076efe080558f104813a21ae699e0e3f0d172a4c526867f7fa880f420e"
+      "bytes": 2650,
+      "sha256": "909da72fdfa30fa0294fa7ae1f6423f213a642fe2c764321542def0b0ab269d8"
     },
     {
       "path": "simple-animation.js",
@@ -41763,13 +41783,13 @@
     },
     {
       "path": "studio.js",
-      "bytes": 118338,
-      "sha256": "d364a84b3a0089c2a8800e2fe5f14f679c50b7ae3c39d5df767615c40d741eff"
+      "bytes": 152474,
+      "sha256": "6fa959517048e61beebe8ab825614a985997c1d4286efaaff8de56d09def1e43"
     },
     {
       "path": "tests/animation-engine.mjs",
-      "bytes": 23087,
-      "sha256": "6c6c1644951b2b9e679fe2b72b622c559045207c34cd2cfbe99d55a51cfacce3"
+      "bytes": 23716,
+      "sha256": "2e583a52601360386c4bdbd43c92cda1d97a12a0cee52acdefdad74765e04243"
     },
     {
       "path": "tests/animation-export.mjs",
@@ -41797,9 +41817,14 @@
       "sha256": "a0c1791a88c17e5d76bc6f67a5802e1f783631a26189e9980e8ed2f65a72097c"
     },
     {
+      "path": "tests/dialogue-resize.mjs",
+      "bytes": 11251,
+      "sha256": "362ca9ac713f6b5e87944d3d4df3443ec5297ddcccd1d37c62f83509cab3d2cb"
+    },
+    {
       "path": "tests/editor-smoke.mjs",
-      "bytes": 88803,
-      "sha256": "c2ddbb68f6d8887fe7d8f55ed7502c486ab57dea623d5cd49e886887f7b20613"
+      "bytes": 89621,
+      "sha256": "bd052d01fa2fcec736e98724cebed91d1fc89c7cbb3c01e0da531b7c127a6d25"
     },
     {
       "path": "tests/ezlo-switch.mjs",
@@ -41812,9 +41837,14 @@
       "sha256": "50910647e3e2bca62fcbe94cad98f53255645bf05a290e8a6b2bc99e41c3ee65"
     },
     {
+      "path": "tests/inline-dialogue.mjs",
+      "bytes": 17673,
+      "sha256": "043c3c60a46285f5dc8d4c1e0d8f855f321c4513354a4e669b686bd212596f16"
+    },
+    {
       "path": "tests/project-privacy.mjs",
-      "bytes": 9865,
-      "sha256": "6278fca8b5cb2f574e9a30f312ccd3ffc043c72a4e3cfccbaf483afe3aa2865a"
+      "bytes": 10108,
+      "sha256": "6ee13cbd5dcd15c2e7665da6a225cbfc6435a88ee4d529ddd26dff2a4ef32428"
     },
     {
       "path": "tests/public-release-privacy.py",
@@ -41825,6 +41855,21 @@
       "path": "tests/random-scenes-variation.mjs",
       "bytes": 21505,
       "sha256": "f075ad23a8f81728334fc3ecd4267bbcde4ecd5d7e58d2cee83c4231111038f1"
+    },
+    {
+      "path": "tests/scene-composer-ui.mjs",
+      "bytes": 12952,
+      "sha256": "7b2702725c087ef2fe9a73d331dbc2c6f884dbcf0fcd093ed8df937f5c9f2c9f"
+    },
+    {
+      "path": "tests/scene-frames.mjs",
+      "bytes": 6769,
+      "sha256": "f57317937e7a2a3906a8a92ab760f27e4be57c8d627755e13151882a8f1e1d1f"
+    },
+    {
+      "path": "tests/scene-images.mjs",
+      "bytes": 12790,
+      "sha256": "d0e04671ee6526740d603a665e20de25352553f7d1f7627e7194da4456d5cef9"
     },
     {
       "path": "tests/simple-animation.mjs",
@@ -41893,8 +41938,8 @@
     },
     {
       "path": "tools/build_public_release.py",
-      "bytes": 8475,
-      "sha256": "10b22f2e9f95a1ea616d94d45698f4a11a0d2c3586bc504e3365c127952a28b0"
+      "bytes": 8562,
+      "sha256": "1c95beb7e86bf080c2649251246e44cbe0c9afaadea830bb15bff1acf628209f"
     },
     {
       "path": "tools/build_transparent_sprites.py",
@@ -41928,8 +41973,8 @@
     },
     {
       "path": "tools/preview.py",
-      "bytes": 2402,
-      "sha256": "a9bb99087cb8f273958d4e515300e2e88fb2cb77f77f385a4887f88b0116f4c8"
+      "bytes": 2500,
+      "sha256": "0b08483f112dfdf17c8f74e680c3fa23c65769c129c8319011af8e9224725583"
     },
     {
       "path": "tools/process_assets.py",

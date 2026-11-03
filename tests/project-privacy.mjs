@@ -15,7 +15,7 @@ const publicScripts = ['examples/starter.js', 'controls.js', 'studio.js', 'anima
 const scripts = publicScripts.map(name => [name, read(name)]);
 const freshId = () => Math.random().toString(36).slice(2) + Date.now().toString(36);
 
-async function browser(storage = new Map()) {
+export async function browser(storage = new Map(), options = {}) {
   const nodes = new Map(), datasets = [], timers = new Map(), events = new Map(), blobs = new Map(), downloads = [];
   let timer = 0, document;
   class Classes {
@@ -72,15 +72,17 @@ async function browser(storage = new Map()) {
     MINISH_PIECES: { assets: assets.filter(asset => !/^\d+$/.test(asset.id)), sheets: {} }
   };
   sandbox.window = sandbox; sandbox.navigator.sendBeacon = network;
+  await options.prepare?.({ sandbox, nodes, events, blobs, downloads, Element });
   const context = vm.createContext(sandbox);
-  for (const [name, code] of scripts) vm.runInContext(code, context, { filename: name });
+  const loadedScripts = options.scripts ? options.scripts.map(name => [name, read(name)]) : scripts;
+  for (const [name, code] of loadedScripts) vm.runInContext(code, context, { filename: name });
   sandbox.MINISH_ANIMATION.init(sandbox.MINISH_STUDIO);
   await new Promise(resolve => setImmediate(resolve));
   return {
     storage, scene: sandbox.MINISH_STUDIO, animation: sandbox.MINISH_ANIMATION, starter: sandbox.MINISH_STARTER,
     save() { for (const [id, item] of [...timers]) if (item.milliseconds === 500 || item.milliseconds === 400) { timers.delete(id); item.callback(); } },
     close() { for (const callback of events.get('beforeunload') || []) callback(); },
-    downloads, blobs, networkAttempts
+    downloads, blobs, networkAttempts, sandbox, nodes, events, context
   };
 }
 

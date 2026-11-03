@@ -33,6 +33,7 @@
   };
   const LAYERS = ['terrain', 'objects', 'overlay'];
   const STORAGE = 'minish-cap-studio-v1';
+  const media = window.MINISH_SCENE_MEDIA || null;
   const CUSTOM_STORAGE = 'minish-cap-studio-custom-pieces-v1';
   const CANVAS_LIMITS = Object.freeze({ minNative: 16, maxNative: 8192, maxNativePixels: 16777216, minScale: 1, maxScale: 8, maxExportEdge: 8192, maxExportPixels: 16777216 });
   const uid = () => Math.random().toString(36).slice(2, 10) + Date.now().toString(36).slice(-4);
@@ -43,7 +44,7 @@
   const selected = () => scene().objects.find(o => o.id === selectedId);
   function newSlide(index = 1, preset = 'portrait', customFormat = null) {
     const format = PRESETS[preset] || customFormat || PRESETS.portrait;
-    return { id: uid(), name: 'Scene ' + String(index).padStart(2, '0'), preset: PRESETS[preset] ? preset : 'custom', width: format.width, height: format.height, exportScale: format.exportScale, color: '#819452', transparent: true, objects: [] };
+    return { id: uid(), name: 'Scene ' + String(index).padStart(2, '0'), preset: PRESETS[preset] ? preset : 'custom', width: format.width, height: format.height, exportScale: format.exportScale, color: '#819452', transparent: true, frame: normalizeFrame(), objects: [] };
   }
   const initialSlide = newSlide();
   let project = { format: 'minish-cap-studio', version: 1, name: 'My little adventure', activeSlide: initialSlide.id, slides: [initialSlide] };
@@ -55,6 +56,8 @@
   let copiedObject = null, pasteCount = 0, copiedByCut = false;
   let libraryDrag = null, editorGutter = { x: 16, y: 16 };
   let undoStack = [], redoStack = [], saveTimer, toastTimer, drawScheduled = false;
+  let restoringPictures = !!(media && window.indexedDB);
+  let inlineDialogue = null;
   const imageCache = new Map(), cropCache = new Map();
   let cropCachePixels = 0;
   const gameUI = window.MINISH_GAME_UI || {}, uiImages = new Map(), tintCache = new Map();
@@ -101,7 +104,7 @@
     if (!uiImages.has(name)) {
       const image = new Image(), record = { image, ready: false };
       record.promise = new Promise(resolve => {
-        image.onload = () => { record.ready = true; scheduleDraw(); resolve(image); };
+        image.onload = () => { record.ready = true; scheduleDraw(); if (name === 'font') updateDialogueLayoutStatus(); resolve(image); };
         image.onerror = () => resolve(null);
       });
       uiImages.set(name, record); image.src = info.dataUrl;
@@ -149,6 +152,8 @@
     }
   }
   function historyBefore() {
+    if (restoringPictures) throw new Error('Your local project is still reopening. Try again in a moment.');
+    if (inlineDialogue) finishDialogueEditing();
     undoStack.push(JSON.stringify(project));
     if (undoStack.length > 45) undoStack.shift();
     redoStack.length = 0;
@@ -158,18 +163,37 @@
     updateInspector();
     updateHistory();
     scheduleSave();
+    emit('minish:scene-changed', scene());
     if (message) status(message);
   }
+  let saveRevision = 0, lastLocalSave = 0;
+  async function persistProject(snapshot, revision, updatedAt) {
+    if (restoringPictures) return;
+    const hasPictures = snapshot.slides.some(slide => slide.objects.some(object => object.kind === 'image'));
+    try {
+      const json = JSON.stringify({ ...snapshot, _localSavedAt: updatedAt });
+      if (hasPictures) {
+        if (!media) throw new Error('Pictures need the picture module.');
+        await media.save(snapshot, STORAGE, updatedAt);
+      }
+      if (revision !== saveRevision) return;
+      if (json.length > 3800000) {
+        if (!media) throw new Error('large');
+        if (!hasPictures) await media.save(snapshot, STORAGE, updatedAt);
+        localStorage.setItem(STORAGE, JSON.stringify({ format: 'minish-cap-studio-local', _localSavedAt: updatedAt }));
+      } else localStorage.setItem(STORAGE, json);
+      lastLocalSave = updatedAt;
+      $('saveState').textContent = 'Saved in this browser';
+      if (!hasPictures && media) media.save(snapshot, STORAGE, updatedAt).catch(() => {});
+    } catch (_) { if (revision === saveRevision) $('saveState').textContent = hasPictures ? 'Save a project file to keep your pictures' : 'Save a project file to keep your work'; }
+  }
   function scheduleSave() {
+    if (restoringPictures) return;
+    const revision = ++saveRevision;
     $('saveState').textContent = 'Saving in this browser…';
     clearTimeout(saveTimer);
     saveTimer = setTimeout(() => {
-      try {
-        const json = JSON.stringify(project);
-        if (json.length > 3800000) throw new Error('large');
-        localStorage.setItem(STORAGE, json);
-        $('saveState').textContent = 'Saved in this browser';
-      } catch (_) { $('saveState').textContent = 'Save a project file to keep your work'; }
+      void persistProject(copy(project), revision, Date.now());
     }, 500);
   }
   function updateHistory() {
@@ -177,6 +201,7 @@
     $('redoBtn').disabled = redoStack.length === 0;
   }
   function undo() {
+    finishDialogueEditing();
     if (!undoStack.length) return;
     redoStack.push(JSON.stringify(project));
     project = JSON.parse(undoStack.pop());
@@ -186,6 +211,7 @@
     status('Last change undone.');
   }
   function redo() {
+    finishDialogueEditing();
     if (!redoStack.length) return;
     undoStack.push(JSON.stringify(project));
     project = JSON.parse(redoStack.pop());
@@ -203,10 +229,17 @@
     setTimeout(() => URL.revokeObjectURL(url), 60000);
   }
   function saveProject() {
-    const saved = { ...project, savedAt: new Date().toISOString(), sourceUrl: catalog.sourceUrl || '', assets: [...new Set(project.slides.flatMap(s => s.objects.filter(o => o.assetId).map(o => o.assetId)))].map(id => { const a = assetMap.get(String(id)); return a ? { id: a.id, name: a.name, path: a.path, sourceUrl: a.sourceUrl } : { id }; }) };
+    const saved = portableProject();
     download(new Blob([JSON.stringify(saved, null, 2)], { type: 'application/json' }), cleanFilename(project.name) + '.minish.json');
     toast('Project saved. Open this JSON in Minish Studio to keep editing.');
   }
+  function portableProject() {
+    finishDialogueEditing();
+    return { ...copy(project), media: media?.portable(project), savedAt: new Date().toISOString(), sourceUrl: catalog.sourceUrl || '', assets: [...new Set(project.slides.flatMap(s => s.objects.filter(o => o.assetId).map(o => o.assetId)))].map(id => { const a = assetMap.get(String(id)); return a ? { id: a.id, name: a.name, path: a.path, sourceUrl: a.sourceUrl } : { id }; }) };
+  }
+  function normalizeFrame(value) { return window.MINISH_FRAMES?.normalize(value) || { style: 'none', size: 0 }; }
+  function normalizeImageRotation(value) { return ((num(value) % 360) + 360) % 360; }
+  function assertPictureCount(slides) { if (new Set(slides.flatMap(slide => (slide.objects || []).filter(object => object.kind === 'image').map(object => object.imageId))).size > 100) throw new Error('A project can hold up to 100 different pictures. Save this project and start another one to add more.'); }
   function canvasFormat(value, strict = true) {
     const width = Number(value.width), height = Number(value.height), exportScale = Number(value.exportScale);
     const l = CANVAS_LIMITS;
@@ -235,6 +268,10 @@
   }
   function validateProject(data) {
     if (!data || data.format !== 'minish-cap-studio' || !Array.isArray(data.slides) || !data.slides.length || data.slides.length > 100) throw new Error('Choose a Minish Studio project JSON file.');
+    if (data.media) {
+      if (!media) throw new Error('Keep scene-media.js with the app to open projects with pictures.');
+      media.hydrate(data.media);
+    }
     const ids = new Set();
     data.slides.forEach((s, index) => {
       if (!s || !Array.isArray(s.objects) || s.objects.length > 30000) throw new Error('This project has an invalid scene.');
@@ -246,8 +283,9 @@
       s.name = String(s.name || 'Scene ' + (index + 1)).slice(0, 80);
       s.color = /^#[0-9a-f]{6}$/i.test(s.color) ? s.color : '#819452';
       s.transparent = !!s.transparent;
+      s.frame = normalizeFrame(s.frame);
       const objectIds = new Set();
-      s.objects = s.objects.filter(o => o && ['sprite', 'dialogue'].includes(o.kind)).map(o => {
+      s.objects = s.objects.filter(o => o && ['sprite', 'dialogue', 'image'].includes(o.kind)).map(o => {
         o.id = String(o.id || uid()); if (objectIds.has(o.id)) o.id = uid(); objectIds.add(o.id);
         o.x = clamp(num(o.x), -100000, 100000); o.y = clamp(num(o.y), -100000, 100000);
         o.scale = clamp(Math.round(num(o.scale, 1)), 1, 8); o.layer = LAYERS.includes(o.layer) ? o.layer : 'objects';
@@ -264,11 +302,18 @@
           if (o.pieceId != null) o.pieceId = String(o.pieceId).slice(0, 160);
           if (o.pieceName != null) o.pieceName = String(o.pieceName).slice(0, 160);
         }
-        else { o.text = String(o.text || '').slice(0, 5000); o.w = clamp(num(o.w, 192), 20, 2000); o.h = clamp(num(o.h, 58), 12, 2000); o.fontSize = clamp(num(o.fontSize, 9), 4, 48); o.color = /^#[0-9a-f]{6}$/i.test(o.color) ? o.color : '#fff7d3'; }
+        else if (o.kind === 'image') {
+          const imageId = String(o.imageId || '');
+          if (!media?.has(imageId)) throw new Error('This project is missing an embedded picture. Open the complete saved project file.');
+          return { id: o.id, kind: 'image', imageId, x: o.x, y: o.y, w: clamp(num(o.w, 100), 1, 32768), h: clamp(num(o.h, 100), 1, 32768), scale: 1, layer: o.layer,
+            rotation: normalizeImageRotation(o.rotation), flipX: !!o.flipX, flipY: !!o.flipY, opacity: clamp(num(o.opacity, 1), 0, 1), keepAspect: o.keepAspect !== false, frame: normalizeFrame(o.frame) };
+        }
+        else { o.text = String(o.text || '').slice(0, 5000); o.w = clamp(Math.round(num(o.w, 192)), 20, 8192); o.h = clamp(Math.round(num(o.h, 58)), 12, 8192); o.fontSize = clamp(num(o.fontSize, 9), 4, 48); o.color = /^#[0-9a-f]{6}$/i.test(o.color) ? o.color : '#fff7d3'; if ('fitText' in o) o.fitText = o.fitText !== false; }
         return o;
       });
     });
     data.name = String(data.name || 'My little adventure').slice(0, 80);
+    assertPictureCount(data.slides);
     if (!ids.has(data.activeSlide)) data.activeSlide = data.slides[0].id;
     return { format: 'minish-cap-studio', version: 1, name: data.name, activeSlide: data.activeSlide, slides: data.slides };
   }
@@ -617,15 +662,28 @@
   }
   function objectBounds(object) {
     const s = object.scale || 1, w = (object.kind === 'sprite' ? object.sw : object.w) * s, h = (object.kind === 'sprite' ? object.sh : object.h) * s;
+    if (object.kind === 'image') {
+      const angle = normalizeImageRotation(object.rotation) * Math.PI / 180, center = objectCenter(object), bw = Math.abs(w * Math.cos(angle)) + Math.abs(h * Math.sin(angle)), bh = Math.abs(w * Math.sin(angle)) + Math.abs(h * Math.cos(angle));
+      return { x: center.x - bw / 2, y: center.y - bh / 2, w: bw, h: bh };
+    }
     if (object.kind !== 'sprite' || !normalizeRotation(object.rotation)) return { x: object.x, y: object.y, w, h };
     const center = objectCenter(object), horizontal = rotateVector({ x: w, y: 0 }, object.rotation), vertical = rotateVector({ x: 0, y: h }, object.rotation);
     const bw = Math.abs(horizontal.x) + Math.abs(vertical.x), bh = Math.abs(horizontal.y) + Math.abs(vertical.y);
     return { x: center.x - bw / 2, y: center.y - bh / 2, w: bw, h: bh };
   }
   function objectContains(object, point) {
+    if (object.kind === 'image') { const local = imageLocalPoint(object, point); return local.x >= 0 && local.y >= 0 && local.x < object.w && local.y < object.h; }
     if (object.kind !== 'sprite') { const b = objectBounds(object); return point.x >= b.x && point.x < b.x + b.w && point.y >= b.y && point.y < b.y + b.h; }
     const local = rotatePoint(point, objectCenter(object), -normalizeRotation(object.rotation)), s = object.scale || 1;
     return local.x >= object.x - 1e-9 && local.x < object.x + object.sw * s - 1e-9 && local.y >= object.y - 1e-9 && local.y < object.y + object.sh * s - 1e-9;
+  }
+  function imageLocalPoint(object, point) {
+    const center = objectCenter(object), angle = -normalizeImageRotation(object.rotation) * Math.PI / 180, x = point.x - center.x, y = point.y - center.y;
+    return { x: x * Math.cos(angle) - y * Math.sin(angle) + object.w / 2, y: x * Math.sin(angle) + y * Math.cos(angle) + object.h / 2 };
+  }
+  function imagePoint(object, x, y) {
+    const center = objectCenter(object), angle = normalizeImageRotation(object.rotation) * Math.PI / 180, dx = x - object.w / 2, dy = y - object.h / 2;
+    return { x: center.x + dx * Math.cos(angle) - dy * Math.sin(angle), y: center.y + dx * Math.sin(angle) + dy * Math.cos(angle) };
   }
   const spriteGeometry = Object.freeze({ normalizeRotation, rotateVector, rotatePoint, center: objectCenter, point: spritePoint, localPoint: spriteLocalPoint, bounds: objectBounds, contains: objectContains });
   function orderedObjects(slide) { return LAYERS.flatMap(name => slide.objects.filter(o => o.layer === name)); }
@@ -650,7 +708,124 @@
     });
     return result;
   }
-  function drawObject(ctx, object) {
+  const dialogueMeasureContext = document.createElement('canvas').getContext('2d');
+  const dialogueLayouts = new Map();
+  function layoutDialogue(object) {
+    const text = String(object.text || ''), width = Math.max(1, num(object.w, 192)), height = Math.max(1, num(object.h, 58));
+    const padding = object.box === false ? 0 : Math.min(gameUI.dialogue?.padding || 10, Math.floor((Math.min(width, height) - 1) / 2));
+    const contentWidth = Math.max(1, width - padding * 2), contentHeight = Math.max(1, height - padding * 2);
+    const requested = clamp(Math.round(num(object.fontSize, 12)), 4, 48), hasFont = !!uiImage('font');
+    const key = JSON.stringify([text, width, height, requested, object.box !== false, object.fitText !== false, hasFont]);
+    if (dialogueLayouts.has(key)) return dialogueLayouts.get(key);
+    const ctx = dialogueMeasureContext, nominal = gameUI.font?.nominalSize || 12;
+    const originalScale = hasFont ? Math.max(1, Math.round(requested / nominal)) : 1;
+    const candidates = [requested];
+    if (object.fitText !== false) {
+      if (hasFont) { for (let scale = originalScale - 1; scale >= 1; scale--) candidates.push(scale * nominal); }
+      else { for (let size = requested - 1; size >= 4; size--) candidates.push(size); }
+    }
+    let layout;
+    for (const fontSize of candidates) {
+      ctx.font = fontSize + 'px ui-monospace, Menlo, Consolas, monospace';
+      const originalMetrics = gameTextMetrics(ctx, fontSize), advances = new Map();
+      for (const char of text) if (!advances.has(char)) advances.set(char, originalMetrics ? originalMetrics.advance(char) : ctx.measureText(char).width);
+      const advance = char => advances.get(char) ?? 0;
+      const measure = value => [...value].reduce((sum, char) => sum + advance(char), 0);
+      const metrics = originalMetrics ? { ...originalMetrics, advance, measure } : null;
+      const lines = wrapText(ctx, text, contentWidth, measure), lineHeight = metrics?.lineHeight || fontSize * 1.45;
+      const textWidth = Math.max(0, ...lines.map(measure)), textHeight = text ? Math.ceil(lines.length * lineHeight) : 0;
+      layout = { lines, scale: metrics?.scale || 1, fontSize, lineHeight, padding, contentWidth, contentHeight, textWidth, textHeight,
+        requiredHeight: Math.ceil(textHeight + padding * 2), overflow: textWidth > contentWidth + .01 || textHeight > contentHeight + .01,
+        shrunk: fontSize !== requested, metrics };
+      if (!layout.overflow) break;
+    }
+    if (dialogueLayouts.size >= 96) dialogueLayouts.delete(dialogueLayouts.keys().next().value);
+    dialogueLayouts.set(key, layout); return layout;
+  }
+  function getDialogueLayout(object = selected()) {
+    if (object?.kind !== 'dialogue') return null;
+    const { metrics, ...layout } = layoutDialogue(object); return copy(layout);
+  }
+  function updateDialogueLayoutStatus(object = selected()) {
+    const output = $('dialogueLayoutStatus'); if (!output || object?.kind !== 'dialogue') return;
+    const layout = layoutDialogue(object);
+    const message = !object.text ? 'Drag an edge or corner to resize this text box.' : layout.overflow ? 'Text needs more room. Widen the box or choose Fit box to text.'
+      : layout.lines.length + (layout.lines.length === 1 ? ' line' : ' lines') + (layout.shrunk ? ' · Text fitted to the box at ' + layout.scale + '×.' : ' · Text wraps to the box.');
+    if (output.textContent !== message) output.textContent = message;
+    output.setAttribute('data-overflow', String(layout.overflow));
+  }
+  function fitSelectedDialogueToText() {
+    const object = selected(); if (object?.kind !== 'dialogue') return null;
+    const padding = object.box === false ? 0 : gameUI.dialogue?.padding || 10;
+    const requested = layoutDialogue({ ...object, fitText: false, w: Math.max(40, object.w), h: 8192 });
+    const measure = requested.metrics?.measure || (text => { dialogueMeasureContext.font = requested.fontSize + 'px ui-monospace, Menlo, Consolas, monospace'; return dialogueMeasureContext.measureText(text).width; });
+    const minimum = Math.max(20, ...[...object.text].map(char => measure(char) + padding * 2));
+    const w = clamp(Math.ceil(Math.max(object.w, minimum)), 20, 8192);
+    const layout = layoutDialogue({ ...object, w, h: 8192, fitText: false });
+    return updateSelected({ w, h: clamp(layout.requiredHeight, 12, 8192) }, 'Text box fitted to your words.');
+  }
+  function inlineDialogueTarget() {
+    if (!inlineDialogue) return null;
+    return project.slides.find(slide => slide.id === inlineDialogue.sceneId)?.objects.find(object => object.id === inlineDialogue.objectId && object.kind === 'dialogue') || null;
+  }
+  function isInlineDialogueTarget(target) {
+    return !!target && (['inlineDialogueEditor', 'inlineDialogueText', 'finishInlineDialogueBtn', 'cancelInlineDialogueBtn', 'inlineDialogueToolbar'].includes(target.id) || !!target.closest?.('#inlineDialogueEditor'));
+  }
+  function positionInlineDialogueEditor() {
+    if (!inlineDialogue) return;
+    const object = inlineDialogueTarget(), editor = $('inlineDialogueEditor'), input = $('inlineDialogueText');
+    if (!object || scene().id !== inlineDialogue.sceneId || document.body.classList.contains('animation-mode')) { finishDialogueEditing(); return; }
+    const layout = layoutDialogue({ ...object, text: input.value }), scale = (object.scale || 1) * stageZoom;
+    const wrapPadding = num(parseFloat($('canvasWrap').style.padding));
+    const canvasRect = mainCanvas.getBoundingClientRect(), area = $('stageViewport').getBoundingClientRect(), vp = $('stageViewport');
+    const objectLeft = canvasRect.left + object.x * stageZoom, objectTop = canvasRect.top + object.y * stageZoom;
+    editor.style.left = (wrapPadding + object.x * stageZoom) + 'px'; editor.style.top = (wrapPadding + object.y * stageZoom) + 'px';
+    editor.style.width = Math.min(object.w * scale, vp.clientWidth) + 'px'; editor.style.height = Math.min(object.h * scale, vp.clientHeight) + 'px';
+    const width = Math.min(Math.max(96, layout.contentWidth * scale), Math.max(24, vp.clientWidth - 16));
+    const height = Math.min(Math.max(48, layout.contentHeight * scale), Math.max(24, vp.clientHeight - 58));
+    const left = clamp(objectLeft + layout.padding * scale, area.left + 8, area.left + vp.clientWidth - width - 8);
+    const top = clamp(objectTop + layout.padding * scale, area.top + 38, area.top + vp.clientHeight - height - 8);
+    Object.assign(input.style, { left: (left - objectLeft) + 'px', top: (top - objectTop) + 'px', width: width + 'px', height: height + 'px',
+      fontSize: Math.max(14, (gameUI.font ? (gameUI.font.cellHeight || 16) * layout.scale : layout.fontSize) * scale) + 'px',
+      lineHeight: Math.max(14, layout.lineHeight * scale) + 'px', color: object.color || '#fff7d3' });
+    const toolbar = $('inlineDialogueToolbar');
+    toolbar.style.left = (left - objectLeft) + 'px'; toolbar.style.top = (top - objectTop - 34) + 'px';
+  }
+  function editDialogue(id = selectedId) {
+    if (restoringPictures || document.body.classList.contains('animation-mode') || document.querySelector('dialog[open]')) return false;
+    const object = scene().objects.find(object => object.id === id && object.kind === 'dialogue');
+    const editor = $('inlineDialogueEditor'), input = $('inlineDialogueText'); if (!object || !editor || !input) return false;
+    if (inlineDialogue?.objectId === id && inlineDialogue.sceneId === scene().id) { input.focus({ preventScroll: true }); return true; }
+    finishDialogueEditing();
+    selectedId = object.id; layer = object.layer; setTool('select');
+    inlineDialogue = { sceneId: scene().id, objectId: object.id, original: object.text };
+    input.value = object.text; editor.hidden = false;
+    $('inlineDialogueHint').textContent = 'Enter adds a line. ' + (window.MINISH_CONTROLS?.modifierLabel || 'Ctrl / Command') + '+Enter applies. Escape cancels.';
+    $('finishInlineDialogueBtn').title = 'Apply text (' + (window.MINISH_CONTROLS?.modifierLabel || 'Ctrl / Command') + '+Enter)';
+    $('cancelInlineDialogueBtn').title = 'Cancel text edit (Esc)';
+    positionInlineDialogueEditor(); scheduleDraw(); input.focus({ preventScroll: true }); input.select();
+    status('Editing text on the canvas. Enter adds a line; Done applies; Esc cancels.'); return true;
+  }
+  function finishDialogueEditing(commit = true, focusCanvas = false) {
+    if (!inlineDialogue) return false;
+    const object = inlineDialogueTarget(), input = $('inlineDialogueText'), text = String(input?.value || '').slice(0, 5000);
+    inlineDialogue = null; if ($('inlineDialogueEditor')) $('inlineDialogueEditor').hidden = true;
+    if (commit && object && object.text !== text) { historyBefore(); object.text = text; changed('Text updated.'); }
+    else { scheduleDraw(); updateInspector(); if (!commit) status('Text edit cancelled.'); }
+    if ((focusCanvas || document.activeElement === input) && !document.body.classList.contains('animation-mode')) mainCanvas.focus({ preventScroll: true }); return true;
+  }
+  function drawObject(ctx, object, options = {}) {
+    if (object.kind === 'image') {
+      const image = media?.ready(object.imageId), angle = normalizeImageRotation(object.rotation), center = objectCenter(object);
+      ctx.save(); ctx.translate(center.x, center.y); ctx.rotate(angle * Math.PI / 180); ctx.translate(-object.w / 2, -object.h / 2);
+      if (image) {
+        ctx.save(); ctx.globalAlpha *= clamp(num(object.opacity, 1), 0, 1); ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = 'high';
+        ctx.translate(object.flipX ? object.w : 0, object.flipY ? object.h : 0); ctx.scale(object.flipX ? -1 : 1, object.flipY ? -1 : 1); ctx.drawImage(image, 0, 0, object.w, object.h); ctx.restore();
+      }
+      ctx.imageSmoothingEnabled = false;
+      window.MINISH_FRAMES?.draw(ctx, { x: 0, y: 0, w: object.w, h: object.h, ...normalizeFrame(object.frame) });
+      ctx.restore(); return;
+    }
     const s = object.scale || 1;
     const rotation = object.kind === 'sprite' ? normalizeRotation(object.rotation) : 0;
     ctx.save(); ctx.translate(rotation ? object.x : Math.round(object.x), rotation ? object.y : Math.round(object.y)); ctx.scale(s, s);
@@ -663,18 +838,18 @@
         else ctx.drawImage(source.image, source.sx, source.sy, source.sw, source.sh, 0, 0, object.sw, object.sh);
       }
     } else {
-      const w = object.w, h = object.h, pad = object.box === false ? 0 : gameUI.dialogue?.padding || 10;
+      const w = object.w, h = object.h, layout = layoutDialogue(object), pad = layout.padding;
       if (object.box !== false && !drawGameFrame(ctx, w, h)) {
         ctx.fillStyle = '#18263a'; ctx.fillRect(0, 3, w, h - 6); ctx.fillRect(3, 0, w - 6, h);
         ctx.fillStyle = '#d7c282'; ctx.fillRect(3, 1, w - 6, 2); ctx.fillRect(3, h - 3, w - 6, 2); ctx.fillRect(1, 3, 2, h - 6); ctx.fillRect(w - 3, 3, 2, h - 6);
         ctx.fillStyle = '#f8ecc2'; ctx.fillRect(4, 4, w - 8, 1); ctx.fillRect(4, 4, 1, h - 8); ctx.fillStyle = '#536784'; ctx.fillRect(4, h - 5, w - 8, 1); ctx.fillRect(w - 5, 4, 1, h - 8);
       }
+      if (options.hideDialogueText) { ctx.restore(); return; }
       ctx.beginPath(); ctx.rect(pad, pad, Math.max(1, w - pad * 2), Math.max(1, h - pad * 2)); ctx.clip();
-      ctx.font = object.fontSize + 'px ui-monospace, Menlo, Consolas, monospace'; ctx.textBaseline = 'top';
-      const metrics = gameTextMetrics(ctx, object.fontSize);
-      const lines = wrapText(ctx, object.text, Math.max(1, w - pad * 2), metrics?.measure);
-      lines.forEach((lineText, index) => {
-        const y = pad + Math.round(index * (metrics?.lineHeight || object.fontSize * 1.45));
+      ctx.font = layout.fontSize + 'px ui-monospace, Menlo, Consolas, monospace'; ctx.textBaseline = 'top';
+      const metrics = layout.metrics;
+      layout.lines.forEach((lineText, index) => {
+        const y = pad + Math.round(index * layout.lineHeight);
         if (metrics) drawGameText(ctx, lineText, pad, y, object.color || '#fff7d3', metrics);
         else { ctx.fillStyle = '#111c29'; ctx.fillText(lineText, pad + 1, y + 1); ctx.fillStyle = object.color || '#fff7d3'; ctx.fillText(lineText, pad, y); }
       });
@@ -685,8 +860,9 @@
     ctx.imageSmoothingEnabled = false; if (options.clear !== false) ctx.clearRect(0, 0, slide.width, slide.height);
     if (!slide.transparent) { ctx.fillStyle = slide.color; ctx.fillRect(0, 0, slide.width, slide.height); }
     for (const object of orderedObjects(slide)) {
-      try { drawObject(ctx, object); } catch (error) { if (!options.quiet) status(error.message); }
+      try { drawObject(ctx, object, { hideDialogueText: options.editing && inlineDialogue?.sceneId === slide.id && inlineDialogue?.objectId === object.id }); } catch (error) { if (!options.quiet) status(error.message); }
     }
+    window.MINISH_FRAMES?.draw(ctx, { x: 0, y: 0, w: slide.width, h: slide.height, ...normalizeFrame(slide.frame) });
     if (options.grid && $('sceneGrid').checked) {
       const step = snapStep(); ctx.save(); ctx.strokeStyle = '#12382d33'; ctx.lineWidth = .5;
       ctx.beginPath();
@@ -703,7 +879,8 @@
     const assets = [...new Set(slide.objects.filter(object => object.kind === 'sprite').map(renderedAssetId))]
       .map(id => [id, !!imageCache.get(id)?.ready]);
     const ui = slide.objects.some(object => object.kind === 'dialogue') ? [...uiImages].map(([name, record]) => [name, record.ready]) : [];
-    return JSON.stringify([slide, assets, ui, grid && $('sceneGrid').checked, grid && snapStep()]);
+    const pictures = slide.objects.filter(object => object.kind === 'image').map(object => [object.imageId, !!media?.ready(object.imageId)]);
+    return JSON.stringify([slide, assets, ui, pictures, grid && $('sceneGrid').checked, grid && snapStep(), grid && inlineDialogue?.sceneId === slide.id ? inlineDialogue.objectId : null]);
   }
   function drawPlacement() {
     const s = scene(), ctx = placementCtx, g = editorGutter, vp = $('stageViewport');
@@ -724,7 +901,7 @@
     for (const object of orderedObjects(s)) {
       const bounds = objectBounds(object);
       if ((bounds.x >= 0 && bounds.y >= 0 && bounds.x + bounds.w <= s.width && bounds.y + bounds.h <= s.height) || !intersectsView(bounds)) continue;
-      try { drawObject(ctx, object); } catch (_) {}
+      try { drawObject(ctx, object, { hideDialogueText: inlineDialogue?.sceneId === s.id && inlineDialogue?.objectId === object.id }); } catch (_) {}
     }
     ctx.restore();
     let preview = null;
@@ -738,9 +915,13 @@
     }
     if (preview && intersectsView(objectBounds(preview))) { ctx.save(); ctx.globalAlpha = .65; try { drawObject(ctx, preview); } catch (_) {} ctx.restore(); }
     const outline = preview || selected();
-    if (outline) {
+    if (outline && outline.id !== inlineDialogue?.objectId) {
       const b = objectBounds(outline); ctx.lineWidth = 1 / stageZoom; ctx.strokeStyle = '#fffbd7'; ctx.strokeRect(b.x, b.y, b.w, b.h);
       ctx.strokeStyle = '#2e624b'; ctx.setLineDash([3 / stageZoom, 3 / stageZoom]); ctx.strokeRect(b.x, b.y, b.w, b.h);
+      if (!preview && ['image', 'dialogue'].includes(outline.kind) && tool === 'select') {
+        ctx.setLineDash([]); const size = 8 / stageZoom;
+        for (const point of resizePoints(outline)) { ctx.fillStyle = '#fffbd7'; ctx.fillRect(point.x - size / 2, point.y - size / 2, size, size); ctx.strokeStyle = '#2e624b'; ctx.strokeRect(point.x - size / 2, point.y - size / 2, size, size); }
+      }
     }
     ctx.restore();
     const position = preview || (canvasDrag?.object) || (hover ? { x: Math.floor(hover.x), y: Math.floor(hover.y) } : selected());
@@ -804,10 +985,11 @@
     }
     updateViewCursor();
     const rasterKey = sceneRasterKey(s, true);
-    if (mainCanvas._minishRasterKey !== rasterKey) { drawScene(mainCtx, s, { grid: true }); mainCanvas._minishRasterKey = rasterKey; }
+    if (mainCanvas._minishRasterKey !== rasterKey) { drawScene(mainCtx, s, { grid: true, editing: true }); mainCanvas._minishRasterKey = rasterKey; }
     drawPlacement();
     updateZoomField();
     $('emptyNudge').hidden = s.objects.length > 0;
+    positionInlineDialogueEditor();
   }
   function renderSlides() {
     const list = $('slideList');
@@ -832,6 +1014,7 @@
     });
   }
   function updateInspector() {
+    if (inlineDialogue && (selectedId !== inlineDialogue.objectId || scene().id !== inlineDialogue.sceneId)) finishDialogueEditing();
     const s = scene(), object = selected();
     const styleBadge = $('sceneStyleBadge'); styleBadge.hidden = !s.generated;
     styleBadge.textContent = s.generated?.kind === 'world' ? 'Hyrule Easter eggs' : s.generated?.style === 'wild' ? 'Wild mashup' : 'Game-inspired';
@@ -845,13 +1028,13 @@
     $('nativeSize').textContent = s.width + ' × ' + s.height + ' native pixels · ' + s.exportScale + '× export';
     $('sceneSize').textContent = s.width + ' × ' + s.height + ' px · export ' + s.width * s.exportScale + ' × ' + s.height * s.exportScale;
     $('objectCount').textContent = s.objects.length + (s.objects.length === 1 ? ' piece' : ' pieces');
-    $('selectionHeading').textContent = object ? (object.kind === 'dialogue' ? 'Selected dialogue' : 'Selected piece') : 'Brush settings';
+    $('selectionHeading').textContent = object ? (object.kind === 'dialogue' ? 'Selected dialogue' : object.kind === 'image' ? 'Selected picture' : 'Selected piece') : 'Brush settings';
     $('deselectBtn').hidden = !object; $('positionControls').hidden = !object; $('dialogueSettings').hidden = !object || object.kind !== 'dialogue';
     if ($('sceneSelectionTools')) $('sceneSelectionTools').hidden = !object && !copiedObject;
     for (const id of ['sceneCopyBtn', 'sceneDuplicateBtn', 'sceneDeleteBtn']) if ($(id)) $(id).disabled = !object;
     if ($('scenePasteBtn')) $('scenePasteBtn').disabled = !copiedObject;
     const sourceAsset = object?.kind === 'sprite' ? assetMap.get(sourceIdFor(object)) || assetMap.get(String(object.assetId)) : null;
-    $('selectedDetails').textContent = object ? (object.kind === 'sprite' ? (object.pieceName || sourceAsset?.name || 'Missing sheet') + ' · ' + object.sw + ' × ' + object.sh + ' px' + (sourceAsset?.contributors ? ' · Sheet by ' + sourceAsset.contributors : '') : 'Your words, inside this little world.') : brush ? (brushPiece?.name || activeAsset.name) + ' · ' + brush.sw + ' × ' + brush.sh + ' px brush' : 'Choose a tile from the collection.';
+    $('selectedDetails').textContent = object ? (object.kind === 'sprite' ? (object.pieceName || sourceAsset?.name || 'Missing sheet') + ' · ' + object.sw + ' × ' + object.sh + ' px' + (sourceAsset?.contributors ? ' · Sheet by ' + sourceAsset.contributors : '') : object.kind === 'image' ? (media?.metadata(object.imageId)?.label || 'Your picture') + ' · Drag a corner to resize. Shift switches aspect lock.' : 'Double-click to edit. Drag an edge or corner to resize.') : brush ? (brushPiece?.name || activeAsset.name) + ' · ' + brush.sw + ' × ' + brush.sh + ' px brush' : 'Choose a tile from the collection.';
     $('objectScale').value = object ? (object.scale || 1) : paintScale;
     $('flipXBtn').classList.toggle('active', object ? !!object.flipX : flipX); $('flipYBtn').classList.toggle('active', object ? !!object.flipY : flipY);
     $('flipXBtn').disabled = object?.kind === 'dialogue'; $('flipYBtn').disabled = object?.kind === 'dialogue';
@@ -866,22 +1049,25 @@
       if (list._renderKey !== renderKey) {
         list._renderKey = renderKey; list.replaceChildren();
         const placeholder = document.createElement('option'); placeholder.value = ''; placeholder.textContent = s.objects.length ? 'Select any placed piece…' : 'No pieces placed yet'; list.append(placeholder);
-        orderedObjects(s).reverse().forEach(o => { const option = document.createElement('option'); option.value = o.id; option.textContent = (o.kind === 'dialogue' ? 'Dialogue: ' + o.text.replace(/\s+/g, ' ').slice(0, 30) : o.pieceName || assetMap.get(String(o.assetId))?.name || 'Sprite') + ' · ' + o.layer; list.append(option); });
+        orderedObjects(s).reverse().forEach(o => { const option = document.createElement('option'); option.value = o.id; option.textContent = (o.kind === 'dialogue' ? 'Dialogue: ' + o.text.replace(/\s+/g, ' ').slice(0, 30) : o.kind === 'image' ? media?.metadata(o.imageId)?.label || 'Picture' : o.pieceName || assetMap.get(String(o.assetId))?.name || 'Sprite') + ' · ' + o.layer; list.append(option); });
       }
       list.value = selectedId || ''; list.disabled = !s.objects.length;
     }
     if (object?.kind === 'dialogue') {
       if (document.activeElement !== $('dialogueText')) $('dialogueText').value = object.text;
-      $('dialogueSize').value = object.fontSize; $('dialogueWidth').value = object.w; $('dialogueHeight').value = object.h;
+      for (const [id, value] of [['dialogueSize', object.fontSize], ['dialogueWidth', object.w], ['dialogueHeight', object.h]]) if (document.activeElement !== $(id)) $(id).value = value;
       $('dialogueBox').checked = object.box !== false; $('dialogueColor').value = object.color || '#fff7d3';
+      if ($('dialogueFitText')) $('dialogueFitText').checked = object.fitText !== false;
+      updateDialogueLayoutStatus(object);
     }
     document.querySelectorAll('[data-layer]').forEach(b => b.classList.toggle('active', b.dataset.layer === (object?.layer || layer)));
     $('deleteSlide').disabled = false;
     if ($('deleteSceneBtn')) $('deleteSceneBtn').disabled = false;
     emit('minish:selection-changed', object || null);
   }
-  function refreshAll() { $('projectName').value = project.name; updateInspector(); updateHistory(); scheduleDraw(); }
+  function refreshAll() { $('projectName').value = project.name; updateInspector(); updateHistory(); scheduleDraw(); emit('minish:scene-changed', scene()); }
   function setTool(next, preserveSelection = false) {
+    if (inlineDialogue && next !== 'select') finishDialogueEditing();
     if (canvasDrag) endCanvasDrag();
     tool = next; hover = null; if (next !== 'select' && next !== 'hand' && !preserveSelection) selectedId = null;
     document.querySelectorAll('[data-tool]').forEach(b => { b.classList.toggle('active', b.dataset.tool === next); b.setAttribute('aria-pressed', String(b.dataset.tool === next)); });
@@ -901,6 +1087,22 @@
   function hitObject(point, restrictLayer = false) {
     return orderedObjects(scene()).reverse().find(o => (!restrictLayer || o.layer === layer) && objectContains(o, point));
   }
+  function imageCorners(object) { return [[0, 0], [1, 0], [1, 1], [0, 1]].map(([cx, cy]) => ({ ...imagePoint(object, cx * object.w, cy * object.h), cx, cy })); }
+  function resizePoints(object) {
+    if (object.kind === 'image') return imageCorners(object);
+    if (object.kind !== 'dialogue') return [];
+    const scale = object.scale || 1;
+    return [[0, 0], [.5, 0], [1, 0], [1, .5], [1, 1], [.5, 1], [0, 1], [0, .5]]
+      .map(([cx, cy]) => ({ x: object.x + cx * object.w * scale, y: object.y + cy * object.h * scale, cx, cy }));
+  }
+  function resizeCursor(handle) {
+    return handle.cx === .5 ? 'ns-resize' : handle.cy === .5 ? 'ew-resize' : handle.cx === handle.cy ? 'nwse-resize' : 'nesw-resize';
+  }
+  function selectedResizeHandle(point) {
+    const object = selected(); if (tool !== 'select' || !object) return null;
+    return resizePoints(object).map(handle => ({ ...handle, distance: Math.hypot(handle.x - point.x, handle.y - point.y) }))
+      .filter(handle => handle.distance <= 8 / stageZoom).sort((a, b) => a.distance - b.distance)[0] || null;
+  }
   function stampAt(x, y) {
     if (!brush || !activeAsset || !currentImage) return false;
     x = clamp(Math.round(x), -100000, 100000); y = clamp(Math.round(y), -100000, 100000);
@@ -919,6 +1121,9 @@
     scene().objects = scene().objects.filter(o => o.id !== object.id); if (selectedId === object.id) selectedId = null;
   }
   function beginCanvasDrag(event) {
+    if (isInlineDialogueTarget(event.target)) return;
+    if (inlineDialogue) finishDialogueEditing();
+    if (restoringPictures) return;
     if (event.button !== 0 || event.ctrlKey || event.metaKey || !canZoomInput(event)) return; event.preventDefault(); mainCanvas.focus({ preventScroll: true });
     if (tool === 'hand') {
       if (fitMode) preparePanSpace();
@@ -928,6 +1133,16 @@
     }
     const p = scenePoint(event); hover = null; (event.currentTarget || mainCanvas).setPointerCapture(event.pointerId);
     canvasDrag = { start: p, history: false, visited: new Set(), last: p };
+    const resizeHandle = selectedResizeHandle(p);
+    if (resizeHandle) {
+      const object = selected(), origin = copy(object);
+      if (object.kind === 'dialogue') {
+        canvasDrag.object = object; canvasDrag.dialogueResize = { origin, cx: resizeHandle.cx, cy: resizeHandle.cy, offset: { x: resizeHandle.x - p.x, y: resizeHandle.y - p.y } };
+        mainCanvas.style.cursor = resizeCursor(resizeHandle); scheduleDraw(); return;
+      }
+      canvasDrag.object = object; canvasDrag.resize = { origin, cx: resizeHandle.cx, cy: resizeHandle.cy, offset: { x: resizeHandle.x - p.x, y: resizeHandle.y - p.y }, fixed: imagePoint(origin, (1 - resizeHandle.cx) * origin.w, (1 - resizeHandle.cy) * origin.h) };
+      mainCanvas.style.cursor = resizeCursor(resizeHandle); changed(); return;
+    }
     if (tool === 'paint') {
       if (!brush) { canvasDrag = null; toast('Choose a sheet and select a tile first.'); return; }
       selectedId = null; stampAt(snapCoord(p.x, false, p.precise), snapCoord(p.y, false, p.precise));
@@ -946,7 +1161,32 @@
       scheduleDraw(); return;
     }
     const p = scenePoint(event); hover = p;
-    if (!canvasDrag) { scheduleDraw(); return; }
+    if (!canvasDrag) { const handle = selectedResizeHandle(p); mainCanvas.style.cursor = handle ? resizeCursor(handle) : tool === 'select' ? 'default' : mainCanvas.style.cursor; scheduleDraw(); return; }
+    if (canvasDrag.dialogueResize) {
+      const { origin, cx, cy, offset } = canvasDrag.dialogueResize, scale = origin.scale || 1;
+      const right = origin.x + origin.w * scale, bottom = origin.y + origin.h * scale;
+      let { x, y, w, h } = origin;
+      if (cx !== .5) { w = clamp(Math.round((cx === 0 ? right - p.x - offset.x : p.x + offset.x - origin.x) / scale), 20, 8192); if (cx === 0) x = right - w * scale; }
+      if (cy !== .5) { h = clamp(Math.round((cy === 0 ? bottom - p.y - offset.y : p.y + offset.y - origin.y) / scale), 12, 8192); if (cy === 0) y = bottom - h * scale; }
+      if (canvasDrag.history || x !== origin.x || y !== origin.y || w !== origin.w || h !== origin.h) {
+        if (!canvasDrag.history) { historyBefore(); canvasDrag.history = true; }
+        Object.assign(canvasDrag.object, { x: clamp(x, -100000, 100000), y: clamp(y, -100000, 100000), w, h }); changed();
+      }
+      return;
+    }
+    if (canvasDrag.resize) {
+      const { origin, cx, cy, fixed, offset } = canvasDrag.resize, angle = normalizeImageRotation(origin.rotation) * Math.PI / 180, dx = p.x + offset.x - fixed.x, dy = p.y + offset.y - fixed.y;
+      const sx = cx ? 1 : -1, sy = cy ? 1 : -1;
+      let w = Math.max(1, (dx * Math.cos(angle) + dy * Math.sin(angle)) * sx), h = Math.max(1, (-dx * Math.sin(angle) + dy * Math.cos(angle)) * sy);
+      if ((origin.keepAspect !== false) !== !!event.shiftKey) { const ratio = origin.w / origin.h; h = Math.max(1, 1 / ratio, (w * ratio + h) / (ratio * ratio + 1)); w = h * ratio; }
+      const factor = Math.min(1, 32768 / w, 32768 / h); w *= factor; h *= factor;
+      const rx = sx * w / 2, ry = sy * h / 2, center = { x: fixed.x + rx * Math.cos(angle) - ry * Math.sin(angle), y: fixed.y + rx * Math.sin(angle) + ry * Math.cos(angle) };
+      if (canvasDrag.history || Math.abs(w - origin.w) + Math.abs(h - origin.h) > .1) {
+        if (!canvasDrag.history) { historyBefore(); canvasDrag.history = true; }
+        Object.assign(canvasDrag.object, { w, h, x: clamp(center.x - w / 2, -100000, 100000), y: clamp(center.y - h / 2, -100000, 100000) }); changed();
+      }
+      return;
+    }
     if (tool === 'paint') {
       const prev = canvasDrag.last, step = !p.precise && $('snapEnabled').checked ? snapStep() : Math.max(1, Math.min(brush.sw, brush.sh) * paintScale);
       const count = Math.min(4096, Math.max(1, Math.ceil(Math.max(Math.abs(p.x - prev.x), Math.abs(p.y - prev.y)) / step)));
@@ -967,6 +1207,43 @@
   mainCanvas.addEventListener('pointerleave', () => { hover = null; if (!canvasDrag) scheduleDraw(); });
   mainCanvas.addEventListener('pointerdown', beginCanvasDrag); mainCanvas.addEventListener('pointermove', moveCanvasDrag);
   const viewport = $('stageViewport');
+  function doubleClickDialogue(event) {
+    if (tool !== 'select' || !canZoomInput(event) || event.button !== 0 || event.altKey || event.ctrlKey || event.metaKey) return;
+    const object = hitObject(scenePoint(event));
+    if (object?.kind === 'dialogue') { event.preventDefault(); event.stopPropagation?.(); editDialogue(object.id); }
+  }
+  mainCanvas.addEventListener('dblclick', doubleClickDialogue);
+  viewport.addEventListener('dblclick', event => { if (event.target !== mainCanvas && !isInlineDialogueTarget(event.target)) doubleClickDialogue(event); });
+  mainCanvas.addEventListener('keydown', event => {
+    if ((event.key === 'Enter' || event.key === 'F2') && !event.ctrlKey && !event.metaKey && !event.altKey && !event.isComposing && event.keyCode !== 229 && tool === 'select' && selected()?.kind === 'dialogue') {
+      event.preventDefault(); event.stopPropagation?.(); editDialogue();
+    }
+  });
+  const inlineInput = $('inlineDialogueText'), inlineEditor = $('inlineDialogueEditor');
+  if (inlineInput && inlineEditor) {
+    inlineEditor.addEventListener('pointerdown', event => event.stopPropagation?.());
+    inlineEditor.addEventListener('dblclick', event => event.stopPropagation?.());
+    $('inlineDialogueToolbar').addEventListener('pointerdown', event => { event.preventDefault(); event.stopPropagation?.(); });
+    inlineInput.addEventListener('input', () => {
+      if (!inlineDialogue) return;
+      inlineInput.value = inlineInput.value.slice(0, 5000);
+      if (document.activeElement !== $('dialogueText')) $('dialogueText').value = inlineInput.value;
+      const object = inlineDialogueTarget(); if (object) updateDialogueLayoutStatus({ ...object, text: inlineInput.value });
+      positionInlineDialogueEditor();
+    });
+    inlineInput.addEventListener('keydown', event => {
+      if (event.isComposing || event.keyCode === 229) return;
+      if (event.key === 'Escape' || event.key === 'Enter' && (event.ctrlKey || event.metaKey) && !event.altKey) {
+        event.preventDefault(); event.stopPropagation?.(); finishDialogueEditing(event.key !== 'Escape', true);
+      }
+    });
+    inlineInput.addEventListener('blur', event => { if (!isInlineDialogueTarget(event.relatedTarget)) finishDialogueEditing(); });
+    inlineEditor.addEventListener('focusout', event => { if (!isInlineDialogueTarget(event.relatedTarget)) finishDialogueEditing(); });
+    $('finishInlineDialogueBtn').addEventListener('click', () => finishDialogueEditing(true, true));
+    $('cancelInlineDialogueBtn').addEventListener('click', () => finishDialogueEditing(false, true));
+    document.addEventListener('pointerdown', event => { if (inlineDialogue && !isInlineDialogueTarget(event.target)) finishDialogueEditing(); }, true);
+  }
+  $('editDialogueOnCanvasBtn')?.addEventListener('click', () => editDialogue());
   viewport.addEventListener('scroll', () => { if (!document.body.classList.contains('animation-mode')) scheduleDraw(); }, { passive: true });
   function zoomCenter() { const rect = viewport.getBoundingClientRect(); return { x: rect.left + viewport.clientWidth / 2, y: rect.top + viewport.clientHeight / 2 }; }
   function captureZoomAnchor(center) {
@@ -1050,7 +1327,7 @@
     if (canZoomInput(event)) event?.preventDefault();
   }
   viewport.addEventListener('gestureend', finishGestureZoom, { passive: false });
-  document.addEventListener('minish:workspace-changed', event => { if (event.detail?.mode === 'animation') { finishGestureZoom(); endCanvasDrag(); } });
+  document.addEventListener('minish:workspace-changed', event => { if (event.detail?.mode === 'animation') { finishDialogueEditing(); finishGestureZoom(); endCanvasDrag(); } });
   for (const [type, handler] of [['pointerdown', beginCanvasDrag], ['pointermove', moveCanvasDrag], ['pointerup', endCanvasDrag], ['pointercancel', endCanvasDrag]]) {
     viewport.addEventListener(type, event => { if (event.target !== mainCanvas) handler(event); });
   }
@@ -1075,17 +1352,100 @@
   });
   function updateSelected(patch, message = 'Piece updated.') {
     const object = selected(); if (!object) return null;
+    if (object.kind === 'image') return updateSelectedImage(patch, message);
     const safe = { ...patch };
     for (const key of ['x', 'y']) if (key in safe) {
       if (!Number.isFinite(Number(safe[key])) || String(safe[key]).trim() === '') throw new Error('Use a number for the piece position.');
       safe[key] = clamp(Math.round(Number(safe[key])), -100000, 100000);
     }
     if ('scale' in safe) safe.scale = clamp(Math.round(num(safe.scale, 1)), 1, 8);
+    if (object.kind === 'dialogue') {
+      for (const [key, minimum] of [['w', 20], ['h', 12], ['fontSize', 4]]) if (key in safe) {
+        if (!Number.isFinite(Number(safe[key])) || String(safe[key]).trim() === '') throw new Error('Use a number for the text box size.');
+        safe[key] = clamp(Math.round(Number(safe[key])), minimum, key === 'fontSize' ? 48 : 8192);
+      }
+      if ('fitText' in safe) safe.fitText = safe.fitText !== false;
+      if ('text' in safe) safe.text = String(safe.text || '').slice(0, 5000);
+    }
     if ('rotation' in safe) { if (object.kind !== 'sprite') return copy(object); safe.rotation = normalizeRotation(safe.rotation); }
     if ('layer' in safe && !LAYERS.includes(safe.layer)) throw new Error('Choose Terrain, Objects or Overlay.');
     for (const key of ['flipX', 'flipY']) if (key in safe) safe[key] = !!safe[key];
     historyBefore(); Object.assign(object, safe); if (safe.layer) layer = safe.layer; changed(message); return copy(object);
   }
+  function imagePlacement(metadata, slide, fit = 1) {
+    const factor = Math.min(slide.width * fit / metadata.width, slide.height * fit / metadata.height);
+    const w = metadata.width * factor, h = metadata.height * factor;
+    return { id: uid(), kind: 'image', imageId: metadata.id, x: (slide.width - w) / 2, y: (slide.height - h) / 2, w, h,
+      scale: 1, rotation: 0, flipX: false, flipY: false, opacity: 1, keepAspect: true, layer: 'objects', frame: normalizeFrame() };
+  }
+  async function importImages(files, options = {}) {
+    if (restoringPictures) await window.MINISH_STUDIO.storageReady;
+    if (!media) throw new Error('Keep scene-media.js with Minish Studio to add pictures.');
+    const placement = options.placement || 'current';
+    if (!['current', 'carousel'].includes(placement)) throw new Error('Choose the current scene or a picture carousel.');
+    const sourceProject = project, targetId = scene().id, fileList = Array.from(files || []);
+    const needed = placement === 'carousel' ? fileList.length - (scene().objects.length ? 0 : 1) : 0;
+    if (project.slides.length + needed > 100) throw new Error('A project can hold up to 100 scenes. Choose fewer pictures.');
+    const pictures = await media.importFiles(fileList);
+    assertPictureCount([...project.slides, { objects: pictures.map(picture => ({ kind: 'image', imageId: picture.id })) }]);
+    if (sourceProject !== project || scene().id !== targetId) throw new Error('The scene changed while the pictures opened. Add them again in the scene you want.');
+    if (placement === 'current' && scene().objects.length + pictures.length > 30000) throw new Error('This scene already has too many pieces. Add the pictures to another scene.');
+    historyBefore(); const slideIds = [];
+    if (placement === 'carousel') {
+      const reference = scene(), start = project.slides.findIndex(slide => slide.id === reference.id) + 1;
+      let offset = 0;
+      pictures.forEach((picture, index) => {
+        const target = index === 0 && !reference.objects.length ? reference : newSlide(project.slides.length + offset + 1, reference.preset, reference);
+        if (target !== reference) { target.frame = copy(normalizeFrame(reference.frame)); project.slides.splice(start + offset++, 0, target); }
+        target.name = 'Picture ' + (index + 1); target.objects.push(imagePlacement(picture, target)); slideIds.push(target.id);
+      });
+      project.activeSlide = slideIds[0]; selectedId = scene().objects.at(-1)?.id || null;
+    } else {
+      const target = scene();
+      pictures.forEach((picture, index) => { const object = imagePlacement(picture, target, .9); object.x += index * 4; object.y += index * 4; target.objects.push(object); selectedId = object.id; });
+      slideIds.push(target.id);
+    }
+    layer = 'objects'; hover = null; fitMode = true; setTool('select'); changed(pictures.length === 1 ? 'Picture added. Drag a corner to resize it.' : pictures.length + ' pictures added.');
+    emit('minish:images-changed', media.list());
+    await persistProject(copy(project), saveRevision, Date.now());
+    return { count: pictures.length, slideIds };
+  }
+  function updateSelectedImage(patch = {}, message = 'Picture updated.') {
+    const object = selected(); if (object?.kind !== 'image') return null;
+    const safe = {};
+    const numeric = (value, label, minimum, maximum) => { if (!Number.isFinite(Number(value)) || String(value).trim() === '') throw new Error('Use a number for the picture ' + label + '.'); return clamp(Number(value), minimum, maximum); };
+    for (const key of ['x', 'y']) if (key in patch) safe[key] = numeric(patch[key], 'position', -100000, 100000);
+    if ('rotation' in patch) safe.rotation = normalizeImageRotation(numeric(patch.rotation, 'rotation', -100000, 100000));
+    if ('opacity' in patch) safe.opacity = numeric(patch.opacity, 'opacity', 0, 1);
+    for (const key of ['flipX', 'flipY', 'keepAspect']) if (key in patch) safe[key] = !!patch[key];
+    if ('layer' in patch) { if (!LAYERS.includes(patch.layer)) throw new Error('Choose Terrain, Objects or Overlay.'); safe.layer = patch.layer; }
+    if ('frame' in patch) safe.frame = normalizeFrame(patch.frame);
+    const width = patch.width ?? patch.w, height = patch.height ?? patch.h, locked = patch.keepAspect ?? object.keepAspect ?? true;
+    if (width != null || height != null || 'scale' in patch) {
+      const ratio = object.w / object.h;
+      let w = width == null ? object.w : numeric(width, 'width', 1, 32768), h = height == null ? object.h : numeric(height, 'height', 1, 32768);
+      if ('scale' in patch) { const factor = numeric(patch.scale, 'scale', .01, 100); w = object.w * factor; h = object.h * factor; }
+      if (locked && !('scale' in patch)) { if (width != null) h = w / ratio; else w = h * ratio; }
+      if (w < 1 || h < 1 || w > 32768 || h > 32768) throw new Error('Keep each picture side between 1 and 32,768 canvas pixels.');
+      safe.w = w; safe.h = h; safe.scale = 1;
+      if (!('x' in safe)) safe.x = object.x + (object.w - w) / 2;
+      if (!('y' in safe)) safe.y = object.y + (object.h - h) / 2;
+    }
+    if (Object.entries(safe).every(([key, value]) => JSON.stringify(object[key]) === JSON.stringify(value))) return copy(object);
+    historyBefore(); Object.assign(object, safe); layer = object.layer; changed(message); return copy(object);
+  }
+  function fitSelectedImage(mode = 'contain') {
+    const object = selected(); if (object?.kind !== 'image') return null;
+    if (!['contain', 'cover'].includes(mode)) throw new Error('Choose Fit or Fill.');
+    const slide = scene(), factor = Math[mode === 'cover' ? 'max' : 'min'](slide.width / object.w, slide.height / object.h);
+    const w = object.w * factor, h = object.h * factor;
+    return updateSelectedImage({ width: w, height: h, x: (slide.width - w) / 2, y: (slide.height - h) / 2, keepAspect: object.keepAspect !== false }, mode === 'cover' ? 'Picture fills the canvas.' : 'Picture fits inside the canvas.');
+  }
+  function setSceneFrame(config) {
+    const frame = normalizeFrame(config); if (JSON.stringify(normalizeFrame(scene().frame)) === JSON.stringify(frame)) return copy(frame);
+    historyBefore(); scene().frame = frame; changed(frame.style === 'none' ? 'Canvas frame removed.' : 'Canvas frame added.'); return copy(frame);
+  }
+  function setImageFrame(config) { return updateSelectedImage({ frame: normalizeFrame(config) }, 'Picture frame updated.'); }
   function deleteSelected() { const object = selected(); if (!object) return false; historyBefore(); scene().objects = scene().objects.filter(o => o.id !== object.id); selectedId = null; changed('Piece deleted. Undo brings it back.'); return true; }
   function duplicateObject() { const object = selected(); if (!object) return null; historyBefore(); const duplicate = { ...copy(object), id: uid(), x: clamp(object.x + snapStep(), -100000, 100000), y: clamp(object.y + snapStep(), -100000, 100000) }; scene().objects.push(duplicate); selectedId = duplicate.id; changed('Piece duplicated.'); return copy(duplicate); }
   function copySelected(cut = false) {
@@ -1097,17 +1457,19 @@
   function pasteSelected() {
     if (!copiedObject) { status('Copy a piece first, then paste it into a scene.'); return null; }
     if (scene().objects.length >= 30000) { toast('This scene already has 30,000 pieces. Delete a piece or use another scene.'); return null; }
+    if (copiedObject.kind === 'image') { try { assertPictureCount([...project.slides, { objects: [copiedObject] }]); } catch (error) { toast(error.message); return null; } }
     const offset = (pasteCount++ + (copiedByCut ? 0 : 1)) * snapStep();
     const object = { ...copy(copiedObject), id: uid(), x: clamp(copiedObject.x + offset, -100000, 100000), y: clamp(copiedObject.y + offset, -100000, 100000) };
     historyBefore(); scene().objects.push(object); selectedId = object.id; layer = object.layer; setTool('select'); changed('Piece pasted. Drag it into place.'); return copy(object);
   }
   function addDialogue() {
     historyBefore(); const s = scene();
-    const object = { id: uid(), kind: 'dialogue', x: Math.min(12, Math.max(0, s.width - 20)), y: Math.max(8, s.height - 74), w: Math.max(20, s.width - 24), h: 58, text: "A little adventure,\na story of your own.", fontSize: 12, color: '#fff7d3', box: true, layer: 'overlay', scale: 1 };
+    const object = { id: uid(), kind: 'dialogue', x: Math.min(12, Math.max(0, s.width - 20)), y: Math.max(8, s.height - 74), w: Math.max(20, s.width - 24), h: 58, text: "A little adventure,\na story of your own.", fontSize: 12, color: '#fff7d3', box: true, fitText: true, layer: 'overlay', scale: 1 };
     s.objects.push(object); layer = 'overlay'; selectedId = object.id; setTool('select'); changed('Dialogue added. Edit your words on the right.'); $('dialogueText').focus(); $('dialogueText').select();
   }
-  function switchSlide(id) { if (project.activeSlide === id) return; project.activeSlide = id; selectedId = null; hover = null; gestureZoom = null; fitMode = true; refreshAll(); scheduleSave(); }
+  function switchSlide(id) { if (restoringPictures || project.activeSlide === id) return; finishDialogueEditing(); project.activeSlide = id; selectedId = null; hover = null; gestureZoom = null; fitMode = true; refreshAll(); scheduleSave(); }
   function addSlide(duplicate = false) {
+    if (project.slides.length >= 100) { toast('This project already has 100 scenes. Save it and start another project to add more.'); return null; }
     historyBefore(); const s = duplicate ? { ...copy(scene()), id: uid(), name: scene().name + ' copy' } : newSlide(project.slides.length + 1, scene().preset || 'portrait', scene());
     if (duplicate) s.objects.forEach(o => { o.id = uid(); });
     const index = project.slides.findIndex(s => s.id === project.activeSlide); project.slides.splice(index + 1, 0, s); project.activeSlide = s.id; selectedId = null; gestureZoom = null; fitMode = true;
@@ -1144,6 +1506,7 @@
     if (required.some(id => !assetMap.has(id))) throw new Error('A required scene asset is missing. Reopen the complete app folder and try again.');
     await Promise.all(required.map(imageFor));
     if (project.slides.length >= 100) throw new Error('This project already has 100 scenes.');
+    assertPictureCount([...project.slides, checked]);
     historyBefore();
     const index = project.slides.findIndex(slide => slide.id === project.activeSlide);
     project.slides.splice(index + 1, 0, checked); project.activeSlide = checked.id;
@@ -1163,6 +1526,7 @@
     if (required.some(id => !assetMap.has(id))) throw new Error('A required scene asset is missing. Reopen the complete app folder and try again.');
     await Promise.all(required.map(imageFor));
     if (scene() !== target || JSON.stringify(target) !== before) throw new Error('The scene changed while the adventure was opening. Click Surprise me again to retry.');
+    assertPictureCount([...project.slides.filter(slide => slide !== target), checked]);
     historyBefore();
     project.slides[project.slides.indexOf(target)] = checked;
     selectedId = null; hover = null; gestureZoom = null; fitMode = true; refreshAll(); scheduleSave();
@@ -1224,23 +1588,47 @@
   }
 
   async function exportSlide(slide) {
+    if (inlineDialogue) {
+      const editing = { ...inlineDialogue }, draft = String($('inlineDialogueText').value).slice(0, 5000);
+      finishDialogueEditing();
+      if (slide.id === editing.sceneId) slide = { ...slide, objects: slide.objects.map(object => object.id === editing.objectId && object.text === editing.original ? { ...object, text: draft } : object) };
+    }
     canvasFormat(slide);
     const ids = [...new Set(slide.objects.filter(o => o.assetId).map(renderedAssetId))]; await Promise.all(ids.map(imageFor));
+    await Promise.all(slide.objects.filter(object => object.kind === 'image').map(object => media.image(object.imageId)));
     if (slide.objects.some(o => o.kind === 'dialogue')) await prepareGameUI();
     const canvas = document.createElement('canvas'); canvas.width = slide.width * slide.exportScale; canvas.height = slide.height * slide.exportScale;
-    const nativeFirst = slide.exportScale > 1 && slide.objects.some(object => object.kind === 'sprite' && normalizeRotation(object.rotation));
-    const raster = nativeFirst ? document.createElement('canvas') : canvas;
-    if (nativeFirst) { raster.width = slide.width; raster.height = slide.height; }
-    const ctx = raster.getContext('2d'); ctx.imageSmoothingEnabled = false; ctx.scale(nativeFirst ? 1 : slide.exportScale, nativeFirst ? 1 : slide.exportScale);
-    // Render artwork without editor grid, selection handles or cursor previews.
-    ctx.clearRect(0, 0, slide.width, slide.height);
-    if (!slide.transparent) { ctx.fillStyle = slide.color; ctx.fillRect(0, 0, slide.width, slide.height); }
-    for (const object of orderedObjects(slide)) drawObject(ctx, object);
-    if (nativeFirst) { const output = canvas.getContext('2d'); output.imageSmoothingEnabled = false; output.drawImage(raster, 0, 0, canvas.width, canvas.height); }
+    drawExportCanvas(canvas, slide, slide.exportScale);
     return await new Promise((resolve, reject) => {
       try { canvas.toBlob(blob => blob ? resolve(blob) : reject(new Error('Could not make the PNG.')), 'image/png'); }
       catch (_) { reject(new Error('The browser blocked local image export. Open the supplied studio launcher, then export again.')); }
     });
+  }
+  function drawExportCanvas(canvas, slide, scale) {
+    const output = canvas.getContext('2d'); output.imageSmoothingEnabled = false;
+    if (scale === 1) { drawScene(output, slide, { quiet: true }); return; }
+    output.clearRect(0, 0, canvas.width, canvas.height);
+    if (!slide.transparent) { output.fillStyle = slide.color; output.fillRect(0, 0, canvas.width, canvas.height); }
+    // Pixel art is composed at native resolution. Pictures are drawn between
+    // those layers at the final PNG resolution, retaining their source detail.
+    const pixels = document.createElement('canvas'); pixels.width = slide.width; pixels.height = slide.height;
+    const pixelContext = pixels.getContext('2d'); pixelContext.imageSmoothingEnabled = false;
+    let pending = false;
+    const flush = () => { if (!pending) return; output.imageSmoothingEnabled = false; output.drawImage(pixels, 0, 0, canvas.width, canvas.height); pixelContext.clearRect(0, 0, pixels.width, pixels.height); pending = false; };
+    for (const object of orderedObjects(slide)) {
+      if (object.kind === 'image') {
+        flush();
+        output.save(); output.scale(scale, scale); drawObject(output, { ...object, frame: { style: 'none', size: 0 } }); output.restore();
+        // The decorative border uses the same crisp native pixels as sprites.
+        if (normalizeFrame(object.frame).style !== 'none') {
+          const center = objectCenter(object); pixelContext.save(); pixelContext.translate(center.x, center.y); pixelContext.rotate(normalizeImageRotation(object.rotation) * Math.PI / 180); pixelContext.translate(-object.w / 2, -object.h / 2);
+          window.MINISH_FRAMES?.draw(pixelContext, { x: 0, y: 0, w: object.w, h: object.h, ...normalizeFrame(object.frame) }); pixelContext.restore(); pending = true;
+        }
+      } else { drawObject(pixelContext, object); pending = true; }
+    }
+    window.MINISH_FRAMES?.draw(pixelContext, { x: 0, y: 0, w: slide.width, h: slide.height, ...normalizeFrame(slide.frame) });
+    if (normalizeFrame(slide.frame).style !== 'none') pending = true;
+    flush();
   }
   async function prepareScene(value) {
     if (!value || !Array.isArray(value.objects)) throw new Error('Choose a valid scene to render.');
@@ -1250,6 +1638,7 @@
     const ids = [...new Set(prepared.objects.filter(object => object.kind === 'sprite').map(renderedAssetId))];
     if (ids.some(id => !assetMap.has(String(id)))) throw new Error('A required animation image is missing from this app folder.');
     await Promise.all(ids.map(imageFor));
+    await Promise.all(prepared.objects.filter(object => object.kind === 'image').map(object => media.image(object.imageId)));
     if (prepared.objects.some(object => object.kind === 'dialogue')) await prepareGameUI();
     return prepared;
   }
@@ -1258,12 +1647,7 @@
     canvasFormat({ ...value, exportScale: scale });
     const prepared = await prepareScene(value), canvas = document.createElement('canvas');
     canvas.width = prepared.width * scale; canvas.height = prepared.height * scale;
-    const nativeFirst = scale > 1 && prepared.objects.some(object => object.kind === 'sprite' && normalizeRotation(object.rotation));
-    const raster = nativeFirst ? document.createElement('canvas') : canvas;
-    if (nativeFirst) { raster.width = prepared.width; raster.height = prepared.height; }
-    const ctx = raster.getContext('2d'); ctx.imageSmoothingEnabled = false; ctx.scale(nativeFirst ? 1 : scale, nativeFirst ? 1 : scale);
-    drawScene(ctx, prepared, { quiet: true });
-    if (nativeFirst) { const output = canvas.getContext('2d'); output.imageSmoothingEnabled = false; output.drawImage(raster, 0, 0, canvas.width, canvas.height); }
+    drawExportCanvas(canvas, prepared, scale);
     return canvas;
   }
   // A small uncompressed ZIP writer keeps carousel exports offline and dependency free.
@@ -1288,7 +1672,7 @@
       if (all) {
         const files = [];
         for (let i = 0; i < project.slides.length; i++) { const s = project.slides[i]; status('Rendering scene ' + (i + 1) + ' of ' + project.slides.length + '…'); const blob = await exportSlide(s); files.push({ name: String(i + 1).padStart(2, '0') + '-' + cleanFilename(s.name) + '.png', data: new Uint8Array(await blob.arrayBuffer()) }); }
-        files.push({ name: cleanFilename(project.name) + '.minish.json', data: new TextEncoder().encode(JSON.stringify(project, null, 2)) });
+        files.push({ name: cleanFilename(project.name) + '.minish.json', data: new TextEncoder().encode(JSON.stringify(portableProject(), null, 2)) });
         download(makeZip(files), cleanFilename(project.name) + '-carousel.zip'); toast('Carousel exported: ' + project.slides.length + ' PNGs and your editable project.');
       } else {
         const s = scene(), blob = await exportSlide(s); download(blob, cleanFilename(project.name) + '-' + cleanFilename(s.name) + '.png'); toast('PNG exported at ' + s.width * s.exportScale + ' × ' + s.height * s.exportScale + ' pixels.');
@@ -1342,7 +1726,7 @@
   $('flipXBtn').addEventListener('click', () => { if (selected()) updateSelected({ flipX: !selected().flipX }); else { flipX = !flipX; updateInspector(); scheduleDraw(); } });
   $('flipYBtn').addEventListener('click', () => { if (selected()) updateSelected({ flipY: !selected().flipY }); else { flipY = !flipY; updateInspector(); scheduleDraw(); } });
   function setSpriteRotation(value) {
-    const angle = normalizeRotation(value);
+    const angle = selected()?.kind === 'image' ? normalizeImageRotation(value) : normalizeRotation(value);
     if (selected()) updateSelected({ rotation: angle }, 'Piece rotated to ' + angle + '°.');
     else { paintRotation = angle; updateInspector(); scheduleDraw(); status('Brush rotation: ' + angle + '°.'); }
   }
@@ -1355,7 +1739,7 @@
     $(id).addEventListener('input', () => {
       const object = selected(); if (!object || $(id).value.trim() === '' || !Number.isFinite(Number($(id).value))) return;
       if (editingId !== object.id) { historyBefore(); editingId = object.id; }
-      Object.assign(object, patch()); scheduleDraw(); updateHistory(); scheduleSave();
+      Object.assign(object, patch()); scheduleDraw(); updateHistory(); scheduleSave(); if (object.kind === 'dialogue') updateDialogueLayoutStatus(object);
     });
     $(id).addEventListener('change', () => {
       const object = selected(); if (!object) return;
@@ -1386,11 +1770,13 @@
   // Keep the canvas responsive while typing and group the whole edit into one undo step.
   let textEditHistory = false;
   $('dialogueText').addEventListener('focus', () => { textEditHistory = false; });
-  $('dialogueText').addEventListener('input', () => { const object = selected(); if (!object || object.kind !== 'dialogue') return; if (!textEditHistory) { historyBefore(); textEditHistory = true; } object.text = $('dialogueText').value; scheduleDraw(); updateHistory(); scheduleSave(); });
+  $('dialogueText').addEventListener('input', () => { const object = selected(); if (!object || object.kind !== 'dialogue') return; if (!textEditHistory) { historyBefore(); textEditHistory = true; } object.text = $('dialogueText').value.slice(0, 5000); scheduleDraw(); updateHistory(); scheduleSave(); updateDialogueLayoutStatus(object); });
   $('dialogueText').addEventListener('change', () => { textEditHistory = false; });
   bindSelectedNumber('dialogueSize', () => ({ fontSize: clamp(Math.round(num($('dialogueSize').value, 9)), 4, 48) }));
-  bindSelectedNumber('dialogueWidth', () => ({ w: clamp(Math.round(num($('dialogueWidth').value, 192)), 20, 2000) }));
-  bindSelectedNumber('dialogueHeight', () => ({ h: clamp(Math.round(num($('dialogueHeight').value, 58)), 12, 2000) }));
+  bindSelectedNumber('dialogueWidth', () => ({ w: clamp(Math.round(num($('dialogueWidth').value, 192)), 20, 8192) }));
+  bindSelectedNumber('dialogueHeight', () => ({ h: clamp(Math.round(num($('dialogueHeight').value, 58)), 12, 8192) }));
+  if ($('dialogueFitText')) $('dialogueFitText').addEventListener('change', () => updateSelected({ fitText: $('dialogueFitText').checked }));
+  if ($('fitDialogueToTextBtn')) $('fitDialogueToTextBtn').addEventListener('click', fitSelectedDialogueToText);
   $('dialogueBox').addEventListener('change', () => updateSelected({ box: $('dialogueBox').checked })); $('dialogueColor').addEventListener('change', () => updateSelected({ color: $('dialogueColor').value }));
   function bindNameField(id, apply, fallback) {
     let editing = false;
@@ -1464,11 +1850,11 @@
       toast('Starter scenes loaded. Every piece is editable. Undo restores your previous project.');
     } catch (error) { toast(error.message); }
   });
-  $('openBtn').addEventListener('click', () => $('openFile').click());
+  $('openBtn').addEventListener('click', () => { finishDialogueEditing(); $('openFile').click(); });
   $('openFile').addEventListener('change', async event => {
     const file = event.target.files[0]; if (!file) return;
     try {
-      if (file.size > 30000000) throw new Error('This project is too large to open.');
+      if (file.size > 167772160) throw new Error('This project file is too large. Use a project under 160 MB.');
       const loaded = validateProject(JSON.parse(await file.text())); historyBefore(); project = loaded; selectedId = null; gestureZoom = null; fitMode = true; refreshAll(); scheduleSave();
       const missing = [...new Set(project.slides.flatMap(s => s.objects.filter(o => o.assetId && !assetMap.has(String(o.assetId))).map(o => o.assetId)))];
       toast(missing.length ? 'Project opened. ' + missing.length + ' source sheets are missing from this collection.' : 'Project opened. Your little world is ready.');
@@ -1517,7 +1903,12 @@
     } else if (action === 'dialogue') addDialogue();
     else if (['paint', 'select', 'erase', 'hand'].includes(action)) setTool(action);
   });
-  window.addEventListener('beforeunload', () => { try { if (JSON.stringify(project).length < 3800000) localStorage.setItem(STORAGE, JSON.stringify(project)); } catch (_) {} });
+  window.addEventListener('beforeunload', () => { finishDialogueEditing(); clearTimeout(saveTimer); void persistProject(copy(project), saveRevision, Date.now()); });
+  document.addEventListener('minish:media-ready', scheduleDraw);
+  for (const eventName of ['pointerdown', 'click', 'keydown', 'input', 'change', 'drop']) document.addEventListener(eventName, event => {
+    if (!restoringPictures || document.body.classList.contains('animation-mode')) return;
+    event.preventDefault(); event.stopImmediatePropagation?.();
+  }, true);
 
   $('assetCount').textContent = sourceAssets.length + ' source sheets';
   [...new Set(sourceAssets.map(a => a.section || 'Collection'))].sort().forEach(section => { const option = document.createElement('option'); option.value = section; option.textContent = section; $('sectionFilter').append(option); });
@@ -1526,7 +1917,7 @@
     if (Array.isArray(saved)) customPieces = saved.slice(0, 2000).flatMap(p => { try { return [normalizePiece(p)]; } catch (_) { return []; } });
   } catch (_) {}
   let restoredProject = false;
-  try { const saved = localStorage.getItem(STORAGE); if (saved) { project = validateProject(JSON.parse(saved)); restoredProject = true; } } catch (_) { $('saveState').textContent = 'Save project to keep your work'; }
+  try { const saved = localStorage.getItem(STORAGE); if (saved) { const data = JSON.parse(saved); lastLocalSave = num(data._localSavedAt); if (data.format === 'minish-cap-studio') { project = validateProject(data); restoredProject = true; } } } catch (_) { $('saveState').textContent = 'Reopening your project…'; }
   if (!restoredProject && window.MINISH_STARTER) {
     try { project = validateProject(copy(window.MINISH_STARTER)); } catch (_) {}
   }
@@ -1538,6 +1929,10 @@
     getScene: () => copy(scene()), getAsset: id => { const asset = assetMap.get(String(id)); return asset ? { ...asset } : null; },
     prepareScene, renderSceneToCanvas, drawSceneToContext: (ctx, slide, options = {}) => drawScene(ctx, slide, { quiet: true, ...options }),
     get selectedObject() { const object = selected(); return object ? copy(object) : null; },
+    importImages, updateSelectedImage, setImageSize: updateSelectedImage, fitSelectedImage, setSceneFrame, setImageFrame,
+    getImageMetadata: id => media?.metadata(id) || null, getImages: () => media?.list() || [], getPortableProject: portableProject,
+    get imageLimits() { return media?.limits || null; },
+    get isRestoring() { return restoringPictures; },
     get customPieces() { return copy(customPieces); },
     chooseAsset: id => { const a = assetMap.get(String(id)); return a ? chooseAsset(a) : Promise.reject(new Error('Unknown sheet')); },
     choosePiece, placePiece, placePieceAt, piecePosition, beginPieceDrag, endPieceDrag, replaceSelectedPose, canSwapSelected, getBrushPiece, getPieceSource, saveCustomPiece, removeCustomPiece,
@@ -1547,10 +1942,20 @@
     setTool, addDialogue, addSlide, switchSlide, deleteSlide, undo, redo, saveProject, exportSlide, makeZip,
     copySelected, cutSelected: () => copySelected(true), pasteSelected, zoomAt, zoomStep, fitCanvas, focusArea,
     get view() { return { zoom: stageZoom, fit: fitMode }; },
-    updateSelected, duplicateSelected: duplicateObject, deleteSelected, reorderSelected, spriteGeometry,
+    updateSelected, getDialogueLayout, fitSelectedDialogueToText, editDialogue, finishDialogueEditing,
+    get isEditingDialogue() { return !!inlineDialogue; }, duplicateSelected: duplicateObject, deleteSelected, reorderSelected, spriteGeometry,
     bringToFront: () => reorderSelected(1, true), sendToBack: () => reorderSelected(-1, true),
     loadProject: data => { const loaded = validateProject(copy(data)); historyBefore(); project = loaded; selectedId = null; gestureZoom = null; fitMode = true; refreshAll(); scheduleSave(); },
-    select: id => { selectedId = scene().objects.find(o => o.id === id)?.id || null; if (selected()) layer = selected().layer; setTool('select'); updateInspector(); scheduleDraw(); },
-    useBackground, render: () => { renderStage(); renderSlides(); }, version: '1.1'
+    select: id => { finishDialogueEditing(); selectedId = scene().objects.find(o => o.id === id)?.id || null; if (selected()) layer = selected().layer; setTool('select'); updateInspector(); scheduleDraw(); },
+    useBackground, render: () => { renderStage(); renderSlides(); }, version: '1.2'
   };
+  const restoreRevision = saveRevision;
+  window.MINISH_STUDIO.storageReady = media ? media.restore(STORAGE).then(saved => {
+    if (!saved || saveRevision !== restoreRevision || saved.updatedAt < lastLocalSave) return false;
+    media.hydrate(saved.media);
+    const restored = validateProject(saved.project);
+    if (saveRevision !== restoreRevision) return false;
+    project = restored; selectedId = null; fitMode = true; restoredProject = true; refreshAll();
+    $('saveState').textContent = 'Saved in this browser'; return true;
+  }).catch(() => { if (!restoredProject && lastLocalSave) $('saveState').textContent = 'Open your saved project file to restore your pictures'; return false; }).finally(() => { restoringPictures = false; emit('minish:scene-changed', scene()); }) : Promise.resolve(false);
 })();

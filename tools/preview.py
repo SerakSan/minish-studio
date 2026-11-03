@@ -10,6 +10,7 @@ PREFIXES = ("assets/sheets/", "assets/thumbnails/", "assets/ui/", "assets/pieces
 FILES.update({"GUIDE.md", "START-HERE.txt", "Open Minish Studio.html", "world-scenes.js", "assets/world-maps.js", "assets/world-maps.json"})
 FILES.update({"world-animation.js", "world-animation-ui.js"})
 FILES.update({"combat-library.js"})
+FILES.update({"scene-media.js", "scene-frames.js", "scene-composer-ui.js", "scene-composer.css"})
 PREFIXES += ("assets/world/",)
 PREFIXES += ("assets/combat/",)
 ART_ROOTS = [ROOT, (ROOT / "assets/sheets").resolve(), (ROOT / "assets/thumbnails").resolve()]

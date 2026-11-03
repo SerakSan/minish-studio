@@ -1,5 +1,13 @@
 # Minish Studio changelog
 
+## 1.2: your pictures, more frames, easier text
+
+- Bring your own pictures into a scene, or turn a batch into a carousel with one picture per slide. Resize, rotate, flip and layer them with the game sprites.
+- Pick from 17 pixel-art frames for the canvas or an individual picture. Search Zelda themes like fairies, the Triforce, the Great Sea, Twilight, masks, hearts and rupees. These borders are designed for the editor.
+- Resize dialogue boxes with eight handles and watch the words rewrap. Fit text to box adapts larger lettering, and Fit box to text makes room for all your words.
+- Double-click a selected text box with Select to edit right on the canvas. Done or Ctrl/Command+Enter applies the edit, Enter adds a line, and Esc cancels. Clicking outside also applies your changes.
+- Pictures stay on your device and travel with saved project files. Large picture projects can reopen from browser autosave, and private imports stay out of the shared game-art library.
+
 ## 1.1: more Hyrule, better fights, smoother controls
 
 - Explore the whole Hyrule terrain map or the illustrated game map. Fill them with Easter eggs, reroll in one click, or try Random Hyrule animation.

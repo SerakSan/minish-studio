@@ -61,7 +61,7 @@
       // Animation projects store references, never a copied source bitmap or a local path.
       delete object.dataUrl; delete object.thumbnailDataUrl; delete object.path;
     } else {
-      object.text = String(input.text || '').slice(0, 5000); object.w = clamp(integer(input.w, 192), 20, 2000); object.h = clamp(integer(input.h, 58), 12, 2000);
+      object.text = String(input.text || '').slice(0, 5000); object.w = clamp(integer(input.w, 192), 20, 8192); object.h = clamp(integer(input.h, 58), 12, 8192);
       object.fontSize = clamp(integer(input.fontSize, 12), 4, 48); object.color = color(input.color, '#fff7d3'); object.box = input.box !== false;
     }
     return object;
@@ -358,6 +358,9 @@
   }
   function importScene(scene, options = {}) {
     if (!scene || !Array.isArray(scene.objects)) throw new Error('Choose a scene to animate first.');
+    if (scene.objects.some(object => object.kind === 'image') || scene.frame?.style && scene.frame.style !== 'none') {
+      throw new Error('Pictures and decorative frames are available in Scene mode. Duplicate this scene and remove them before importing the copy into Animate. Your original scene stays unchanged.');
+    }
     const remap = new Map(scene.objects.map(object => [object.id, uid()]));
     return addClip({ name: options.name || scene.name || 'Animated scene', width: scene.width, height: scene.height, exportScale: scene.exportScale,
       color: scene.color, transparent: scene.transparent, worldId: scene.worldId, worldStyle: scene.worldStyle,
